@@ -5,16 +5,29 @@ const session = require("express-session");
 const jwt = require("jsonwebtoken");
 const cookieParser = require("cookie-parser");
 const multer = require("multer");
-const stripe = require("stripe")(
-  "sk_test_51O9lZ0IQTS4vUIMWJeAJ5Ds71jNbeQFj6v8mO7leS2cDIJuLy1fwNzoiXPKZV5KdoMpfzocfJ6hBusxPIjbGeveF00RTnmVYCX"
-);
+
 const http = require("http");
+const express = require("express");
 
 mongoose.set("strictQuery", false);
 require("dotenv").config();
 
-//Admin Controller
+const MongoURI = process.env.MONGO_URI;
 
+//Admin Controller
+const {
+  login,
+    logout,
+    updateUserInfoInCookie,
+    requireAdminAuth,
+    createToken,
+    addAdmin,
+    removePlayer,
+    removeAdmin,
+    addPlayer,
+    makePairs,
+    requireAuth,
+} = require("./src/Controllers/adminController.js");
 //Player Controller
 
 //Pairs Controller
@@ -44,4 +57,11 @@ app.get("/home", (req, res) => {
   // #Routing to userController here
   app.use(express.json());
 
+  app.post("/login", login);
+app.get("/logout", logout);
+app.post("/addAdmin", requireAuth , addAdmin);
+app.delete("/removePlayer", requireAuth , removePlayer);
+app.post("/addPlayer", requireAuth , addPlayer);
+app.post("/makePairs", requireAuth ,makePairs);
+app.delete("/removeAdmin", requireAuth ,removeAdmin);
 

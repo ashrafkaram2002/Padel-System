@@ -217,6 +217,25 @@ const requireAdminAuth = (req, res, next) => {
       throw new Error(error.message);
     }
   };
+
+  const requireAuth = async (req, res, next) => {
+    const token = req.cookies.jwt;
+  
+    if (token) {
+      jwt.verify(token, "secret-unkown", (err, decodedToken) => {
+        if (err) {
+          console.log(err.message);
+          res.redirect("/login");
+        } else {
+          // Store the user information in the request object
+          req.user = decodedToken;
+          next();
+        }
+      });
+    } else {
+      res.redirect("/login");
+    }
+  };
   
 
   module.exports = {
@@ -230,4 +249,5 @@ const requireAdminAuth = (req, res, next) => {
     removeAdmin,
     addPlayer,
     makePairs,
+    requireAuth,
 }
