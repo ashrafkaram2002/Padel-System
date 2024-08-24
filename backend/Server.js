@@ -12,7 +12,7 @@ const express = require("express");
 mongoose.set("strictQuery", false);
 require("dotenv").config();
 
-const MongoURI = process.env.MONGO_URI;
+
 
 //Admin Controller
 const {
@@ -42,6 +42,8 @@ const adminstrator = require("./src/Models/Admin.js");
 const player = require("./src/Models/Player.js");
 const pair = require("./src/Models/Pair.js");
 
+const MongoURI = process.env.MONGO_URI;
+
 mongoose
   .connect(MongoURI)
   .then(() => {
@@ -54,7 +56,7 @@ app.get("/home", (req, res) => {
     res.status(200).send("You have everything installed!");
   });
   
-  // #Routing to userController here
+  
   app.use(express.json());
 
   app.post("/login", login);
