@@ -10,6 +10,10 @@ const playerSchema = new Schema(
       type: String,
       required: true,
     },
+    position: {
+      type: String,
+      required: true,
+    },
   },
   { timestamps: true }
 );

@@ -2,11 +2,15 @@ const Schema = mongoose.Schema;
 
 const pairSchema = new Schema(
   {
-    points: {
+    player1: {
       type: String,
       required: true,
     },
-    name: {
+    player2: {
+      type: String,
+      required: true,
+    },
+    points: {
       type: String,
       required: true,
     },
