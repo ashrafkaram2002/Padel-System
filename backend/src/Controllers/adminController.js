@@ -64,8 +64,8 @@ const requireAdminAuth = (req, res, next) => {
   };
 
   const addAdmin = async (req, res) => {
-    const { username } = req.body;
   
+    
     try {
       let password = req.body.password;
       const { username, email, name } = req.body;
