@@ -62,8 +62,8 @@ app.get("/home", (req, res) => {
   app.post("/login", login);
 app.get("/logout", logout);
 app.post("/addAdmin" , addAdmin);
-app.delete("/removePlayer", requireAuth , removePlayer);
-app.post("/addPlayer", requireAuth , addPlayer);
-app.post("/makePairs", requireAuth ,makePairs);
-app.delete("/removeAdmin", requireAuth ,removeAdmin);
+app.delete("/removePlayer" , removePlayer);
+app.post("/addPlayer" , addPlayer);
+app.post("/makePairs" ,makePairs);
+app.delete("/removeAdmin" ,removeAdmin);
 

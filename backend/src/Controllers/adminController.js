@@ -65,7 +65,7 @@ const requireAdminAuth = (req, res, next) => {
 
   const addAdmin = async (req, res) => {
   
-    
+
     try {
       let password = req.body.password;
       const { username, email, name } = req.body;
@@ -111,7 +111,7 @@ const requireAdminAuth = (req, res, next) => {
       const newPlayer = await playerModel.create({
         name,
         position,
-        points: 0,
+        points: 1000,
       });
   
       console.log("Player Created!");
