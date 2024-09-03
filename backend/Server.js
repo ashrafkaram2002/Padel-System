@@ -32,6 +32,7 @@ const {
     requireAuth,
     viewPlayers,
     viewAdmins,
+    makeDraw2,
 } = require("./src/Controllers/adminController.js");
 //Player Controller
 
@@ -81,6 +82,7 @@ app.post("/teamMatching" , requireAuth ,teamMatching);
 app.post("/teamMatchingRandomized" , requireAuth ,teamMatchingRandomized);
 app.post("/UpdateScoreAndPoints" , requireAuth ,UpdateScoreAndPoints);
 app.post("/makeDraw" , requireAuth ,makeDraw);
+app.post("/makeDraw2" , requireAuth ,makeDraw2);
 
 app.delete("/removePlayer" , requireAuth ,removePlayer);
 app.delete("/removeAdmin" ,requireAuth,removeAdmin);

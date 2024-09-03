@@ -370,43 +370,142 @@ const requireAdminAuth = (req, res, next) => {
   
   
   
+  const previousDraws = []; // To store the previously generated draws
+
   const makeDraw = async (req, res) => {
-    const teams = req.body.teams; // Array of arrays of size 2 with player names
-    try {
-      // Fetch players based on provided names and calculate team points
-      const teamPoints = await Promise.all(
-        teams.map(async ([player1Name, player2Name]) => {
-          const player1 = await playerModel.findOne({ name: player1Name });
-          const player2 = await playerModel.findOne({ name: player2Name });
+      const teams = req.body.teams; // Array of arrays of size 2 with player names
+      try {
+          // Fetch players based on provided names and calculate team points
+          const teamPoints = await Promise.all(
+              teams.map(async ([player1Name, player2Name]) => {
+                  const player1 = await playerModel.findOne({ name: player1Name });
+                  const player2 = await playerModel.findOne({ name: player2Name });
   
-          if (!player1 || !player2) {
-            throw new Error(`Player ${!player1 ? player1Name : player2Name} not found.`);
+                  if (!player1 || !player2) {
+                      throw new Error(`Player ${!player1 ? player1Name : player2Name} not found.`);
+                  }
+  
+                  const totalPoints = parseInt(player1.points) + parseInt(player2.points);
+                  return {
+                      team: [player1Name, player2Name],
+                      points: totalPoints,
+                  };
+              })
+          );
+  
+          // Sort teams by their total points (highest to lowest)
+          teamPoints.sort((a, b) => b.points - a.points);
+  
+          // Schedule matches: highest vs lowest, second highest vs second lowest, etc.
+          const matches = [];
+          while (teamPoints.length > 1) {
+              const highestTeam = teamPoints.shift();
+              const lowestTeam = teamPoints.pop();
+              matches.push([highestTeam.team, lowestTeam.team]);
           }
   
-          const totalPoints = player1.points + player2.points;
-          return {
-            team: [player1Name, player2Name],
-            points: totalPoints,
-          };
-        })
-      );
+          // Save this draw to previousDraws
+          previousDraws.push(matches);
   
-      // Sort teams by their total points (highest to lowest)
-      teamPoints.sort((a, b) => b.points - a.points);
+          return res.status(200).json(matches);
+      } catch (error) {
+          return res.status(400).json({ error: error.message });
+      }
+  };
   
-      // Schedule matches: highest vs lowest, second highest vs second lowest, etc.
-      const matches = [];
-      while (teamPoints.length > 1) {
-        const highestTeam = teamPoints.shift();
-        const lowestTeam = teamPoints.pop();
-        matches.push([highestTeam.team, lowestTeam.team]);
+
+  const makeDraw2 = async (req, res) => {
+    const { teams } = req.body;
+  
+    try {
+      // Ensure teams are in pairs and count is even
+      if (teams.length % 2 !== 0) {
+        throw new Error("Number of teams must be even.");
       }
   
-      return res.status(200).json(matches);
+      // Helper function to generate all unique combinations of pairs from the given teams
+      const generateUniquePairs = (teams) => {
+        const results = [];
+        const used = new Set();
+  
+        const generatePairs = (remainingTeams, currentPairs = []) => {
+          if (remainingTeams.length === 0) {
+            results.push([...currentPairs]);
+            return;
+          }
+  
+          for (let i = 0; i < remainingTeams.length; i++) {
+            for (let j = i + 1; j < remainingTeams.length; j++) {
+              const pair = [remainingTeams[i], remainingTeams[j]];
+              const sortedPair = pair.sort().toString();
+  
+              if (!used.has(sortedPair)) {
+                used.add(sortedPair);
+                generatePairs(
+                  remainingTeams.filter((_, index) => index !== i && index !== j),
+                  [...currentPairs, pair]
+                );
+                used.delete(sortedPair);
+              }
+            }
+          }
+        };
+  
+        generatePairs(teams);
+        return results;
+      };
+  
+      const allCombinations = generateUniquePairs(teams);
+  
+      if (allCombinations.length === 0) {
+        throw new Error("No unique combinations possible.");
+      }
+  
+      // Function to normalize draw order by sorting matches
+      const normalizeDraw = (draw) => {
+        return draw.map(match => match.sort((a, b) => a.toString().localeCompare(b.toString())))
+                    .sort((a, b) => a.toString().localeCompare(b.toString()));
+      };
+  
+      // Store previous combinations to avoid repeats
+      const usedCombinations = req.app.locals.usedCombinations || [];
+      req.app.locals.usedCombinations = usedCombinations;
+  
+      let selectedCombination;
+      
+      // Convert all draws to normalized form
+      const normalizedCombinations = allCombinations.map(combo => normalizeDraw(combo));
+      const usedNormalizedCombinations = usedCombinations.map(combo => normalizeDraw(combo));
+  
+      // Find a new combination not used before
+      for (const combo of normalizedCombinations) {
+        if (!usedNormalizedCombinations.some(prevCombo => prevCombo.toString() === combo.toString())) {
+          selectedCombination = combo;
+          usedCombinations.push(combo);
+          break;
+        }
+      }
+  
+      if (!selectedCombination) {
+        // If all combinations have been used, reset and start over
+        req.app.locals.usedCombinations = [];
+        selectedCombination = allCombinations[0];
+      }
+  
+      return res.status(200).json(selectedCombination);
+  
     } catch (error) {
       return res.status(400).json({ error: error.message });
     }
   };
+  
+  
+  
+
+
+  
+
+  
 
   const viewPlayers = async (req, res) => {
     try {
@@ -450,6 +549,7 @@ const requireAdminAuth = (req, res, next) => {
     requireAuth,
     UpdateScoreAndPoints,
     makeDraw,
+    makeDraw2,
     viewPlayers,
     viewAdmins,
 }
