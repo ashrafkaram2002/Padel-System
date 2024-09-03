@@ -25,8 +25,13 @@ const {
     removePlayer,
     removeAdmin,
     addPlayer,
-    makePairs,
+    teamMatching,
+    teamMatchingRandomized,
+    UpdateScoreAndPoints,
+    makeDraw,
     requireAuth,
+    viewPlayers,
+    viewAdmins,
 } = require("./src/Controllers/adminController.js");
 //Player Controller
 
@@ -40,7 +45,7 @@ const server = app.listen(port, () => {
 
 const adminstrator = require("./src/Models/Admin.js");
 const player = require("./src/Models/Player.js");
-const pair = require("./src/Models/Pair.js");
+
 
 const MongoURI = process.env.MONGO_URI;
 
@@ -57,13 +62,26 @@ app.get("/home", (req, res) => {
   });
   
   
-  app.use(express.json());
+app.use(express.json());
 
-  app.post("/login", login);
+app.use(cookieParser());
+app.use(bodyParser.json());
+app.use(
+  session({ secret: "your-secret-key", resave: true, saveUninitialized: true })
+);
+
 app.get("/logout", logout);
-app.post("/addAdmin" , addAdmin);
-app.delete("/removePlayer" , removePlayer);
-app.post("/addPlayer" , addPlayer);
-app.post("/makePairs" ,makePairs);
-app.delete("/removeAdmin" ,removeAdmin);
+app.get("/viewPlayers" ,viewPlayers);
+app.get("/viewAdmins", requireAuth ,viewAdmins);
+
+app.post("/login", login);
+app.post("/addAdmin" , requireAuth ,addAdmin);
+app.post("/addPlayer" , requireAuth ,addPlayer);
+app.post("/teamMatching" , requireAuth ,teamMatching);
+app.post("/teamMatchingRandomized" , requireAuth ,teamMatchingRandomized);
+app.post("/UpdateScoreAndPoints" , requireAuth ,UpdateScoreAndPoints);
+app.post("/makeDraw" , requireAuth ,makeDraw);
+
+app.delete("/removePlayer" , requireAuth ,removePlayer);
+app.delete("/removeAdmin" ,requireAuth,removeAdmin);
 

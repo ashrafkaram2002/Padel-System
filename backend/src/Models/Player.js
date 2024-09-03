@@ -11,10 +11,17 @@ const playerSchema = new Schema(
     name: {
       type: String,
       required: true,
+      unique: true,
     },
     position: {
       type: String,
       required: true,
+    },
+    wins: {
+      type: String,
+    },
+    loses: {
+      type: String,
     },
   },
   { timestamps: true }

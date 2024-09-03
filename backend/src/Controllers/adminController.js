@@ -1,6 +1,7 @@
 const adminModel = require("../Models/Admin.js");
 const playerModel = require("../Models/Player.js");
-const pairModel = require("../Models/Pair.js");
+const matchModel = require("../Models/Match.js");
+
 const jwt = require("jsonwebtoken");
 const maxAge = 3 * 24 * 6 * 60;
 const bcrypt = require("bcrypt");
@@ -68,7 +69,7 @@ const requireAdminAuth = (req, res, next) => {
 
     try {
       let password = req.body.password;
-      const { username, email, name } = req.body;
+      const {username} = req.body;
       const salt = await bcrypt.genSalt();
       const newPassword = await bcrypt.hash(password, salt);
       password = newPassword;
@@ -85,8 +86,7 @@ const requireAdminAuth = (req, res, next) => {
       const newAdmin = await adminModel.create({
         username,
         password,
-        name,
-        email,
+
       });
       console.log("Admin Created!");
       res.status(200).send(newAdmin);
@@ -99,6 +99,7 @@ const requireAdminAuth = (req, res, next) => {
     const {
       name,
       position, 
+      points,
     } = req.body;
     try {
       const existingPlayer = await playerModel.findOne({ name });
@@ -111,7 +112,9 @@ const requireAdminAuth = (req, res, next) => {
       const newPlayer = await playerModel.create({
         name,
         position,
-        points: 1000,
+        points,
+        wins: "0",
+        loses: "0", 
       });
   
       console.log("Player Created!");
@@ -121,11 +124,13 @@ const requireAdminAuth = (req, res, next) => {
     }
   };
 
+  
+
   const removePlayer = async (req, res) => {
     try {
-      const username = req.query.username;
+      const name = req.body.name;
       const removedPlayer = await playerModel.findOneAndDelete({
-        username: username,
+        name: name,
       });
   
       if (!removedPlayer) {
@@ -155,8 +160,9 @@ const requireAdminAuth = (req, res, next) => {
     }
   };
 
-  const makePairs = async (req,res) => {
-    const playerNames = req.query.playerNames;
+  const teamMatching = async (req, res) => {
+    const playerNames = req.body.playerNames;
+  
     try {
       if (playerNames.length % 2 !== 0) {
         throw new Error("Number of players must be even.");
@@ -170,8 +176,8 @@ const requireAdminAuth = (req, res, next) => {
       }
   
       // Separate players by position
-      const leftPlayers = players.filter(player => player.position === 'left');
-      const rightPlayers = players.filter(player => player.position === 'right');
+      const leftPlayers = players.filter((player) => player.position === "left");
+      const rightPlayers = players.filter((player) => player.position === "right");
   
       if (leftPlayers.length !== rightPlayers.length) {
         throw new Error("Number of left and right position players must be equal.");
@@ -181,42 +187,71 @@ const requireAdminAuth = (req, res, next) => {
       leftPlayers.sort((a, b) => b.points - a.points);
       rightPlayers.sort((a, b) => a.points - b.points);
   
-      const pairs = [];
+      const teams = [];
   
       // Create pairs
       for (let i = 0; i < leftPlayers.length; i++) {
         const player1 = leftPlayers[i];
         const player2 = rightPlayers[i];
   
-        // Check if the pair already exists
-        const existingPair = await Pair.findOne({
-          $or: [
-            { player1: player1.name, player2: player2.name },
-            { player1: player2.name, player2: player1.name },
-          ],
-        });
-  
-        if (existingPair) {
-          return `Pair between ${player1.name} and ${player2.name} already exists.`;
-        }
-  
-        // Create and save the new pair
-        const newPair = new pairModel({
-          player1: player1.name,
-          player2: player2.name,
-          points: 0,
-        });
-  
-        await newPair.save();
-        pairs.push(newPair);
+        // Add the pair as an array of player names
+        teams.push([player1.name, player2.name]);
       }
   
-      return pairs;
+      return res.status(200).json({ teams });
   
     } catch (error) {
-      throw new Error(error.message);
+      return res.status(400).json({ error: error.message });
     }
   };
+
+  const teamMatchingRandomized = async (req, res) => {
+    const playerNames = req.body.playerNames;
+  
+    try {
+      if (playerNames.length % 2 !== 0) {
+        throw new Error("Number of players must be even.");
+      }
+  
+      // Fetch players based on the provided names
+      const players = await playerModel.find({ name: { $in: playerNames } });
+  
+      if (players.length !== playerNames.length) {
+        throw new Error("Some players not found.");
+      }
+  
+      // Separate players by position
+      const leftPlayers = players.filter((player) => player.position === "left");
+      const rightPlayers = players.filter((player) => player.position === "right");
+  
+      if (leftPlayers.length !== rightPlayers.length) {
+        throw new Error("Number of left and right position players must be equal.");
+      }
+  
+      // Randomize the order of the players
+      const shuffleArray = (array) => array.sort(() => Math.random() - 0.5);
+      const shuffledLeftPlayers = shuffleArray(leftPlayers);
+      const shuffledRightPlayers = shuffleArray(rightPlayers);
+  
+      const teams = [];
+  
+      // Create randomized pairs
+      for (let i = 0; i < shuffledLeftPlayers.length; i++) {
+        const player1 = shuffledLeftPlayers[i];
+        const player2 = shuffledRightPlayers[i];
+  
+        // Add the pair as an array of player names
+        teams.push([player1.name, player2.name]);
+      }
+  
+      return res.status(200).json({ teams });
+  
+    } catch (error) {
+      return res.status(400).json({ error: error.message });
+    }
+  };
+  
+  
 
   const requireAuth = async (req, res, next) => {
     const token = req.cookies.jwt;
@@ -236,7 +271,169 @@ const requireAdminAuth = (req, res, next) => {
       res.redirect("/login");
     }
   };
+
+
+  const UpdateScoreAndPoints = async (req, res) => {
+    try {
+      const { teams, score } = req.body;
   
+      // Extract teams from the input
+      const team1 = teams[0];
+      const team2 = teams[1];
+  
+      // Determine the winner and loser based on the score
+      const scoreSets = score.split('/').map(set => set.split('-').map(Number));
+      let winnerTeam, loserTeam;
+  
+      const team1SetsWon = scoreSets.filter(([t1, t2]) => t1 > t2).length;
+      const team2SetsWon = scoreSets.filter(([t1, t2]) => t2 > t1).length;
+  
+      if (team1SetsWon > team2SetsWon) {
+        winnerTeam = team1;
+        loserTeam = team2;
+      } else {
+        winnerTeam = team2;
+        loserTeam = team1;
+      }
+  
+      // Fetch players from the database
+      const winningPlayers = await playerModel.find({
+        name: { $in: winnerTeam }
+      });
+  
+      const losingPlayers = await playerModel.find({
+        name: { $in: loserTeam }
+      });
+  
+      // Convert string points to numbers and calculate the total points for the teams
+      const winningTeamPoints = winningPlayers.reduce((sum, player) => sum + Number(player.points), 0);
+      const losingTeamPoints = losingPlayers.reduce((sum, player) => sum + Number(player.points), 0);
+  
+      //console.log("winning: " + winningTeamPoints);
+      //console.log("losing: " + losingTeamPoints);
+  
+      // Calculate the delta (absolute difference)
+      const delta = Math.abs(winningTeamPoints - losingTeamPoints);
+      //console.log("delta: " + delta);
+  
+      // Initialize points to be added or subtracted
+      let pointsChange;
+  
+      // Apply point changes based on delta range
+      if (delta <= 100) {
+        pointsChange = 20;
+      } else if (delta <= 200) {
+        pointsChange = winningTeamPoints > losingTeamPoints ? 16 : 24;
+      } else if (delta <= 300) {
+        pointsChange = winningTeamPoints > losingTeamPoints ? 12 : 28;
+      } else if (delta <= 400) {
+        pointsChange = winningTeamPoints > losingTeamPoints ? 8 : 32;
+      } else {
+        pointsChange = winningTeamPoints > losingTeamPoints ? 4 : 36;
+      }
+  
+      // Update points and wins/loses for each player
+      for (const player of winningPlayers) {
+        player.points = (Number(player.points) + pointsChange).toString();
+        player.wins = (Number(player.wins) + 1).toString();
+        await player.save();
+      }
+  
+      for (const player of losingPlayers) {
+        player.points = (Number(player.points) - pointsChange).toString();
+        player.loses = (Number(player.loses) + 1).toString();
+        await player.save();
+      }
+  
+      // Create a new Match record
+      const newMatch = new matchModel({
+        team1: team1,
+        team2: team2,
+        score: score,
+      });
+  
+      await newMatch.save();
+  
+      return res.status(200).json({
+        message: 'Points updated successfully',
+        match: newMatch,
+        updatedPlayers: {
+          winningPlayers,
+          losingPlayers,
+        },
+      });
+    } catch (error) {
+      return res.status(500).json({ error: error.message });
+    }
+  };
+  
+  
+  
+  
+  const makeDraw = async (req, res) => {
+    const teams = req.body.teams; // Array of arrays of size 2 with player names
+    try {
+      // Fetch players based on provided names and calculate team points
+      const teamPoints = await Promise.all(
+        teams.map(async ([player1Name, player2Name]) => {
+          const player1 = await playerModel.findOne({ name: player1Name });
+          const player2 = await playerModel.findOne({ name: player2Name });
+  
+          if (!player1 || !player2) {
+            throw new Error(`Player ${!player1 ? player1Name : player2Name} not found.`);
+          }
+  
+          const totalPoints = player1.points + player2.points;
+          return {
+            team: [player1Name, player2Name],
+            points: totalPoints,
+          };
+        })
+      );
+  
+      // Sort teams by their total points (highest to lowest)
+      teamPoints.sort((a, b) => b.points - a.points);
+  
+      // Schedule matches: highest vs lowest, second highest vs second lowest, etc.
+      const matches = [];
+      while (teamPoints.length > 1) {
+        const highestTeam = teamPoints.shift();
+        const lowestTeam = teamPoints.pop();
+        matches.push([highestTeam.team, lowestTeam.team]);
+      }
+  
+      return res.status(200).json(matches);
+    } catch (error) {
+      return res.status(400).json({ error: error.message });
+    }
+  };
+
+  const viewPlayers = async (req, res) => {
+    try {
+      // Fetch all players from the database
+      const players = await playerModel.find();
+  
+      // If there are no players, return a 404 error
+      if (!players.length) {
+        return res.status(404).json({ message: "No players found." });
+      }
+  
+      // Return the players in the response
+      res.status(200).json(players);
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  };
+  
+  const viewAdmins = async (req, res) => {
+    try {
+      const admins = await adminModel.find(); // Replace `adminModel` with the actual name of your admin model
+      res.status(200).json(admins);
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  };  
+
 
   module.exports = {
     login,
@@ -248,6 +445,11 @@ const requireAdminAuth = (req, res, next) => {
     removePlayer,
     removeAdmin,
     addPlayer,
-    makePairs,
+    teamMatching,
+    teamMatchingRandomized,
     requireAuth,
+    UpdateScoreAndPoints,
+    makeDraw,
+    viewPlayers,
+    viewAdmins,
 }
