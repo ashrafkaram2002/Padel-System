@@ -1,6 +1,7 @@
 const adminModel = require("../Models/Admin.js");
 const playerModel = require("../Models/Player.js");
 const matchModel = require("../Models/Match.js");
+const drawModel = require("../Models/Draw.js");
 
 const jwt = require("jsonwebtoken");
 const maxAge = 3 * 24 * 6 * 60;
@@ -550,6 +551,52 @@ const requireAdminAuth = (req, res, next) => {
     }
   };
 
+  const confirmDraw = async (req, res) => {
+    try {
+      const { teams } = req.body;
+  
+      if (!teams || teams.length === 0) {
+        return res.status(400).json({ error: "Teams data is required." });
+      }
+  
+      // Generate draw array structure
+      const draw = [];
+      while (teams.length > 1) {
+        const team1 = teams.shift();
+        const team2 = teams.pop();
+        draw.push([team1, team2]);
+      }
+  
+      // Delete any existing draws
+      await drawModel.deleteMany({});
+  
+      // Create a new draw with the provided data
+      const newDraw = await drawModel.create({ draw });
+  
+      // Return the newly created draw
+      return res.status(200).json(newDraw);
+    } catch (error) {
+      return res.status(500).json({ error: error.message });
+    }
+  };
+  
+
+  const viewDraw = async (req, res) => {
+    try {
+      // Fetch all draws from the database
+      const draws = await drawModel.find({});
+  
+      // Check if there are any draws
+      if (draws.length === 0) {
+        return res.status(404).json({ message: 'No draws found.' });
+      }
+  
+      return res.status(200).json(draws);
+    } catch (error) {
+      return res.status(500).json({ error: error.message });
+    }
+  };
+
 
   module.exports = {
     login,
@@ -570,4 +617,6 @@ const requireAdminAuth = (req, res, next) => {
     viewPlayers,
     viewAdmins,
     viewMatches,
+    confirmDraw,
+    viewDraw,
 }
