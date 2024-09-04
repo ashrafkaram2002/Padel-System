@@ -33,6 +33,7 @@ const {
     viewPlayers,
     viewAdmins,
     makeDraw2,
+    viewMatches,
 } = require("./src/Controllers/adminController.js");
 //Player Controller
 
@@ -73,6 +74,7 @@ app.use(
 
 app.get("/logout", logout);
 app.get("/viewPlayers" ,viewPlayers);
+app.get("/viewMatches" ,viewMatches);
 app.get("/viewAdmins", requireAuth ,viewAdmins);
 
 app.post("/login", login);

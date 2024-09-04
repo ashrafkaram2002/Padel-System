@@ -503,9 +503,9 @@ const requireAdminAuth = (req, res, next) => {
   
 
 
-  
 
-  
+
+
 
   const viewPlayers = async (req, res) => {
     try {
@@ -531,7 +531,24 @@ const requireAdminAuth = (req, res, next) => {
     } catch (error) {
       res.status(500).json({ error: error.message });
     }
-  };  
+  }; 
+  
+  const viewMatches = async (req, res) => {
+    try {
+      // Fetch all matches from the database
+      const matches = await matchModel.find();
+  
+      // If there are no players, return a 404 error
+      if (!matches.length) {
+        return res.status(404).json({ message: "No matches found." });
+      }
+  
+      // Return the matches in the response
+      res.status(200).json(matches);
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  };
 
 
   module.exports = {
@@ -552,4 +569,5 @@ const requireAdminAuth = (req, res, next) => {
     makeDraw2,
     viewPlayers,
     viewAdmins,
+    viewMatches,
 }
