@@ -1,0 +1,123 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+  --color-active: #68BBE3;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: Transparent;
+    --foreground: Transparent;
+  }
+}
+
+body {
+  color: var(--foreground);
+  background: var(--background);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
+.center-container {
+  @apply absolute inset-x-80 top-[calc(100px+10px)] bg-[#003060] shadow-lg rounded-lg;
+  height: 700px; /* Fixed height */
+  overflow-y: auto; /* Scrolls if content exceeds height */
+}
+
+.horizontal-container {
+  @apply flex items-center justify-center; /* Align items horizontally and center them */
+  @apply space-x-4; /* Add spacing between child elements (optional) */
+}
+
+.login-button {
+  color: rgb(220, 224, 255); /* Text color */
+  font-size: 1rem; /* Font size */
+  font-weight: 500; /* Font weight */
+  text-decoration: none; /* Remove underline */
+  transition: background-color 0.3s ease; /* Smooth background color transition */
+}
+
+.login-button:hover {
+  color: rgb(255, 255, 255); /* Text color */
+  text-decoration: underline;
+}
+
+/* Tab button styles */
+.tab-buttons {
+  @apply flex border-b border-gray-300;
+}
+
+.tab-button {
+  @apply px-6 py-3 text-lg font-medium focus:outline-none; /* Increased padding and font size */
+  @apply mx-2; /* Added margin between tabs */
+}
+
+.tab-button-active {
+  @apply border-b-2;
+  border-color: var(--color-active); /* Use custom active color */
+  color: var(--color-active); /* Use custom active color */
+}
+
+.tab-button-inactive {
+  @apply text-white; /* Changed inactive color to white */
+}
+
+/* Tab content styling */
+.tab-content {
+  @apply p-4;
+}
+
+.tab-text {
+  @apply font-medium ;
+}
+
+.tab-icon {
+  @apply mr-2;
+}
+
+.search-bar {
+  @apply flex justify-center items-center mb-10; /* Centering the container horizontally */
+}
+
+.search-input {
+  @apply p-2 w-full mr-2; /* Styling for the search input */
+  background-color: #ffffff; /* Set background color */
+  color: #003060; /* Set text color */
+}
+
+.players-table-container {
+  @apply p-4; /* Padding around the container */
+}
+
+.players-table {
+  @apply min-w-full border-collapse bg-[#055c9d] shadow-md ; /* Transparent background for table */
+}
+
+.players-table thead {
+  @apply bg-[#055c9d] text-white; /* Background color and text color for table header */
+}
+
+.players-table th {
+  @apply px-4 py-2 border-b font-bold; /* Bold text for column headers */
+}
+
+.players-table td {
+  @apply px-4 py-2 text-white text-center; /* White text color for table cells */
+}
+
+.players-table tr:hover {
+  @apply bg-[#68bbe3]; /* Background color on row hover */
+}
+
+.no-data {
+  @apply text-center; /* Center text for no data found */
+}
