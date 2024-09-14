@@ -5,7 +5,7 @@ import MainTabs from './components/MainTabs';
 export default function Home() {
   return (
     <>
-      <AppNavBar />
+      <AppNavBar onLogin={false} onHome={true} />
       <div className="relative min-h-screen">
         <Image
           src="/assets/padel2.jpg"

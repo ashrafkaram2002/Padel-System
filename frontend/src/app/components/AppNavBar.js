@@ -1,7 +1,18 @@
-import { GiTennisBall } from 'react-icons/gi';
-import Link from 'next/link';
+"use client";
 
-export default function AppNavBar() {
+import { GiTennisBall } from 'react-icons/gi';
+import { useRouter } from 'next/navigation';
+
+export default function AppNavBar({onHome, onLogin}) {
+  const router = useRouter();
+
+  const handleLoginClick = () => {
+    router.push('/login'); // Navigate to the login page
+  };
+  const handleHomeClick = () => {
+    router.push('/'); // Navigate to the home page
+  };
+
   return (
     <nav className="bg-[#003060] shadow-md py-4">
       <div className="container mx-auto flex items-center justify-between px-4">
@@ -11,11 +22,17 @@ export default function AppNavBar() {
             Padel Website
           </span>
         </div>
-        <div>
-          <Link href="/login" className="login-button">
+        {onHome && (<nav>
+          <button onClick={handleLoginClick} className="navbar-button">
             Login
-          </Link>
-        </div>
+          </button>
+        </nav>)}
+        {onLogin && (<nav>
+          <button onClick={handleHomeClick} className="navbar-button">
+            Home
+          </button>
+        </nav>)}
+        
       </div>
     </nav>
   );

@@ -1,7 +1,26 @@
+"use client"; 
 
-import React from 'react';
+import { useState, useEffect } from 'react';
+import axios from 'axios';
 
 export default function DrawsTable({ searchTerm }) {
+
+  const [drawsData, setDrawsData] = useState([]);
+
+  // Fetch draws data from the backend
+  useEffect(() => {
+    const fetchDrawsData = async () => {
+      try {
+        const response = await axios.get('http://localhost:8000/viewDraw');
+        setMatchesData(response.data);
+      } catch (error) {
+        console.error('Error fetching draws data:', error);
+      }
+    };
+
+    fetchDrawsData();
+  }, []);
+
     const dummyData = [
         { playerA: 'John Doe', playerB: 'Jane Smith', date: '2024-09-01', time: '14:00', location: 'Court 1' },
         { playerA: 'Alice Johnson', playerB: 'Bob Brown', date: '2024-09-02', time: '16:00', location: 'Court 2' },

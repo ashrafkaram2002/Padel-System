@@ -1,6 +1,6 @@
 "use client";  // Ensures this component is treated as a client component
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { GiTabletopPlayers} from 'react-icons/gi';
 import { BsFillPeopleFill, BsPersonFill  } from "react-icons/bs";
 
@@ -10,9 +10,13 @@ import MatchesTable from './MatchesTable';
 import DrawsTable from './DrawsTable';
 
 export default function MainTabs() {
-  const [activeTab, setActiveTab] = useState('players');
 
+  const [activeTab, setActiveTab] = useState('players');
   const [searchTerm, setSearchTerm] = useState('');
+
+  useEffect(() => {
+    setSearchTerm('');
+  }, [activeTab]);
 
   const handleSearch = (term) => {
     setSearchTerm(term);

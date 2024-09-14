@@ -11,6 +11,7 @@ const express = require("express");
 
 mongoose.set("strictQuery", false);
 require("dotenv").config();
+const cors = require('cors');
 
 
 
@@ -43,6 +44,7 @@ const {
 
 const port = process.env.PORT || "8000";
 const app = express();
+app.use(cors());
 const server = app.listen(port, () => {
   console.log(`Listening to requests on http://localhost:${port}`);
 });
