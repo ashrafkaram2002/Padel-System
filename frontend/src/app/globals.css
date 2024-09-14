@@ -1,0 +1,213 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+  --color-active: #8bdf36;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: Transparent;
+    --foreground: Transparent;
+  }
+}
+
+body {
+  color: var(--foreground);
+  background: var(--background);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
+.center-container {
+  @apply absolute inset-x-80 top-[calc(100px+10px)] bg-[#003060] shadow-lg rounded-lg bg-opacity-70;
+  height: 700px; /* Fixed height */
+  overflow-y: hidden;
+}
+
+.centering-container {
+  @apply absolute inset-x-60 top-[calc(100px+10px)] shadow-lg rounded-lg;
+  height: 700px; /* Fixed height */
+  overflow-y: hidden;
+  display: flex; /* Flexbox for centering */
+  justify-content: center; /* Horizontally center */
+  align-items: center; /* Vertically center */
+}
+
+.horizontal-container {
+  @apply flex items-center justify-center; /* Align items horizontally and center them */
+  @apply space-x-4; /* Add spacing between child elements (optional) */
+}
+
+.navbar-button {
+  color: rgb(220, 224, 255); /* Text color */
+  font-size: 1rem; /* Font size */
+  font-weight: 500; /* Font weight */
+  text-decoration: none; /* Remove underline */
+  transition: background-color 0.3s ease; /* Smooth background color transition */
+}
+
+.navbar-button:hover {
+  color: rgb(255, 255, 255); /* Text color */
+  text-decoration: underline;
+}
+
+.error-message {
+  color: #ff4d4f;
+  margin-top: 10px;
+}
+
+/* Tab button styles */
+.tab-buttons {
+  @apply flex border-b border-gray-300;
+}
+
+.tab-button {
+  @apply px-6 py-3 text-lg font-medium focus:outline-none; /* Increased padding and font size */
+  @apply mx-2; /* Added margin between tabs */
+}
+
+.tab-button-active {
+  @apply border-b-2;
+  border-color: var(--color-active); /* Use custom active color */
+  color: var(--color-active); /* Use custom active color */
+}
+
+.tab-button-inactive {
+  @apply text-white; /* Changed inactive color to white */
+}
+
+/* Tab content styling */
+.tab-content {
+  @apply p-4;
+}
+
+.tab-text {
+  @apply font-medium ;
+}
+
+.tab-icon {
+  @apply mr-2;
+}
+
+.search-bar {
+  @apply flex justify-center items-center mb-10; /* Centering the container horizontally */
+}
+
+.search-input {
+  @apply p-2 w-full mr-2; /* Styling for the search input */
+  background-color: #ffffff; /* Set background color */
+  color: #003060; /* Set text color */
+}
+
+.players-table-container {
+  @apply p-4; 
+  height: 35rem; 
+  overflow-y: auto; 
+}
+
+.players-table {
+  @apply min-w-full border-collapse bg-[#055c9d] shadow-md ; 
+}
+
+.players-table thead {
+  @apply bg-[#055c9d] text-white; 
+}
+
+.players-table th {
+  @apply px-4 py-2 border-b font-bold; 
+}
+
+.players-table td {
+  @apply px-4 py-2 text-white text-center; 
+}
+
+.players-table tr:hover {
+  @apply bg-[#68bbe3]; 
+}
+
+.no-data {
+  @apply text-center; 
+}
+
+
+/* Login Page Styling */
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #6cb2eb, #3b82f6);
+}
+
+.login-box {
+  background: rgba(255, 255, 255, 0.8);
+  padding: 4rem; /* Increased padding */
+  border-radius: 15px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+  text-align: center;
+  width: 450px; /* Increased width */
+}
+
+.login-title {
+  font-size: 2.4rem; /* Increased font size */
+  color: #003060;
+  margin-bottom: 1rem;
+  font-weight: 600;
+}
+
+.login-subtitle {
+  font-size: 1.1rem; /* Increased font size */
+  color: #6c757d;
+  margin-bottom: 2.5rem;
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.login-input {
+  padding: 1rem; /* Increased padding */
+  margin-bottom: 1.5rem;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  font-size: 1.1rem; /* Increased font size */
+  color: #003060;
+  background-color: rgba(255, 255, 255, 0.9);
+  transition: border-color 0.2s ease-in-out;
+}
+
+.login-input:focus {
+  border-color: #055c9d;
+  outline: none;
+}
+
+.login-buttonn {
+  padding: 1rem; /* Increased padding */
+  background-color: #055c9d;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-size: 1rem; /* Increased font size */
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.login-buttonn:hover {
+  background-color: #003060;
+}
+
+.login-footer {
+  margin-top: 1.5rem;
+  font-size: 0.9rem; /* Increased font size */
+}
+
