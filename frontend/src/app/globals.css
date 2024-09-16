@@ -28,14 +28,14 @@ body {
 }
 
 .center-container {
-  @apply absolute inset-x-80 top-[calc(100px+10px)] bg-[#003060] shadow-lg rounded-lg bg-opacity-70;
-  height: 700px; /* Fixed height */
+  @apply absolute inset-x-80 top-[calc(50px+10px)] bg-[#003060] shadow-lg rounded-lg bg-opacity-70;
+  height: 40rem; /* Fixed height */
   overflow-y: hidden;
 }
 
 .centering-container {
-  @apply absolute inset-x-60 top-[calc(100px+10px)] shadow-lg rounded-lg;
-  height: 700px; /* Fixed height */
+  @apply absolute inset-x-60 top-[calc(50px+10px)] shadow-lg rounded-lg;
+  height: 40rem; /* Fixed height */
   overflow-y: hidden;
   display: flex; /* Flexbox for centering */
   justify-content: center; /* Horizontally center */
@@ -103,14 +103,27 @@ body {
 }
 
 .search-input {
-  @apply p-2 w-full mr-2; /* Styling for the search input */
-  background-color: #ffffff; /* Set background color */
-  color: #003060; /* Set text color */
+  padding: 0.5rem;
+  margin-bottom: 0.6rem;
+  margin-left: 1.1rem;
+  width: 50rem;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  font-size: 1rem; /* Increased font size */
+  color: #003060;
+  background-color: rgba(255, 255, 255, 0.9);
+  transition: border-color 0.2s ease-in-out;
+}
+
+.search-input:focus {
+  border-color: #8bdf36;
+  outline: none;
 }
 
 .players-table-container {
-  @apply p-4; 
-  height: 35rem; 
+  padding-left: 1rem;
+  padding-right: 1rem;
+  height: 31rem; 
   overflow-y: auto; 
 }
 
@@ -187,7 +200,7 @@ body {
 }
 
 .login-input:focus {
-  border-color: #055c9d;
+  border-color: #8bdf36;
   outline: none;
 }
 
@@ -211,3 +224,61 @@ body {
   font-size: 0.9rem; /* Increased font size */
 }
 
+/* HamburgerMenu.css */
+
+.hamburger-button {
+  color: white;
+  border: none;
+  padding: 4px;
+  font-size: 2rem;
+  cursor: pointer;
+  position: relative;
+  z-index: 10;
+}
+
+.hamburger-button.open {
+  color: #8bdf36;
+}
+
+.hamburger-menu {
+  position: fixed;
+  top: 5.5rem; 
+  right: -100%;
+  width: 15rem; /* Adjust width as needed */
+  height: calc(100vh - 5.5rem); /* Adjust this value based on the height of your navbar */
+  background-color: white;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.3);
+  overflow-y: auto;
+  transition: right 0.3s ease-in-out; 
+}
+
+.hamburger-menu.open {
+  right: 0;
+}
+
+.menu-item {
+  display: block;
+  width: 100%;
+  padding: 15px;
+  font-size: 1rem;
+  text-align: center;
+  text-decoration: none;
+  color: black;
+  border-bottom: 1px solid #ddd; /* Add a border to separate items */
+  box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.1); /* Subtle shadow at the bottom */
+  background-color: #fafafa; /* Light background color */
+  transition: background-color 0.3s, color 0.3s; /* Smooth transition */
+}
+
+.menu-item:hover {
+  background-color: rgba(139, 223, 54, 0.5);
+  font-weight: bolder;
+}
+
+.menu-footer {
+  width: 100%;
+  padding: 15px;
+  text-align: center;
+  color: #888; /* Color for the footer text */
+  margin-top: 15rem;
+}

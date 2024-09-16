@@ -1,20 +1,30 @@
 "use client";
 
+import { useState } from 'react';
+
 export default function HamburgerMenu({ menuOpen, toggleMenu }) {
   return (
     <>
-      <button className="hamburger-button" onClick={toggleMenu}>
-        ☰ 
+      <button
+        className={`hamburger-button ${menuOpen ? 'open' : ''}`}
+        onClick={toggleMenu}
+      >
+        ☰
       </button>
 
-      {menuOpen && (
-        <div className="hamburger-menu bg-white shadow-lg rounded p-4 absolute top-[4rem] right-0">
-          <a href="#" className="block py-2">Dashboard</a>
-          <a href="#" className="block py-2">Settings</a>
-          <a href="#" className="block py-2">Profile</a>
-          {/* Add more links as needed */}
+      <div className={`hamburger-menu ${menuOpen ? 'open' : ''}`}>
+        <a href="#" className="menu-item">Manage Admins</a>
+        <a href="#" className="menu-item">Manage Players</a>
+        <a href="#" className="menu-item">Match Teams</a>
+        <a href="#" className="menu-item">Draw Matches</a>
+        <a href="#" className="menu-item">Update Scores</a>
+
+        <div className="menu-footer">
+          &copy; Padel Website
         </div>
-      )}
+      </div>
+
+      
     </>
   );
 }
