@@ -34,11 +34,10 @@ export default function MatchesTable({ searchTerm }) {
 
   return (
     <div className="players-table-container">
-      {loading && 
+      {loading ? 
      (<div className="flex justify-center items-center">
        <div className="w-8 h-8 border-4 border-dashed rounded-full animate-spin border-white"></div>
-      </div>)}
-     <table className="players-table">
+      </div>): (<table className="players-table">
       <thead>
         <tr>
           <th>Team 1</th>
@@ -61,7 +60,8 @@ export default function MatchesTable({ searchTerm }) {
           </tr>
         )}
       </tbody>
-    </table>
+    </table>)}
+     
     </div>
     
   );

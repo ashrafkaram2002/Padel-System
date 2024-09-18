@@ -66,11 +66,9 @@ mongoose
 app.get("/home", (req, res) => {
     res.status(200).send("You have everything installed!");
   });
-  
-  
-app.use(express.json());
 
 app.use(cookieParser());
+app.use(express.json());
 app.use(bodyParser.json());
 app.use(
   session({ secret: "your-secret-key", resave: true, saveUninitialized: true })
@@ -79,19 +77,19 @@ app.use(
 app.get("/logout", logout);
 app.get("/viewPlayers" ,viewPlayers);
 app.get("/viewMatches" ,viewMatches);
-app.get("/viewAdmins", requireAuth ,viewAdmins);
+app.get("/viewAdmins" ,viewAdmins);
 app.get("/viewDraw", requireAuth ,viewDraw);
 
 app.post("/login", login);
-app.post("/addAdmin" , requireAuth ,addAdmin);
-app.post("/addPlayer" , requireAuth ,addPlayer);
-app.post("/teamMatching" , requireAuth ,teamMatching);
-app.post("/teamMatchingRandomized" , requireAuth ,teamMatchingRandomized);
+app.post("/addAdmin" ,addAdmin);
+app.post("/addPlayer" ,addPlayer);
+app.post("/teamMatching" ,teamMatching);
+app.post("/teamMatchingRandomized" ,teamMatchingRandomized);
 app.post("/UpdateScoreAndPoints" , requireAuth ,UpdateScoreAndPoints);
 app.post("/makeDraw" , requireAuth ,makeDraw);
 app.post("/makeDraw2" , requireAuth ,makeDraw2);
 app.post("/confirmDraw" , requireAuth ,confirmDraw);
 
-app.delete("/removePlayer" , requireAuth ,removePlayer);
-app.delete("/removeAdmin" ,requireAuth,removeAdmin);
+app.delete("/removePlayer" , removePlayer);
+app.delete("/removeAdmin" ,removeAdmin);
 

@@ -127,13 +127,30 @@ const requireAdminAuth = (req, res, next) => {
 
   
 
+  // const removePlayer = async (req, res) => {
+  //   try {
+  //     const name = req.body.name;
+  //     const removedPlayer = await playerModel.findOneAndDelete({
+  //       name: name,
+  //     });
+  
+  //     if (!removedPlayer) {
+  //       return res.status(404).json({ message: "Player not found" });
+  //     }
+  //     return res.status(200).json({ message: "Player removed successfully" });
+  //   } catch (error) {
+  //     console.error(error);
+  //     return res.status(500).json({ message: "Internal server error" });
+  //   }
+  // };
+
   const removePlayer = async (req, res) => {
     try {
-      const name = req.body.name;
-      const removedPlayer = await playerModel.findOneAndDelete({
-        name: name,
-      });
-  
+      const { id } = req.query;
+      if (!id) {
+        return res.status(400).json({ message: "Player ID not found" });
+      }
+      const removedPlayer = await playerModel.findByIdAndDelete(id);
       if (!removedPlayer) {
         return res.status(404).json({ message: "Player not found" });
       }
@@ -143,6 +160,7 @@ const requireAdminAuth = (req, res, next) => {
       return res.status(500).json({ message: "Internal server error" });
     }
   };
+  
 
   const removeAdmin = async (req, res) => {
     try {
@@ -256,22 +274,25 @@ const requireAdminAuth = (req, res, next) => {
 
   const requireAuth = async (req, res, next) => {
     const token = req.cookies.jwt;
+    console.log('Token:', token); // Check if token is retrieved
   
     if (token) {
       jwt.verify(token, "secret-unkown", (err, decodedToken) => {
         if (err) {
-          console.log(err.message);
+          console.log('JWT Error:', err.message);
           res.redirect("/login");
         } else {
-          // Store the user information in the request object
           req.user = decodedToken;
+          console.log('Decoded Token:', decodedToken); // Check if token is decoded
           next();
         }
       });
     } else {
+      console.log('No token found');
       res.redirect("/login");
     }
   };
+  
 
 
   const UpdateScoreAndPoints = async (req, res) => {

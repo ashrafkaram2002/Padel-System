@@ -29,7 +29,7 @@ export default function Login() {
       if (response.status === 200) {
         console.log('Login successful', response.data);
         // Redirect to admin dashboard or do something on success
-        Cookies.set('jwt', response.data.token, { expires: 1 });
+        Cookies.set('jwt', response.data.token, { expires: 1, path: '/', secure: true, sameSite: 'None' });
         router.push('/');
         setErrorMessage('');
       } else {

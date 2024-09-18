@@ -6,6 +6,16 @@
   --background: #ffffff;
   --foreground: #171717;
   --color-active: #8bdf36;
+  --normal-color: #055c9d;
+  --dark-color: #003060;
+  --error-color: #dc3545;
+  --gray-color: #6c757d;
+  --color-active-rgb: 139, 223, 54;   /* #8bdf36 */
+  --normal-color-rgb: 5, 92, 157;     /* #055c9d */
+  --dark-color-rgb: 0, 48, 96;        /* #003060 */
+  --error-color-rgb: 220, 53, 69;     /* #dc3545 */
+  --gray-color-rgb: 108, 117, 125;    /* #6c757d */
+  --white-color-rgb: 255, 255, 255;   
 }
 
 @media (prefers-color-scheme: dark) {
@@ -47,6 +57,55 @@ body {
   @apply space-x-4; /* Add spacing between child elements (optional) */
 }
 
+.horizontal-container2 {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding-left: 2rem;
+  padding-right: 2rem;
+}
+
+.horizontal-container3 {
+  display: flex;
+  flex-direction: row;
+  padding-left: 2rem;
+  padding-right: 2rem;
+  background-color: rgba(255, 255, 255, 0.2); /* Red with 20% opacity */
+  border-radius: 10px; /* Rounded borders, adjust value as needed */
+  padding: 0.5rem; /* Optional padding for content inside */
+}
+
+.horizontal-container3:hover{
+  transform: scale(1.02);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Light shadow for a lifted effect */
+}
+
+.two-column-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  position: relative; /* Ensure that the pseudo-element is positioned properly */
+}
+
+.two-column-container::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background-color: #8bdf36; /*line */
+  transform: translateX(-50%); /* Centers the line between the columns */
+}
+
+.column {
+  width: 48%; /* Each column takes up about half, with some space between */
+  text-align: center; /* Centers items horizontally inside the column */
+}
+
+
 .navbar-button {
   color: rgb(220, 224, 255); /* Text color */
   font-size: 1rem; /* Font size */
@@ -61,7 +120,7 @@ body {
 }
 
 .error-message {
-  color: #ff4d4f;
+  color: var(--error-color);
   margin-top: 10px;
 }
 
@@ -110,13 +169,13 @@ body {
   border: 1px solid #ccc;
   border-radius: 10px;
   font-size: 1rem; /* Increased font size */
-  color: #003060;
+  color: var(--dark-color);
   background-color: rgba(255, 255, 255, 0.9);
   transition: border-color 0.2s ease-in-out;
 }
 
 .search-input:focus {
-  border-color: #8bdf36;
+  border-color: var(--color-active);
   outline: none;
 }
 
@@ -172,14 +231,14 @@ body {
 
 .login-title {
   font-size: 2.4rem; /* Increased font size */
-  color: #003060;
+  color:  var(--dark-color);
   margin-bottom: 1rem;
   font-weight: 600;
 }
 
 .login-subtitle {
   font-size: 1.1rem; /* Increased font size */
-  color: #6c757d;
+  color:  var(--gray-color);
   margin-bottom: 2.5rem;
 }
 
@@ -194,19 +253,19 @@ body {
   border: 1px solid #ccc;
   border-radius: 10px;
   font-size: 1.1rem; /* Increased font size */
-  color: #003060;
+  color: var(--gray-color);
   background-color: rgba(255, 255, 255, 0.9);
   transition: border-color 0.2s ease-in-out;
 }
 
 .login-input:focus {
-  border-color: #8bdf36;
+  border-color: var(--color-active);
   outline: none;
 }
 
 .login-buttonn {
   padding: 1rem; /* Increased padding */
-  background-color: #055c9d;
+  background-color: var(--normal-color);
   color: white;
   border: none;
   border-radius: 10px;
@@ -216,7 +275,7 @@ body {
 }
 
 .login-buttonn:hover {
-  background-color: #003060;
+  background-color: var(--dark-color);
 }
 
 .login-footer {
@@ -237,15 +296,16 @@ body {
 }
 
 .hamburger-button.open {
-  color: #8bdf36;
+  color: var(--color-active);
 }
 
 .hamburger-menu {
-  position: fixed;
+  position: absolute;
+  align-items: center; /* Align icon and text vertically */
   top: 5.5rem; 
   right: -100%;
   width: 15rem; /* Adjust width as needed */
-  height: calc(100vh - 5.5rem); /* Adjust this value based on the height of your navbar */
+  height: 100vh;
   background-color: white;
   box-shadow: 2px 0 5px rgba(0, 0, 0, 0.3);
   overflow-y: auto;
@@ -257,13 +317,17 @@ body {
 }
 
 .menu-item {
-  display: block;
+  display: flex;
+  align-items: center; /* Align icon and text vertically */
+  justify-content: flex-start; /* Align text and icon to the left */
   width: 100%;
-  padding: 15px;
+  height:5rem;
+  padding: 10px 15px;
   font-size: 1rem;
   text-align: center;
   text-decoration: none;
-  color: black;
+  color: var(--dark-color);
+  cursor: pointer;
   border-bottom: 1px solid #ddd; /* Add a border to separate items */
   box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.1); /* Subtle shadow at the bottom */
   background-color: #fafafa; /* Light background color */
@@ -280,5 +344,222 @@ body {
   padding: 15px;
   text-align: center;
   color: #888; /* Color for the footer text */
-  margin-top: 15rem;
+  margin-top: 10rem;
 }
+.menu-icon {
+  color: var(--dark-color);
+  margin-right: 1rem; 
+  font-size: 1.5rem; 
+}
+
+/* Admin Pages */
+
+.page-title{
+  font-size: 2rem;
+  font-weight: bold;
+  color: white;
+  margin: 1rem;
+  letter-spacing: 0.2rem; /* Slight letter spacing for a modern look */
+}
+
+.mini-title{
+  text-align: left;
+  font-size: 1rem;
+  font-weight: bold;
+  color: var(--color-active);
+  margin: 0.5rem;
+  letter-spacing: 0.15rem; /* Slight letter spacing for a modern look */
+}
+
+.subtitle{
+  font-weight: lighter;
+  color:white;
+  letter-spacing: 0.1rem;
+}
+
+.button-label{
+  color: white;
+  font-size: 1.1rem;
+  font-weight: bold;
+  margin-left: 0.7rem;
+}
+
+.icon-button{
+  color:var(--color-active);
+  font-size: 2rem;
+}
+.icon-button:hover{
+  transform: scale(1.05);
+}
+
+.delete-icon{
+  color:white;
+  font-size: 1.7rem;
+  cursor: pointer;
+}
+
+.delete-icon:hover{
+  color:var(--error-color);
+  transform: scale(1.05);
+}
+
+/* Modal overlay that covers the screen */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000; /* Ensure it's above other elements */
+}
+
+/* Modal content box */
+.modal-content {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  width: 30rem;
+  text-align: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.modal-title {
+  font-size: 1.7rem; 
+  font-weight: bold;
+  color: var(--normal-color); /* Use a vibrant color for a standout effect */
+  margin: 0.5rem 0; /* Top and bottom margin for better spacing */
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3); /* Subtle shadow to create depth */
+  letter-spacing: 0.2rem; /* Slight letter spacing for a modern look */
+  border-bottom: 2px solid var(--normal-color); /* Underline effect */
+  padding-bottom: 0.5rem; /* Padding to enhance the underline effect */
+}
+
+.modal-label {
+  display: flex;
+  justify-content: start;
+  font-size: 1rem;
+  color:black;
+}
+
+.modal-input{
+  padding: 0.7rem; /* Increased padding */
+  width: 100%;
+  margin-bottom: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  font-size: 1rem; /* Increased font size */
+  color: black;
+  background-color: rgba(255, 255, 255, 0.9);
+  transition: border-color 0.2s ease-in-out;
+}
+
+.modal-button {
+  padding: 12px 24px; /* Slightly larger padding for a more substantial button */
+  margin: 10px;
+  border: none;
+  border-radius: 12px; /* More rounded corners for a modern look */
+  cursor: pointer;
+  font-weight: bold;
+  letter-spacing: 0.05rem; /* Subtle letter spacing for a sleek appearance */
+  transition: background-color 0.3s ease, transform 0.3s ease; /* Smooth transition for background color and hover effect */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Light shadow for a lifted effect */
+}
+
+.modal-button.confirm {
+  background-color: rgba(var(--normal-color-rgb), 0.3);
+  color: var(--dark-color);
+}
+
+.modal-button.cancel {
+  background-color: rgba(var(--gray-color-rgb), 0.2);
+  color: var(--error-color);
+}
+
+.modal-button.confirm:hover {
+  background-color: rgba(var(--normal-color-rgb), 0.4);
+  transform: scale(1.05); /* Slightly increase the size on hover */
+}
+
+.modal-button.cancel:hover {
+  background-color: rgba(var(--gray-color-rgb), 0.3);
+  transform: scale(1.05); /* Slightly increase the size on hover */
+}
+
+.modal-button:active {
+  transform: scale(0.95); /* Slightly reduce size on click for a pressed effect */
+}
+
+
+.modal-message {
+  margin-top: 10px;
+  color: var(--error-color); 
+}
+
+.confirmation-message {
+  margin: 1rem;
+  color: var(--dark-color); 
+  font-size: 1.2rem;
+}
+
+
+.dropdown-container {
+  max-height: 10rem;
+  height: 10rem;
+  overflow-y: auto;
+  border: 1px solid rgba(var(--white-color-rgb), 0.5);
+  border-radius: 8px;
+  background-color: rgba(var(--gray-color-rgb), 0.6);
+}
+
+.dropdown-container ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.dropdown-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 1rem;
+  border-bottom: 1px solid rgba(var(--white-color-rgb), 0.5);
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.dropdown-item:hover {
+  background-color: rgba(var(--dark-color-rgb), 0.5);
+}
+
+.teams-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem; /* Space between each team */
+  height: 30rem;
+  margin: 1rem;
+  overflow-y: auto;
+}
+
+.team-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  background-color: rgba(var(--dark-color-rgb), 0.7); /* Light background color */
+  border: 1px solid #ddd; /* Border around each team container */
+  border-radius: 4px; /* Rounded corners */
+  margin-right: 1rem;
+}
+
+.team-member {
+  font-size: 1rem;
+  font-weight: bold;
+  color: white
+
+}
+
