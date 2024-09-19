@@ -86,9 +86,9 @@ app.post("/addPlayer" ,addPlayer);
 app.post("/teamMatching" ,teamMatching);
 app.post("/teamMatchingRandomized" ,teamMatchingRandomized);
 app.post("/UpdateScoreAndPoints" , requireAuth ,UpdateScoreAndPoints);
-app.post("/makeDraw" , requireAuth ,makeDraw);
-app.post("/makeDraw2" , requireAuth ,makeDraw2);
-app.post("/confirmDraw" , requireAuth ,confirmDraw);
+app.post("/makeDraw" ,makeDraw);
+app.post("/makeDraw2" ,makeDraw2);
+app.post("/confirmDraw" ,confirmDraw);
 
 app.delete("/removePlayer" , removePlayer);
 app.delete("/removeAdmin" ,removeAdmin);

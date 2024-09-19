@@ -52,7 +52,7 @@ export default function AppNavBar({onHome, onLogin}) {
   };
 
   return (
-    <nav className="bg-[#003060] shadow-md py-4 relative z-10">
+    <nav className="bg-[#003060] shadow-md py-2 relative z-10">
       <div className="container mx-auto flex items-center justify-between px-4">
         <div className="flex items-center">
           <GiTennisBall style={{ marginRight: "1rem", fontSize: "3em", color: "#8bdf36" }} />

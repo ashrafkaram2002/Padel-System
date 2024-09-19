@@ -37,9 +37,34 @@ body {
   }
 }
 
+/* Keyframes for pulsating effect */
+@keyframes pulsate {
+  0% {
+    text-shadow: 
+      4px 4px 5px rgba(0, 0, 0, 0.5),
+      0 0 25px rgba(255, 105, 180, 0.6);
+  }
+  50% {
+    text-shadow: 
+      4px 4px 10px rgba(0, 0, 0, 0.7),
+      0 0 35px rgba(255, 105, 180, 0.8);
+  }
+  100% {
+    text-shadow: 
+      4px 4px 5px rgba(0, 0, 0, 0.5),
+      0 0 25px rgba(255, 105, 180, 0.6);
+  }
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
+}
+
 .center-container {
-  @apply absolute inset-x-80 top-[calc(50px+10px)] bg-[#003060] shadow-lg rounded-lg bg-opacity-70;
-  height: 40rem; /* Fixed height */
+  @apply absolute inset-x-80 top-[calc(0px+6px)] bg-[#003060] shadow-lg rounded-lg bg-opacity-70;
+  height: 39rem; /* Fixed height */
   overflow-y: hidden;
 }
 
@@ -300,21 +325,25 @@ body {
 }
 
 .hamburger-menu {
-  position: absolute;
-  align-items: center; /* Align icon and text vertically */
-  top: 5.5rem; 
-  right: -100%;
-  width: 15rem; /* Adjust width as needed */
+  position: fixed; /* Use fixed positioning to keep it out of the normal flow */
+  top: 4.5rem;
+  right: -15rem; /* Initially positioned off-screen */
+  width: 15rem; /* Width of the menu */
   height: 100vh;
   background-color: white;
   box-shadow: 2px 0 5px rgba(0, 0, 0, 0.3);
-  overflow-y: auto;
-  transition: right 0.3s ease-in-out; 
+  transform: translateX(100%); /* Move menu off-screen */
+  transition: transform 0.3s ease-in-out, visibility 0.3s ease-in-out;
+  visibility: hidden; /* Hidden by default */
 }
 
 .hamburger-menu.open {
-  right: 0;
+  right: 0; /* Bring the menu into view */
+  transform: translateX(0); /* Move menu into view */
+  transition: transform 0.3s ease-in-out, visibility 0.3s ease-in-out;
+  visibility: visible; /* Show the menu */
 }
+
 
 .menu-item {
   display: flex;
@@ -540,7 +569,7 @@ body {
   display: flex;
   flex-direction: column;
   gap: 0.5rem; /* Space between each team */
-  height: 30rem;
+  height: 25rem;
   margin: 1rem;
   overflow-y: auto;
 }
@@ -560,6 +589,69 @@ body {
   font-size: 1rem;
   font-weight: bold;
   color: white
-
 }
 
+.matches-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem; /* Space between each match */
+  height: 27.5rem; /* Adjust height as needed */
+  margin: 1rem 5rem;
+  overflow-y: auto;
+}
+
+.match-container {
+  display: flex;
+  align-items: center;
+  border-radius: 15px;
+  background-color: rgba(var(--dark-color-rgb), 0.7); /* Subtle background */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.match-container:hover{
+  background-color: rgba(var(--dark-color-rgb), 0.9); /* Subtle background */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.team {
+  font-size: 1.2rem;
+  color: white;
+  padding: 0.5rem;
+  width: 20rem; /* Adjust width to fit the content */
+}
+
+.vs {
+  font-size: 3rem; /* Extra large for emphasis */
+  font-weight: bold;
+  color: #dc3545; /* Bright color for 'vs' */
+  text-shadow: 
+    4px 4px 5px rgba(0, 0, 0, 0.5), /* Multiple shadows for depth */
+    0 0 25px rgba(233, 135, 128, 0.6); /* Glowing effect */
+  transform: rotate(-15deg); /* Increased rotation for more dynamism */
+}
+
+.match-container:hover .vs {
+  animation: pulsate 1.5s infinite;
+}
+
+/* Keyframes for pulsating effect */
+@keyframes pulsate {
+  0% {
+    text-shadow: 
+      4px 4px 5px rgba(0, 0, 0, 0.5),
+      0 0 25px rgba(255, 255, 255, 0.8);
+    transform: rotate(-15deg) scale(1); /* Start state */
+  }
+  50% {
+    text-shadow: 
+      4px 4px 10px rgba(0, 0, 0, 0.7),
+      0 0 35px rgba(255, 255, 255, 0.8);
+    transform: rotate(-15deg) scale(1.1); /* Scaled up state */
+  }
+  100% {
+    text-shadow: 
+      4px 4px 5px rgba(0, 0, 0, 0.5),
+      0 0 25px rgba(255, 255, 255, 0.8);
+    transform: rotate(-15deg) scale(1); /* End state */
+  }
+}

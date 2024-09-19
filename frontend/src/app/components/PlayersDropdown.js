@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { MdDelete } from "react-icons/md";
 
-const PlayersDropdown = ({ players, onSelect }) => {
+const PlayersDropdown = ({ players, onSelect, loading }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [availablePlayers, setAvailablePlayers] = useState([]);
   const [selectedPlayers, setSelectedPlayers] = useState([]);
@@ -55,7 +55,9 @@ const PlayersDropdown = ({ players, onSelect }) => {
   
         <div className='mini-title'>Available Players</div>
         <div className='dropdown-container'>
-          <ul>
+          {loading?(<div className="flex justify-center items-center">
+         <div className="w-8 h-8 border-4 border-dashed rounded-full animate-spin border-white"></div>
+      </div>):(<ul>
             {availablePlayers.length > 0 ? (
               availablePlayers.map(player => (
                 <li 
@@ -70,7 +72,8 @@ const PlayersDropdown = ({ players, onSelect }) => {
             ) : (
               <li className='dropdown-item'>No players available</li>
             )}
-          </ul>
+          </ul>)}
+          
         </div>
       </div>
       
