@@ -5,7 +5,7 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
-  --color-active: #8bdf36;
+  --color-active: #c6df36;
   --normal-color: #055c9d;
   --dark-color: #003060;
   --error-color: #dc3545;
@@ -121,7 +121,7 @@ html, body {
   top: 0;
   bottom: 0;
   width: 2px;
-  background-color: #8bdf36; /*line */
+  background-color: #c6df36; /*line */
   transform: translateX(-50%); /* Centers the line between the columns */
 }
 
@@ -314,7 +314,7 @@ html, body {
   color: white;
   border: none;
   padding: 4px;
-  font-size: 2rem;
+  font-size: 2.3rem;
   cursor: pointer;
   position: relative;
   z-index: 10;
@@ -327,22 +327,23 @@ html, body {
 .hamburger-menu {
   position: fixed; /* Use fixed positioning to keep it out of the normal flow */
   top: 4.5rem;
-  right: -15rem; /* Initially positioned off-screen */
+  left: -15rem; /* Initially positioned off-screen to the left */
   width: 15rem; /* Width of the menu */
   height: 100vh;
   background-color: white;
   box-shadow: 2px 0 5px rgba(0, 0, 0, 0.3);
-  transform: translateX(100%); /* Move menu off-screen */
+  transform: translateX(-100%); /* Move menu off-screen to the left */
   transition: transform 0.3s ease-in-out, visibility 0.3s ease-in-out;
   visibility: hidden; /* Hidden by default */
 }
 
 .hamburger-menu.open {
-  right: 0; /* Bring the menu into view */
+  left: -1rem; /* Bring the menu into view */
   transform: translateX(0); /* Move menu into view */
   transition: transform 0.3s ease-in-out, visibility 0.3s ease-in-out;
   visibility: visible; /* Show the menu */
 }
+
 
 
 .menu-item {
@@ -364,7 +365,7 @@ html, body {
 }
 
 .menu-item:hover {
-  background-color: rgba(139, 223, 54, 0.5);
+  background-color: #c6df36;
   font-weight: bolder;
 }
 

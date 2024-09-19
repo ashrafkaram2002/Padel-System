@@ -54,36 +54,46 @@ export default function AppNavBar({onHome, onLogin}) {
   return (
     <nav className="bg-[#003060] shadow-md py-2 relative z-10">
       <div className="container mx-auto flex items-center justify-between px-4">
-        <div className="flex items-center">
-          <GiTennisBall style={{ marginRight: "1rem", fontSize: "3em", color: "#8bdf36" }} />
-          <span className="text-4xl font-bold text-white">
-            Padel Website
-          </span>
-        </div>
+        
+        {/* Left side: Menu */}
         <div className="flex items-center">
           {isAdminLoggedIn && (
             <div className='horizontal-container'>
-              <button onClick={handleLogout} className="navbar-button">
-              Logout
-              </button>
               <HamburgerMenu menuOpen={menuOpen} toggleMenu={toggleMenu} />
             </div>
           )}
-
+        </div>
+  
+        {/* Center: Title */}
+        <div className="flex-1 flex justify-center items-center">
+          <GiTennisBall style={{ marginRight: "1rem", fontSize: "3em", color: "#c6df36" }} />
+          <span className="text-4xl font-bold text-white">
+            SR League
+          </span>
+        </div>
+  
+        {/* Right side: Login/Logout */}
+        <div className="flex items-center">
+          {isAdminLoggedIn && (
+            <button onClick={handleLogout} className="navbar-button">
+              Logout
+            </button>
+          )}
+  
           {(onHome && !isAdminLoggedIn) && (
             <button onClick={handleLoginClick} className="navbar-button">
               Login
             </button>
           )}
-
+  
           {onLogin && (
             <button onClick={handleHomeClick} className="navbar-button">
               Home
             </button>
           )}
         </div>
-        
       </div>
     </nav>
   );
+  
 }

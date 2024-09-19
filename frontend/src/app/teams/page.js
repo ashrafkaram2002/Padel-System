@@ -39,8 +39,10 @@ export default function Teams() {
   };
 
   const handleMatchTeams = async () => {
-    if (selectedPlayers.length % 2 !== 0) {
-      alert('Please select an even number of players.');
+    const leftPlayers = selectedPlayers.filter(player => player.position === 'left');
+  const rightPlayers = selectedPlayers.filter(player => player.position === 'right');
+    if (leftPlayers.length !== rightPlayers.length) {
+      alert('The number of players positioned left must be equal to the number of players positioned right.');
       return;
     }
   
@@ -55,9 +57,13 @@ export default function Teams() {
     }
   };
 
+
+  
   const handleAlternativeMatchTeams = async () => {
-    if (selectedPlayers.length % 2 !== 0) {
-      alert('Please select an even number of players.');
+    const leftPlayers = selectedPlayers.filter(player => player.position === 'left');
+  const rightPlayers = selectedPlayers.filter(player => player.position === 'right');
+    if (leftPlayers.length !== rightPlayers.length) {
+      alert('The number of players positioned left must be equal to the number of players positioned right.');
       return;
     }
   
