@@ -574,7 +574,7 @@ const requireAdminAuth = (req, res, next) => {
 
   const confirmDraw = async (req, res) => {
     try {
-      const { teams, timings, day } = req.body;
+      const { teams, timings, day, locations } = req.body;
   
       if (!teams || teams.length === 0) {
         return res.status(400).json({ error: "Teams data is required." });
@@ -588,6 +588,9 @@ const requireAdminAuth = (req, res, next) => {
         return res.status(400).json({ error: "A valid day string is required." });
       }
   
+      if (!locations || locations.length === 0) {
+        return res.status(400).json({ error: "valid locations are required." });
+      }
       // Generate draw array structure
       const draw = [];
       while (teams.length > 1) {
@@ -600,7 +603,7 @@ const requireAdminAuth = (req, res, next) => {
       await drawModel.deleteMany({});
   
       // Create a new draw with the provided data, including timings and day
-      const newDraw = await drawModel.create({ draw, timings, day });
+      const newDraw = await drawModel.create({ draw, timings, day, locations });
   
       // Return the newly created draw
       return res.status(200).json(newDraw);

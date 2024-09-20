@@ -16,6 +16,10 @@ const drawSchema = new Schema(
         type: String,
         required: true,
       },
+      locations: {
+        type: [String],
+        required: true,
+      },
     },
     { timestamps: true }
   );
