@@ -8,6 +8,14 @@ const drawSchema = new Schema(
         type: [[[String]]],
         required: true,
       },
+      timings: {
+        type: [String],
+        required: true,
+      },
+      day: {
+        type: String,
+        required: true,
+      },
     },
     { timestamps: true }
   );

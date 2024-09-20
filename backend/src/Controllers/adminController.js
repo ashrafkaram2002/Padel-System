@@ -574,10 +574,18 @@ const requireAdminAuth = (req, res, next) => {
 
   const confirmDraw = async (req, res) => {
     try {
-      const { teams } = req.body;
+      const { teams, timings, day } = req.body;
   
       if (!teams || teams.length === 0) {
         return res.status(400).json({ error: "Teams data is required." });
+      }
+  
+      if (!timings || timings.length !== teams.length / 2) {
+        return res.status(400).json({ error: `Timings must be an array with ${teams.length / 2} elements.` });
+      }
+  
+      if (!day || typeof day !== 'string') {
+        return res.status(400).json({ error: "A valid day string is required." });
       }
   
       // Generate draw array structure
@@ -591,8 +599,8 @@ const requireAdminAuth = (req, res, next) => {
       // Delete any existing draws
       await drawModel.deleteMany({});
   
-      // Create a new draw with the provided data
-      const newDraw = await drawModel.create({ draw });
+      // Create a new draw with the provided data, including timings and day
+      const newDraw = await drawModel.create({ draw, timings, day });
   
       // Return the newly created draw
       return res.status(200).json(newDraw);
@@ -600,6 +608,7 @@ const requireAdminAuth = (req, res, next) => {
       return res.status(500).json({ error: error.message });
     }
   };
+  
   
 
   const viewDraw = async (req, res) => {
