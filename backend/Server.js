@@ -37,6 +37,7 @@ const {
     viewMatches,
     confirmDraw,
     viewDraw,
+    putTimings,
 } = require("./src/Controllers/adminController.js");
 //Player Controller
 
@@ -89,6 +90,7 @@ app.post("/UpdateScoreAndPoints" , requireAuth ,UpdateScoreAndPoints);
 app.post("/makeDraw" ,makeDraw);
 app.post("/makeDraw2" ,makeDraw2);
 app.post("/confirmDraw" ,confirmDraw);
+app.post("/putTimings" ,putTimings);
 
 app.delete("/removePlayer" , removePlayer);
 app.delete("/removeAdmin" ,removeAdmin);
