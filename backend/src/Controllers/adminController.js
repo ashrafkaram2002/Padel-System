@@ -574,22 +574,10 @@ const requireAdminAuth = (req, res, next) => {
 
   const confirmDraw = async (req, res) => {
     try {
-      const { teams, timings, day, locations } = req.body;
+      const { teams } = req.body;
   
       if (!teams || teams.length === 0) {
         return res.status(400).json({ error: "Teams data is required." });
-      }
-  
-      if (!timings || timings.length !== teams.length / 2) {
-        return res.status(400).json({ error: `Timings must be an array with ${teams.length / 2} elements.` });
-      }
-  
-      if (!day || typeof day !== 'string') {
-        return res.status(400).json({ error: "A valid day string is required." });
-      }
-  
-      if (!locations || locations.length === 0) {
-        return res.status(400).json({ error: "valid locations are required." });
       }
       // Generate draw array structure
       const draw = [];
@@ -602,8 +590,8 @@ const requireAdminAuth = (req, res, next) => {
       // Delete any existing draws
       await drawModel.deleteMany({});
   
-      // Create a new draw with the provided data, including timings and day
-      const newDraw = await drawModel.create({ draw, timings, day, locations });
+      // Create a new draw with empty strings for timings, day, and location
+      const newDraw = await drawModel.create({ draw, timings: [], day: "", locations: [] });
   
       // Return the newly created draw
       return res.status(200).json(newDraw);
@@ -612,6 +600,43 @@ const requireAdminAuth = (req, res, next) => {
     }
   };
   
+  
+  const putTimings = async (req, res) => {
+    try {
+      const { timings, day, locations } = req.body;
+  
+      if (!timings || !Array.isArray(timings) || timings.length === 0) {
+        return res.status(400).json({ error: "Timings array is required." });
+      }
+  
+      if (!day || typeof day !== 'string') {
+        return res.status(400).json({ error: "A valid day string is required." });
+      }
+  
+      if (!locations || !Array.isArray(locations) || locations.length === 0) {
+        return res.status(400).json({ error: "Locations array is required." });
+      }
+  
+      // Retrieve the existing draw
+      const existingDraw = await drawModel.findOne();
+      if (!existingDraw) {
+        return res.status(404).json({ error: "No draw found." });
+      }
+  
+      // Update the draw with timings, day, and locations
+      existingDraw.timings = timings;
+      existingDraw.day = day;
+      existingDraw.locations = locations;
+  
+      // Save the updated draw
+      await existingDraw.save();
+  
+      // Return the updated draw
+      return res.status(200).json(existingDraw);
+    } catch (error) {
+      return res.status(500).json({ error: error.message });
+    }
+  };
   
 
   const viewDraw = async (req, res) => {
@@ -652,4 +677,5 @@ const requireAdminAuth = (req, res, next) => {
     viewMatches,
     confirmDraw,
     viewDraw,
+    putTimings,
 }
