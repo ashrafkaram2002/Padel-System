@@ -55,7 +55,7 @@ export default function HamburgerMenu({ menuOpen, toggleMenu }) {
         </a>
 
         <div className="menu-footer">
-          &copy; Padel Website
+          &copy; SR League
         </div>
       </div>
     </>

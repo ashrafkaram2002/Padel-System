@@ -40,8 +40,10 @@ export default function Teams() {
 
   const handleMatchTeams = async () => {
     const leftPlayers = selectedPlayers.filter(player => player.position === 'left');
-  const rightPlayers = selectedPlayers.filter(player => player.position === 'right');
+    const rightPlayers = selectedPlayers.filter(player => player.position === 'right');
     if (leftPlayers.length !== rightPlayers.length) {
+      console.log("r", rightPlayers)
+      console.log("l", leftPlayers)
       alert('The number of players positioned left must be equal to the number of players positioned right.');
       return;
     }
@@ -80,16 +82,18 @@ export default function Teams() {
 
   const handleMakeDraw = async () => {
     setDrawMade(true); // Set state to indicate the draw is made
-
+    setLoading(true); // Start loading before sending the request
+  
     try {
       // Send the teams to the backend to generate matches
       const response = await axios.post('http://localhost:8000/makeDraw', { teams });
       setMatches(response.data || []); // Store the retrieved matches
     } catch (error) {
       alert(`Error making draw: ${error.response ? error.response.data.error : error.message}`);
+    } finally {
+      setLoading(false); // Stop loading after the request is finished
     }
   };
-
 
   return (
     <>
@@ -104,8 +108,9 @@ export default function Teams() {
       </div>
 
       <div className="center-container" style={{ marginTop: "5rem", textAlign: "center" }}>
-        {drawMade?(
-          <div >
+        {drawMade?( (loading? (<div className="flex justify-center items-center">
+         <div className="w-8 h-8 border-4 border-dashed rounded-full animate-spin border-white mt-8"></div>
+      </div>): (<div >
              <div className='horizontal-container2'>
                <div className="page-title">Manage Draws</div>
              </div>
@@ -134,7 +139,8 @@ export default function Teams() {
               </button>
              </div>
              
-         </div>)
+         </div>))
+          )
         :
         (<div>
           <div className='horizontal-container2'>

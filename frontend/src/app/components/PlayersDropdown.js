@@ -56,7 +56,7 @@ const PlayersDropdown = ({ players, onSelect, loading }) => {
         <div className='mini-title'>Available Players</div>
         <div className='dropdown-container'>
           {loading?(<div className="flex justify-center items-center">
-         <div className="w-8 h-8 border-4 border-dashed rounded-full animate-spin border-white"></div>
+         <div className="w-8 h-8 border-4 border-dashed rounded-full animate-spin border-white mt-4"></div>
       </div>):(<ul>
             {availablePlayers.length > 0 ? (
               availablePlayers.map(player => (
@@ -66,7 +66,8 @@ const PlayersDropdown = ({ players, onSelect, loading }) => {
                   className='dropdown-item'
                   onClick={() => handleSelectPlayer(player)}
                 >
-                  {player.name}
+                  <div style={{fontWeight:"bold", marginRight:"2rem"}}>{player.position=="left"?"L":"R"}<span style={{marginLeft:"2rem", fontWeight:"lighter"}}>{player.points} pts</span></div>
+                  <div>{player.name}</div>
                 </li>
               ))
             ) : (
@@ -88,7 +89,8 @@ const PlayersDropdown = ({ players, onSelect, loading }) => {
           {selectedPlayers.length > 0 ? (
             selectedPlayers.map(player => (
               <li key={player._id} title={`${player.position}`} className='dropdown-item'>
-                {player.name}
+                <div style={{fontWeight:"bold", marginRight:"2rem"}}>{player.position=="left"?"L":"R"}<span style={{marginLeft:"2rem", fontWeight:"lighter"}}>{player.points} pts</span></div>
+                <div>{player.name}</div>
                 <button onClick={() => handleRemovePlayer(player)}>
                   <MdDelete className="delete-icon" />
                 </button>

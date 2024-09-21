@@ -63,13 +63,13 @@ html, body {
 }
 
 .center-container {
-  @apply absolute inset-x-80 top-[calc(0px+6px)] bg-[#003060] shadow-lg rounded-lg bg-opacity-70;
+  @apply absolute inset-x-80 top-[calc(5px+10px)] bg-[#003060] shadow-lg rounded-lg bg-opacity-70;
   height: 39rem; /* Fixed height */
   overflow-y: hidden;
 }
 
 .centering-container {
-  @apply absolute inset-x-60 top-[calc(50px+10px)] shadow-lg rounded-lg;
+  @apply absolute inset-x-60 top-[calc(30px+10px)] shadow-lg rounded-lg;
   height: 40rem; /* Fixed height */
   overflow-y: hidden;
   display: flex; /* Flexbox for centering */
@@ -374,7 +374,7 @@ html, body {
   padding: 15px;
   text-align: center;
   color: #888; /* Color for the footer text */
-  margin-top: 10rem;
+  margin-top: 12rem;
 }
 .menu-icon {
   color: var(--dark-color);
