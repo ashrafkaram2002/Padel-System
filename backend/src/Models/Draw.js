@@ -10,15 +10,15 @@ const drawSchema = new Schema(
       },
       timings: {
         type: [String],
-        required: true,
+        // required: true,
       },
       day: {
         type: String,
-        required: true,
+        // required: true,
       },
       locations: {
         type: [String],
-        required: true,
+        // required: true,
       },
     },
     { timestamps: true }

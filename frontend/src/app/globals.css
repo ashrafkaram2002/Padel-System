@@ -106,6 +106,16 @@ html, body {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Light shadow for a lifted effect */
 }
 
+.horizontal-container5 {
+  display: flex;
+  flex-direction: row;
+  background-color: var(--color-active);
+  border-radius: 10px; /* Rounded borders, adjust value as needed */
+  padding: 0.5rem; /* Optional padding for content inside */
+  width: 6rem;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Light shadow for a lifted effect */
+}
+
 .two-column-container {
   display: flex;
   justify-content: space-between;
@@ -326,7 +336,7 @@ html, body {
 
 .hamburger-menu {
   position: fixed; /* Use fixed positioning to keep it out of the normal flow */
-  top: 4.5rem;
+  top: 5rem;
   left: -15rem; /* Initially positioned off-screen to the left */
   width: 15rem; /* Width of the menu */
   height: 100vh;
@@ -374,7 +384,7 @@ html, body {
   padding: 15px;
   text-align: center;
   color: #888; /* Color for the footer text */
-  margin-top: 12rem;
+  margin-top: 7rem;
 }
 .menu-icon {
   color: var(--dark-color);
@@ -412,6 +422,13 @@ html, body {
   font-size: 1.1rem;
   font-weight: bold;
   margin-left: 0.7rem;
+}
+
+.button-label2{
+  color: var(--dark-color);
+  font-size: 0.8rem;
+  font-weight: bold;
+
 }
 
 .icon-button{
@@ -607,6 +624,7 @@ html, body {
   border-radius: 15px;
   background-color: rgba(var(--dark-color-rgb), 0.7); /* Subtle background */
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  cursor: auto;
 }
 
 .match-container:hover{
@@ -655,4 +673,40 @@ html, body {
       0 0 25px rgba(255, 255, 255, 0.8);
     transform: rotate(-15deg) scale(1); /* End state */
   }
+}
+
+.team2 {
+  font-size: 1rem;
+  color: white;
+  padding: 0.5rem;
+  width: 20rem; /* Adjust width to fit the content */
+}
+
+.match-container2 {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: 15px;
+  background-color: rgba(var(--dark-color-rgb), 0.7); /* Subtle background */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  cursor: auto;
+}
+
+.match-container2:hover{
+  background-color: rgba(var(--dark-color-rgb), 0.9); /* Subtle background */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.vs2 {
+  font-size: 1.5rem; 
+  font-weight: bold;
+  color: #dc3545; /* Bright color for 'vs' */
+  text-shadow: 
+    4px 4px 5px rgba(0, 0, 0, 0.5), /* Multiple shadows for depth */
+    0 0 25px rgba(233, 135, 128, 0.6); /* Glowing effect */
+  transform: rotate(-15deg); /* Increased rotation for more dynamism */
+}
+
+.match-container2:hover .vs2 {
+  animation: pulsate 1.5s infinite;
 }

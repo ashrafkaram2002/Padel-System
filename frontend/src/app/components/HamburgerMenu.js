@@ -7,6 +7,7 @@ import { MdManageAccounts } from "react-icons/md";
 import { RiTeamFill } from "react-icons/ri";
 import { GiTabletopPlayers} from 'react-icons/gi';
 import { BsFillPeopleFill} from "react-icons/bs";
+import { TbScoreboard } from "react-icons/tb";
 
 export default function HamburgerMenu({ menuOpen, toggleMenu }) {
 
@@ -26,6 +27,14 @@ export default function HamburgerMenu({ menuOpen, toggleMenu }) {
 
   const handleTeamsClick = () => {
     router.push('/teams'); // Navigate to teams page
+  };
+
+  const handleMatchesClick = () => {
+    router.push('/matches'); // Navigate to matches page
+  };
+
+  const handleScoresClick = () => {
+    router.push('/scores'); // Navigate to scores page
   };
 
   return (
@@ -50,8 +59,11 @@ export default function HamburgerMenu({ menuOpen, toggleMenu }) {
         <a onClick={handleTeamsClick} className="menu-item">
           <BsFillPeopleFill className="menu-icon" /> Match Teams
         </a>
-        <a href="#" className="menu-item">
+        <a onClick={handleMatchesClick} className="menu-item">
           <GiTabletopPlayers className="menu-icon" /> Manage Matches
+        </a>
+        <a onClick={handleScoresClick} className="menu-item">
+          <TbScoreboard className="menu-icon" /> Update Scores
         </a>
 
         <div className="menu-footer">

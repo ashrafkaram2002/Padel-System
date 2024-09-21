@@ -596,6 +596,7 @@ const requireAdminAuth = (req, res, next) => {
       // Return the newly created draw
       return res.status(200).json(newDraw);
     } catch (error) {
+      console.error(error.stack);
       return res.status(500).json({ error: error.message });
     }
   };

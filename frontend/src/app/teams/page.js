@@ -18,6 +18,13 @@ export default function Teams() {
   const [loading, setLoading] = useState(true);
   const [drawMade, setDrawMade] = useState(false);
   const [matches, setMatches] = useState([]);
+  const [drawConfirmed, setDrawConfirmed] = useState(false);  // State for modal visibility
+
+  const closeModal = () => {
+    setDrawConfirmed(false);
+    setDrawMade(false); 
+    setTeams([]);
+  };
 
   const fetchPlayersData = async () => {
     try {
@@ -95,6 +102,32 @@ export default function Teams() {
     }
   };
 
+  const handleReDraw = async () => {
+    setLoading(true);  // Show loading indicator
+  
+    try {
+      const response = await axios.post('http://localhost:8000/makeDraw2', { teams });
+      setMatches(response.data || []);  // Store the new matches
+    } catch (error) {
+      alert(`Error making re-draw: ${error.response ? error.response.data.error : error.message}`);
+    } finally {
+      setLoading(false);  // Hide loading indicator
+    }
+  };
+
+  const handleConfirmDraw = async () => {
+    setLoading(true);  // Show loading indicator
+  
+    try {
+      const response = await axios.post('http://localhost:8000/confirmDraw', { teams });
+      setDrawConfirmed(true);  // Set state to show confirmation modal
+    } catch (error) {
+      alert(`Error confirming draw: ${error.response ? error.response.data.error : error.message}`);
+    } finally {
+      setLoading(false);  // Hide loading indicator
+    }
+  };
+  
   return (
     <>
       <AppNavBar onLogin={false} onHome={false} />
@@ -118,27 +151,36 @@ export default function Teams() {
              {matches.length > 0 && (
               matches.map((match, index) => (
               <div key={index} className="match-container">
-                    <div className="team"> {match[0][0]} / {match[0][1]}</div>
+                    <div className="team"> {match[0][0]} | {match[0][1]}</div>
                     <div className="vs">vs</div>
-                    <div className="team"> {match[1][0]} / {match[1][1]}</div>
+                    <div className="team"> {match[1][0]} | {match[1][1]}</div>
       
               </div>
             ))
              )}
              </div>
              <div className='horizontal-container2' style={{marginLeft:"3rem", marginRight:"3rem"}}>
-              <button className="horizontal-container3" style={{height:"3rem"}}>
+              <button className="horizontal-container3" style={{height:"3rem"}} onClick={handleReDraw}>
                 <TbArrowsShuffle2 className="icon-button"/>
                 <div className="button-label" > Re-Draw</div>
                 
               </button>
-              <button className="horizontal-container3" style={{height:"3rem"}}>
+              <button className="horizontal-container3" style={{height:"3rem"}} onClick={handleConfirmDraw}>
                 <GiConfirmed className="icon-button"/>
                 <div className="button-label"> Confirm Draw</div>
                
               </button>
              </div>
-             
+             {drawConfirmed && (
+              <div className="modal-overlay">
+                <div className="modal-content">
+                  <p className="confirmation-message">Drawn matches are confirmed</p>
+                   <button className="modal-button confirm" onClick={closeModal}>
+                       Close
+                   </button>
+                </div>
+              </div>
+              )}
          </div>))
           )
         :

@@ -79,14 +79,14 @@ app.get("/logout", logout);
 app.get("/viewPlayers" ,viewPlayers);
 app.get("/viewMatches" ,viewMatches);
 app.get("/viewAdmins" ,viewAdmins);
-app.get("/viewDraw", requireAuth ,viewDraw);
+app.get("/viewDraw",viewDraw);
 
 app.post("/login", login);
 app.post("/addAdmin" ,addAdmin);
 app.post("/addPlayer" ,addPlayer);
 app.post("/teamMatching" ,teamMatching);
 app.post("/teamMatchingRandomized" ,teamMatchingRandomized);
-app.post("/UpdateScoreAndPoints" , requireAuth ,UpdateScoreAndPoints);
+app.post("/UpdateScoreAndPoints" ,UpdateScoreAndPoints);
 app.post("/makeDraw" ,makeDraw);
 app.post("/makeDraw2" ,makeDraw2);
 app.post("/confirmDraw" ,confirmDraw);
