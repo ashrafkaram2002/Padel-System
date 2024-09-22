@@ -82,7 +82,7 @@ export default function PlayersAdminTable({ playersData=[],loading, fetchPlayers
             ))
           ) : (
             <tr>
-              <td colSpan="3" className="no-data">No data found</td>
+              <td colSpan="6" className="none-message">No players found</td>
             </tr>
           )}
         </tbody>
@@ -92,7 +92,7 @@ export default function PlayersAdminTable({ playersData=[],loading, fetchPlayers
       {showDeleteModal && (
         <div className="modal-overlay">
           <div className="modal-content">
-            <p className="confirmation-message">Are you sure you want to delete {selectedPlayer?.name}?</p>
+            <div className="confirmation-message">Are you sure you want to delete <div style={{fontWeight:"bold"}}>{selectedPlayer?.name} <span>?</span></div></div>
             <button className="modal-button cancel" onClick={handleDeleteConfirm}>
               Confirm
             </button>

@@ -60,9 +60,7 @@ export default function AdminsTable({ adminsData=[], loading, fetchAdminsData })
               </tr>
             ))
           ) : (
-            <tr>
-              <td colSpan="3" className="no-data">No data found</td>
-            </tr>
+            <div className='horizontal-container'><div className='none-message'> No admins found.</div></div>
           )}
         </tbody>
       </table>)}
@@ -71,7 +69,7 @@ export default function AdminsTable({ adminsData=[], loading, fetchAdminsData })
       {showConfirmModal && (
         <div className="modal-overlay">
           <div className="modal-content">
-            <p className="confirmation-message">Are you sure you want to delete {adminToDelete?.username}?</p>
+          <div className="confirmation-message">Are you sure you want to delete <div style={{fontWeight:"bold"}}>{adminToDelete} <span>?</span></div></div>
             <button className="modal-button cancel" onClick={handleConfirmDelete}>
               Confirm
             </button>

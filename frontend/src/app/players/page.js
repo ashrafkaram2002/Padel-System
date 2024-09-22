@@ -53,7 +53,7 @@ const handleAddPlayerConfirm = async () => {
       if (response.status === 200) {
         setMessage('Player added successfully!');
         setShowAddModal(false);
-        setNewPlayer({ name: '', position: 'Left', points: 0 });
+        setNewPlayer({ name: '', position: 'left', points: 0 });
         fetchPlayersData();
       } else {
         setMessage('Failed to add player');
@@ -67,7 +67,7 @@ const handleAddPlayerConfirm = async () => {
   const handleAddCancel = () => {
     setShowAddModal(false);
     setMessage('');
-    setNewPlayer({ name: '', position: 'Left', points: 0 });
+    setNewPlayer({ name: '', position: 'left', points: 0 });
   };
 
  const handleSearch = (term) => {
@@ -125,8 +125,8 @@ const handleAddPlayerConfirm = async () => {
         className="modal-input"
         onChange={(e) => setNewPlayer({ ...newPlayer, position: e.target.value })}
       >
-        <option value="Left">Left</option>
-        <option value="Right">Right</option>
+        <option value="left">Left</option>
+        <option value="right">Right</option>
       </select>
 
       <label htmlFor="playerPoints" className="modal-label">Player Points:</label>

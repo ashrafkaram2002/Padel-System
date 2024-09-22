@@ -159,6 +159,17 @@ html, body {
   margin-top: 10px;
 }
 
+.none-message{
+  color:white;
+  font-size: 1rem;
+  width:fit-content;
+  background: rgba(var(--color-active-rgb), 0.2);
+  padding: 1rem; /* Increased padding */
+  border-radius: 15px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+  text-align: center;
+}
+
 /* Tab button styles */
 .tab-buttons {
   @apply flex border-b border-gray-300;
@@ -550,6 +561,11 @@ html, body {
   margin: 1rem;
   color: var(--dark-color); 
   font-size: 1.2rem;
+  
+}
+
+.confirmation-message p {
+  display: inline; /* Make <p> behave like an inline element */
 }
 
 

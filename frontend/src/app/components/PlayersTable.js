@@ -56,7 +56,7 @@ export default function PlayersTable({ searchTerm }) {
             ))
           ) : (
             <tr>
-              <td colSpan="3" className="no-data">No data found</td>
+              <td colSpan="5" className="none-message">No players found</td>
             </tr>
           )}
         </tbody>

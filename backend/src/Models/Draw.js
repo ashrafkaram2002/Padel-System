@@ -13,7 +13,7 @@ const drawSchema = new Schema(
         // required: true,
       },
       day: {
-        type: String,
+        type:[String],
         // required: true,
       },
       locations: {

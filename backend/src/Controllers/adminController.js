@@ -610,8 +610,13 @@ const requireAdminAuth = (req, res, next) => {
         return res.status(400).json({ error: "Timings array is required." });
       }
   
-      if (!day || typeof day !== 'string') {
-        return res.status(400).json({ error: "A valid day string is required." });
+      // if (!day || typeof day !== 'string') {
+      //   return res.status(400).json({ error: "A valid day string is required." });
+      // }
+
+      // Validate day (now it expects an array of strings)
+      if (!day || !Array.isArray(day) || day.some(d => typeof d !== 'string')) {
+         return res.status(400).json({ error: "An array of valid day strings is required." });
       }
   
       if (!locations || !Array.isArray(locations) || locations.length === 0) {

@@ -40,8 +40,8 @@ export default function MatchesTable({ searchTerm }) {
       </div>): (<table className="players-table">
       <thead>
         <tr>
-          <th>Team 1</th>
-          <th>Team 2</th>
+          <th>Team A</th>
+          <th>Team B</th>
           <th>Score</th>
         </tr>
       </thead>
@@ -56,8 +56,8 @@ export default function MatchesTable({ searchTerm }) {
           ))
         ) : (
           <tr>
-            <td colSpan="4">No data found</td>
-          </tr>
+              <td colSpan="4" className="none-message">No matches found</td>
+            </tr>
         )}
       </tbody>
     </table>)}
