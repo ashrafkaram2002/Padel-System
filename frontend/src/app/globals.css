@@ -151,7 +151,22 @@ html, body {
   padding-right: 1.5rem;
 }
 
+.navbar-button2 {
+  color: rgb(220, 224, 255); /* Text color */
+  font-size: 1rem; /* Font size */
+  font-weight: 500; /* Font weight */
+  text-decoration: none; /* Remove underline */
+  transition: background-color 0.3s ease; /* Smooth background color transition */
+  padding-right: 1.5rem;
+  padding-bottom: 0.9rem;
+  padding-top: 0.9rem;
+}
+
 .navbar-button:hover {
+  color: rgb(255, 255, 255); /* Text color */
+  text-decoration: underline;
+}
+.navbar-button2:hover {
   color: rgb(255, 255, 255); /* Text color */
   text-decoration: underline;
 }

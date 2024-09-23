@@ -76,13 +76,13 @@ export default function AppNavBar({onHome, onLogin}) {
           )}
   
           {(onHome && !isAdminLoggedIn) && (
-            <button onClick={handleLoginClick} className="navbar-button">
+            <button onClick={handleLoginClick} className="navbar-button2">
               Login
             </button>
           )}
   
           {onLogin && (
-            <button onClick={handleHomeClick} className="navbar-button">
+            <button onClick={handleHomeClick} className="navbar-button2">
               Home
             </button>
           )}
