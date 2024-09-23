@@ -11,10 +11,11 @@ export default function Home() {
       <AppNavBar onLogin={false} onHome={true}/>
       <div className="relative min-h-screen">
         <Image
-          src="/assets/padel2.jpg"
+          src="/assets/padel.png"
           alt="Padel Background"
           layout="fill"
           objectFit="cover"
+          style={{ objectPosition: 'right'}} // Center the image
         />
         <div className="center-container">
           <MainTabs />

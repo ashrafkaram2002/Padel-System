@@ -118,11 +118,12 @@ export default function Admins() {
     <>
       <AppNavBar onLogin={false} onHome={false} />
       <div className="relative min-h-screen">
-        <Image
-          src="/assets/padel2.jpg"
+      <Image
+          src="/assets/padel.png"
           alt="Padel Background"
           layout="fill"
           objectFit="cover"
+          style={{ objectPosition: 'right'}} // Center the image
         />
       </div>
 

@@ -47,11 +47,12 @@ export default function Login() {
     <>
       <AppNavBar onLogin={true} onHome={false} adminOn={false}/>
       <div className="relative min-h-screen">
-        <Image
-          src="/assets/padel2.jpg"
+      <Image
+          src="/assets/padel.png"
           alt="Padel Background"
           layout="fill"
           objectFit="cover"
+          style={{ objectPosition: 'right'}} // Center the image
         />
         <div className="centering-container">
       <div className="login-box">

@@ -146,12 +146,13 @@ const putTimings = async (timings, day, locations) => {
     <>
       <AppNavBar onLogin={false} onHome={false}/>
 <div className="relative min-h-screen">
-  <Image
-    src="/assets/padel2.jpg"
-    alt="Padel Background"
-    layout="fill"
-    objectFit="cover"
-  />
+        <Image
+          src="/assets/padel.png"
+          alt="Padel Background"
+          layout="fill"
+          objectFit="cover"
+          style={{ objectPosition: 'right'}} // Center the image
+        />
 </div>
 
 <div className="center-container" style={{marginTop: "5rem", textAlign: "center"}}>
