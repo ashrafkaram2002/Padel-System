@@ -125,48 +125,60 @@ const putTimings = async (timings, day, locations) => {
   return (
     <>
       <AppNavBar onLogin={false} onHome={false}/>
-      <div className="relative min-h-screen">
-        <Image
-          src="/assets/padel2.jpg"
-          alt="Padel Background"
-          layout="fill"
-          objectFit="cover"
-        />
-      </div>
+<div className="relative min-h-screen">
+  <Image
+    src="/assets/padel2.jpg"
+    alt="Padel Background"
+    layout="fill"
+    objectFit="cover"
+  />
+</div>
 
-      <div className="center-container" style={{marginTop:"5rem", textAlign: "center"}}>
-        <div className='horizontal-container2'>
-          <div className="page-title"> Manage Matches</div>
-        </div>
-        {loading? (<div className="flex justify-center items-center">
-         <div className="w-8 h-8 border-4 border-dashed rounded-full animate-spin border-white mt-8"></div> </div>)
-        :(<div className="matches-list">
-          {matches.length>0?(matches.map((match, index) => {
-             const hasTiming = timings[index] && dates[index] && locations[index]; // Check if timing, date, and location exist
+<div className="center-container" style={{marginTop: "5rem", textAlign: "center"}}>
+  <div className='horizontal-container2'>
+    <div className="page-title">Manage Matches</div>
+  </div>
+  {loading ? (
+    <div className="flex justify-center items-center">
+      <div className="w-8 h-8 border-4 border-dashed rounded-full animate-spin border-white mt-8"></div>
+    </div>
+  ) : (
+    <div className="matches-list">
+      {matches.length > 0 ? (
+        matches.map((match, index) => {
+          const hasTiming = timings[index] && dates[index] && locations[index]; // Check if timing, date, and location exist
 
-             return (
-             <div key={index} className="match-container2">
-             <div className="team2"> {match[0][0]} | {match[0][1]}</div>
-             <div className="vs2">vs</div>
-             <div className="team2"> {match[1][0]} | {match[1][1]}</div>
-              <button className="horizontal-container5" onClick={() => handleAddTiming(match,index)}>
+          return (
+            <div key={index} className="match-container2">
+              <div className="team2">{match[0][0]} | {match[0][1]}</div>
+              <div className="vs2">vs</div>
+              <div className="team2">{match[1][0]} | {match[1][1]}</div>
+              <button className="horizontal-container5" onClick={() => handleAddTiming(match, index)}>
                 <div className="button-label2">
-                {hasTiming ? "Edit Timing" : "Add Timing"}
+                  {hasTiming ? "Edit Timing" : "Add Timing"}
                 </div>
               </button>
             </div>
-              );
-            })) :( <div className='horizontal-container'><div className='none-message'> No draws available.</div></div>)}
-             
-             
-        </div>)}
-        <div className='horizontal-container2' style={{marginLeft:"3rem", marginRight:"3rem", justifyContent:"center"}}>
-              <button className="horizontal-container3" style={{height:"3rem"}} onClick={handleFinalSubmitTimings}>
-                <GiConfirmed className="icon-button"/>
-                <div className="button-label" > Submit Timings</div>               
-              </button>
-        </div>  
-      </div>
+          );
+        })
+      ) : (
+        <div className='horizontal-container'>
+          <div className='none-message'>No matches found.</div>
+        </div>
+      )}
+    </div>
+  )}
+  
+  {matches.length > 0 && (
+    <div className='horizontal-container2' style={{marginLeft: "3rem", marginRight: "3rem", justifyContent: "center"}}>
+      <button className="horizontal-container3" style={{height: "3rem"}} onClick={handleFinalSubmitTimings}>
+        <GiConfirmed className="icon-button"/>
+        <div className="button-label">Submit Timings</div>               
+      </button>
+    </div>
+  )}
+</div>
+
 
         {modalOpen && (
           <div className="modal-overlay">

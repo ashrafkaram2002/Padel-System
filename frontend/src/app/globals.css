@@ -15,7 +15,8 @@
   --dark-color-rgb: 0, 48, 96;        /* #003060 */
   --error-color-rgb: 220, 53, 69;     /* #dc3545 */
   --gray-color-rgb: 108, 117, 125;    /* #6c757d */
-  --white-color-rgb: 255, 255, 255;   
+  --white-color-rgb: 255, 255, 255; 
+  --success-color: #28a745;  
 }
 
 @media (prefers-color-scheme: dark) {
@@ -28,7 +29,7 @@
 body {
   color: var(--foreground);
   background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: Tahoma, sans-serif;
 }
 
 @layer utilities {
@@ -555,6 +556,11 @@ html, body {
 .modal-message {
   margin-top: 10px;
   color: var(--error-color); 
+}
+
+.modal-message2 {
+  margin-top: 10px;
+  color: var(--success-color); /* Change to the variable for success color */
 }
 
 .confirmation-message {

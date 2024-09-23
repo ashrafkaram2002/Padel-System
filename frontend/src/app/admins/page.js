@@ -165,7 +165,7 @@ export default function Admins() {
               onChange={(e) => setConfirmPassword(e.target.value)}
               className="modal-input"
             />
-            {message && <p className="modal-message">{message}</p>}
+            {message && <p className="modal-message2">{message}</p>}
             <button className="modal-button confirm" onClick={handleAddAdmin}>
               Confirm
             </button>
@@ -177,6 +177,6 @@ export default function Admins() {
         </div>
       )}
     </>
-    
+
   );
 }

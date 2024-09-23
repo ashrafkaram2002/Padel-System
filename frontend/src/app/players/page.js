@@ -142,7 +142,7 @@ export default function Players() {
         value={newPlayer.points}
         onChange={(e) => setNewPlayer({ ...newPlayer, points: e.target.value })}
       />
-      {message && <p className="modal-message">{message}</p>}
+      {message && <p className="modal-message2">{message}</p>}
             <button className="modal-button confirm" onClick={handleAddPlayerConfirm}>
               Add Player
             </button>

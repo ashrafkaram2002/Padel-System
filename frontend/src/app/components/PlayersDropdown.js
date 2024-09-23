@@ -90,8 +90,10 @@ const PlayersDropdown = ({ players, onSelect, loading }) => {
           {selectedPlayers.length > 0 ? (
             selectedPlayers.map(player => (
               <li key={player._id} title={`${player.position}`} className='dropdown-item'>
-                <div style={{fontWeight:"bold", marginRight:"2rem"}}>{player.position=="left"?"L":"R"}<span style={{marginLeft:"2rem", fontWeight:"lighter"}}>{player.points} pts</span></div>
+                <div style={{fontWeight:"bold", marginRight:"2rem"}}>{player.position=="left"?"L":"R"} </div>
                 <div>{player.name}</div>
+                  <span style={{marginLeft:"2rem", fontWeight:"lighter"}}>{player.points} pts</span>
+                
                 <button onClick={() => handleRemovePlayer(player)}>
                   <MdDelete className="delete-icon" />
                 </button>

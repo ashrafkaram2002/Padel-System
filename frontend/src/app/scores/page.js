@@ -202,7 +202,7 @@ export default function Scores() {
                 </div>
               ))
             ) : (
-                <div className='horizontal-container'><div className='none-message'> No completed matches available.</div></div> 
+                <div className='horizontal-container'><div className='none-message'> No matches found.</div></div> 
             )}
           </div>
         )}
