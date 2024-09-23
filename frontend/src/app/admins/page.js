@@ -136,7 +136,7 @@ export default function Admins() {
             <MdPersonAdd className="icon-button" />
           </button>
         </div>
-        <SearchBar className="search-bar" onSearch={handleSearch} />
+        <SearchBar className="search-bar" onSearch={handleSearch}/>
         <AdminsTable searchTerm={searchTerm} adminsData={filteredData} loading={loading} fetchAdminsData={fetchAdminsData} />
       </div>
 

@@ -5,8 +5,8 @@ import axios from 'axios';
 import Image from "next/image";
 import AppNavBar from '../components/AppNavBar';
 import { GiConfirmed } from 'react-icons/gi';
-import { IoIosAdd } from "react-icons/io";
-import { FiEdit } from "react-icons/fi";
+import { useRouter} from 'next/navigation';
+
 
 export default function Matches() {
 
@@ -22,6 +22,8 @@ export default function Matches() {
     const [matchTime, setMatchTime] = useState("");  // Temp state for modal input
     const [matchDate, setMatchDate] = useState("");  // Temp state for modal input
     const [matchLocation, setMatchLocation] = useState("");  // Temp state for modal input
+    
+    const router = useRouter();
 
   useEffect(() => {
     fetchDraws();
@@ -45,10 +47,26 @@ export default function Matches() {
     setMessage(null);
   }
 
+  const goToMatchesTab = () => {
+    router.push('/?tab=draws'); // Navigate to the draws tab
+  };
+
   const handleSubmitTiming = () => {
     // Ensure all fields are filled
-    if (!matchTime || !matchDate || !matchLocation) {
+    if (!matchTime && !matchDate && !matchLocation) {
         setMessage("Please enter all fields");
+        return;
+    }
+    if(!matchTime){
+        setMessage("Please enter the match's time");
+        return;
+    }
+    if(!matchDate){
+        setMessage("Please enter the match's date");
+        return;
+    }
+    if(!matchLocation){
+        setMessage("Please enter the match's location");
         return;
     }
 
@@ -82,6 +100,8 @@ const putTimings = async (timings, day, locations) => {
   try {
       const response = await axios.post('http://localhost:8000/putTimings', { timings, day, locations });
       console.log('Timings updated:', response.data);
+      goToMatchesTab();
+      
   } catch (error) {
       console.error('Error updating timings:', error);
   }
@@ -136,7 +156,7 @@ const putTimings = async (timings, day, locations) => {
 
 <div className="center-container" style={{marginTop: "5rem", textAlign: "center"}}>
   <div className='horizontal-container2'>
-    <div className="page-title">Manage Matches</div>
+    <div className="page-title">Manage Draws</div>
   </div>
   {loading ? (
     <div className="flex justify-center items-center">
@@ -150,9 +170,9 @@ const putTimings = async (timings, day, locations) => {
 
           return (
             <div key={index} className="match-container2">
-              <div className="team2">{match[0][0]} | {match[0][1]}</div>
+              <div className="team2">{match[0][0]} - {match[0][1]}</div>
               <div className="vs2">vs</div>
-              <div className="team2">{match[1][0]} | {match[1][1]}</div>
+              <div className="team2">{match[1][0]} - {match[1][1]}</div>
               <button className="horizontal-container5" onClick={() => handleAddTiming(match, index)}>
                 <div className="button-label2">
                   {hasTiming ? "Edit Timing" : "Add Timing"}
@@ -185,9 +205,9 @@ const putTimings = async (timings, day, locations) => {
 
             <div className="modal-content">
             <h2 className="modal-title">Add Match Timing</h2>
-            <div className="login-subtitle" style={{marginBottom:"0.3rem"}}>{selectedMatch[0][0]}-{selectedMatch[0][1]}</div>
+            <div className="login-subtitle" style={{marginBottom:"0.3rem"}}>{selectedMatch[0][0]} - {selectedMatch[0][1]}</div>
             <div style={{color:"#dc3545", fontWeight:"bold", marginBottom:"0.3"}}>VS</div>
-            <div className="login-subtitle" style={{marginBottom:"0.5rem"}}>{selectedMatch[1][0]} & {selectedMatch[1][1]} </div>
+            <div className="login-subtitle" style={{marginBottom:"0.5rem"}}>{selectedMatch[1][0]} - {selectedMatch[1][1]} </div>
             <div>
                 <label htmlFor="matchDay" className="modal-label">Match Day:</label>
                 <input

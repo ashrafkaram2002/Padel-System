@@ -72,6 +72,14 @@ export default function DrawsTable({ searchTerm }) {
     return `${shortDayName}, ${dayWithOrdinal} of ${monthName}`;
   };
 
+  const isAfterNowOrWithinLastHour = (day, timing) => {
+    const now = new Date();
+    const matchDate = new Date(`${day}T${timing}`);
+    const timeDifference = matchDate - now;
+    const oneHourInMilliseconds = 60 * 60 * 1000;
+    return timeDifference >= -oneHourInMilliseconds; // Match is either within the past hour or in the future
+  };
+
   // Process and sort draws data based on date and time
   const processedData = drawsData.flatMap((drawEntry) => {
     return drawEntry.draw.map((match, index) => ({
@@ -80,10 +88,14 @@ export default function DrawsTable({ searchTerm }) {
       date: formatDate(drawEntry.day[0]),     // Use the first date (assuming one per draw)
       time: drawEntry.timings[0], // Use the first time (assuming one per draw)
       location: drawEntry.locations[0], // Use the first location (assuming one per draw)
+      matchDay: drawEntry.day[0], // Original date to be used in filtering
+      matchTime: drawEntry.timings[0], // Original time to be used in filtering
     }));
+  }).filter(item => {
+    return isAfterNowOrWithinLastHour(item.matchDay, item.matchTime);
   }).sort((a, b) => {
-    const dateA = new Date(a.date);
-    const dateB = new Date(b.date);
+    const dateA = new Date(a.matchDay);
+    const dateB = new Date(b.matchDay);
     const timeA = parseTime(a.time);
     const timeB = parseTime(b.time);
 
@@ -100,11 +112,13 @@ export default function DrawsTable({ searchTerm }) {
 
   return (
     <div className="players-table-container">
-      {loading ? (
-        <div className="flex justify-center items-center">
-          <div className="w-8 h-8 border-4 border-dashed rounded-full animate-spin border-white"></div>
-        </div>
-      ) : (
+  {loading ? (
+    <div className="flex justify-center items-center">
+      <div className="w-8 h-8 border-4 border-dashed rounded-full animate-spin border-white mt-5"></div>
+    </div>
+  ) : (
+    <div>
+      {filteredData.length > 0 ? (
         <table className="players-table">
           <thead>
             <tr>
@@ -116,24 +130,23 @@ export default function DrawsTable({ searchTerm }) {
             </tr>
           </thead>
           <tbody>
-            {filteredData.length > 0 ? (
-              filteredData.map((item, index) => (
-                <tr key={index}>
-                  <td>{item.playerA}</td>
-                  <td>{item.playerB}</td>
-                  <td>{item.date}</td>
-                  <td>{item.time}</td>
-                  <td>{item.location}</td>
-                </tr>
-              ))
-            ) : (
-              <tr>
-                <td colSpan="5" className='none-message'>No draws available.</td>
+            {filteredData.map((item, index) => (
+              <tr key={index}>
+                <td>{item.playerA}</td>
+                <td>{item.playerB}</td>
+                <td>{item.date}</td>
+                <td>{item.time}</td>
+                <td>{item.location}</td>
               </tr>
-            )}
+            ))}
           </tbody>
         </table>
+      ) : (
+        <div className='center'> <div className='none-message'>No upcoming matches available.</div></div> 
       )}
     </div>
+  )}
+</div>
+
   );
 }

@@ -55,7 +55,7 @@ export default function AppNavBar({onHome, onLogin}) {
     <nav className="bg-[#003060] shadow-md py-2 relative z-10">
       <div className="container mx-auto flex items-center justify-between px-4">
         
-        {/* Left side: Menu */}
+      
         <div className="flex items-center">
           {isAdminLoggedIn && (
             <div className='horizontal-container'>

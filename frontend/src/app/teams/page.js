@@ -45,9 +45,18 @@ export default function Teams() {
     setSelectedPlayers(prev => [...prev, player]);
   };
 
+  const handleRemovePlayer = (player) => {
+    setSelectedPlayers(prev => prev.filter(p => p._id !== player._id));
+  };
+
   const handleMatchTeams = async () => {
     const leftPlayers = selectedPlayers.filter(player => player.position === 'left');
     const rightPlayers = selectedPlayers.filter(player => player.position === 'right');
+    console.log(selectedPlayers.length)
+    if(selectedPlayers.length%4!==0){
+      alert('The number of players should be divisible by 4.');
+      return;
+    }
     if (leftPlayers.length !== rightPlayers.length) {
       console.log("r", rightPlayers)
       console.log("l", leftPlayers)
@@ -70,7 +79,11 @@ export default function Teams() {
   
   const handleAlternativeMatchTeams = async () => {
     const leftPlayers = selectedPlayers.filter(player => player.position === 'left');
-  const rightPlayers = selectedPlayers.filter(player => player.position === 'right');
+    const rightPlayers = selectedPlayers.filter(player => player.position === 'right');
+    if(selectedPlayers.length%4!==0){
+      alert('The number of players should be divisible by 4.');
+      return;
+    }
     if (leftPlayers.length !== rightPlayers.length) {
       alert('The number of players positioned left must be equal to the number of players positioned right.');
       return;
@@ -151,9 +164,9 @@ export default function Teams() {
              {matches.length > 0 && (
               matches.map((match, index) => (
               <div key={index} className="match-container">
-                    <div className="team"> {match[0][0]} | {match[0][1]}</div>
+                    <div className="team"> {match[0][0]} - {match[0][1]}</div>
                     <div className="vs">vs</div>
-                    <div className="team"> {match[1][0]} | {match[1][1]}</div>
+                    <div className="team"> {match[1][0]} - {match[1][1]}</div>
       
               </div>
             ))
@@ -196,6 +209,7 @@ export default function Teams() {
               <PlayersDropdown 
                 players={players} 
                 onSelect={handleSelectPlayer} 
+                onRemove={handleRemovePlayer}
                 loading={loading}
               />
 

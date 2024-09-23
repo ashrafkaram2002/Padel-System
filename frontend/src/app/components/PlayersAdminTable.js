@@ -50,15 +50,18 @@ export default function PlayersAdminTable({ playersData=[],loading, fetchPlayers
   return (
     <div className="players-table-container" style={{marginLeft:"2rem", marginRight:"2rem", height:"30rem"}}>
       
-      {loading ?
-      (<div className="flex justify-center items-center">
-         <div className="w-8 h-8 border-4 border-dashed rounded-full animate-spin border-white"></div>
-      </div>): (<table className="players-table">
+      {loading ? (
+  <div className="flex justify-center items-center">
+    <div className="w-8 h-8 border-4 border-dashed rounded-full animate-spin border-white mt-5"></div>
+  </div>
+) : (
+  <div className="players-table-container">
+    {playersData.length > 0 ? (
+      <table className="players-table">
         <thead>
           <tr>
             <th>Name</th>
             <th>Position</th>
-
             <th>Wins</th>
             <th>Losses</th>
             <th>Points</th>
@@ -66,29 +69,28 @@ export default function PlayersAdminTable({ playersData=[],loading, fetchPlayers
           </tr>
         </thead>
         <tbody>
-          {playersData.length > 0 ? (
-            playersData.map((item, index) => (
-              <tr key={index}>
-                <td>{item.name}</td>
-                <td>{item.position}</td>
-                
-                <td>{item.wins}</td>
-                <td>{item.loses}</td>
-                <td>{item.points}</td>
-                <td>
-                    <button onClick={() => handleDeleteClick(item)}>
-                    <MdDelete className="delete-icon" />
-                    </button>
-                </td>
-              </tr>
-            ))
-          ) : (
-            <tr>
-              <td colSpan="6" className="none-message">No players found</td>
+          {playersData.map((item, index) => (
+            <tr key={index}>
+              <td>{item.name}</td>
+              <td>{item.position}</td>
+              <td>{item.wins}</td>
+              <td>{item.loses}</td>
+              <td>{item.points}</td>
+              <td>
+                <button onClick={() => handleDeleteClick(item)}>
+                  <MdDelete className="delete-icon" />
+                </button>
+              </td>
             </tr>
-          )}
+          ))}
         </tbody>
-      </table>)}
+      </table>
+    ) : (
+      <div className='center'> <div className='none-message'>No players found.</div></div> 
+    )}
+  </div>
+)}
+
 
       {/* Modal for delete confirmation */}
       {showDeleteModal && (

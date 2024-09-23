@@ -63,6 +63,12 @@ html, body {
   overflow: hidden;
 }
 
+.center{
+  display: flex;
+  justify-content: center;
+  
+}
+
 .center-container {
   @apply absolute inset-x-80 top-[calc(5px+10px)] bg-[#003060] shadow-lg rounded-lg bg-opacity-70;
   height: 39rem; /* Fixed height */
@@ -70,7 +76,7 @@ html, body {
 }
 
 .centering-container {
-  @apply absolute inset-x-60 top-[calc(30px+10px)] shadow-lg rounded-lg;
+  @apply absolute inset-x-60 top-[calc(0px+10px)] shadow-lg rounded-lg;
   height: 40rem; /* Fixed height */
   overflow-y: hidden;
   display: flex; /* Flexbox for centering */
@@ -104,16 +110,6 @@ html, body {
 
 .horizontal-container3:hover{
   transform: scale(1.02);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Light shadow for a lifted effect */
-}
-
-.horizontal-container5 {
-  display: flex;
-  flex-direction: row;
-  background-color: var(--color-active);
-  border-radius: 10px; /* Rounded borders, adjust value as needed */
-  padding: 0.5rem; /* Optional padding for content inside */
-  width: 6rem;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Light shadow for a lifted effect */
 }
 
@@ -188,7 +184,7 @@ html, body {
   display: flex;
   align-items: center;
   position: relative; /* Required for absolute positioning of the hover effect */
-  font-size: 0.9rem; /* Adjust this value to make the font smaller */
+  font-size: 1rem;
   padding-left: 0.85rem;
   padding-right: 0.85rem;
 }
@@ -196,20 +192,38 @@ html, body {
 .navbar-item::after {
   content: '';
   position: absolute;
-  top: -40%; /* Adjust for larger hover box */
-  left: -2%; /* Adjust for larger hover box */
-  right: -2%; /* Adjust for larger hover box */
-  bottom: -40%; /* Adjust for larger hover box */
-  background-color: rgba(255, 255, 255, 0.3); /* Translucent background */
-  opacity: 0; /* Start hidden */
-  transition: opacity 0.3s; /* Smooth transition */
-  z-index: -1; /* Behind the text */
+  top: -40%;
+  left: -0.01%; 
+  right: -0.01%; 
+  bottom: -40%; 
+  background-color: rgba(255, 255, 255, 0.3); 
+  opacity: 0; 
+  transition: opacity 0.3s;
+  z-index: -1; /* Place behind the text */
 }
 
 .navbar-item:hover::after,
-.navbar-item.selected::after { /* Show hover effect on hover and for selected item */
-  opacity: 1; /* Show on hover */
+.navbar-item.active::after {
+  opacity: 1; /* Show the background on hover and when active */
 }
+
+/* .navbar-item::after {
+  content: '';
+  position: absolute;
+  top: -40%;
+  left: -2%; 
+  right: -2%; 
+  bottom: -40%; 
+  background-color: rgba(255, 255, 255, 0.3); 
+  opacity: 0; 
+  transition: opacity 0.3s;
+  z-index: -1; 
+}
+
+.navbar-item:hover::after,
+.navbar-item.selected::after { 
+  opacity: 1; 
+} */
 
 .menu-icon {
   margin-right: 0.5rem; /* Space between icon and text */
@@ -273,14 +287,14 @@ html, body {
 }
 
 .search-bar {
-  @apply flex justify-center items-center mb-10; /* Centering the container horizontally */
+  @apply flex justify-center items-center mb-10 w-[52rem]; /* Centering the container horizontally */
 }
 
 .search-input {
   padding: 0.5rem;
   margin-bottom: 0.6rem;
-  margin-left: 1.1rem;
-  width: 50rem;
+  /* margin-left: 1.1rem; */
+  width:90%;
   border: 1px solid #ccc;
   border-radius: 10px;
   font-size: 1rem; /* Increased font size */
@@ -318,7 +332,7 @@ html, body {
 }
 
 .players-table tr:hover {
-  @apply bg-[#68bbe3]; 
+  background-color: rgba(var(--white-color-rgb), 0.3); 
 }
 
 .no-data {
@@ -398,80 +412,6 @@ html, body {
   font-size: 0.9rem; /* Increased font size */
 }
 
-/* HamburgerMenu.css */
-
-.hamburger-button {
-  color: white;
-  border: none;
-  padding: 4px;
-  font-size: 2.3rem;
-  cursor: pointer;
-  position: relative;
-  z-index: 10;
-}
-
-.hamburger-button.open {
-  color: var(--color-active);
-}
-
-.hamburger-menu {
-  position: fixed; /* Use fixed positioning to keep it out of the normal flow */
-  top: 5rem;
-  left: -15rem; /* Initially positioned off-screen to the left */
-  width: 15rem; /* Width of the menu */
-  height: 100vh;
-  background-color: white;
-  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.3);
-  transform: translateX(-100%); /* Move menu off-screen to the left */
-  transition: transform 0.3s ease-in-out, visibility 0.3s ease-in-out;
-  visibility: hidden; /* Hidden by default */
-}
-
-.hamburger-menu.open {
-  left: -1rem; /* Bring the menu into view */
-  transform: translateX(0); /* Move menu into view */
-  transition: transform 0.3s ease-in-out, visibility 0.3s ease-in-out;
-  visibility: visible; /* Show the menu */
-}
-
-
-
-.menu-item {
-  display: flex;
-  align-items: center; /* Align icon and text vertically */
-  justify-content: flex-start; /* Align text and icon to the left */
-  width: 100%;
-  height:5rem;
-  padding: 10px 15px;
-  font-size: 1rem;
-  text-align: center;
-  text-decoration: none;
-  color: var(--dark-color);
-  cursor: pointer;
-  border-bottom: 1px solid #ddd; /* Add a border to separate items */
-  box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.1); /* Subtle shadow at the bottom */
-  background-color: #fafafa; /* Light background color */
-  transition: background-color 0.3s, color 0.3s; /* Smooth transition */
-}
-
-.menu-item:hover {
-  background-color: #c6df36;
-  font-weight: bolder;
-}
-
-.menu-footer {
-  width: 100%;
-  padding: 15px;
-  text-align: center;
-  color: #888; /* Color for the footer text */
-  margin-top: 7rem;
-}
-.menu-icon {
-  color: var(--dark-color);
-  margin-right: 1rem; 
-  font-size: 1.5rem; 
-}
-
 /* Admin Pages */
 
 .page-title{
@@ -506,9 +446,18 @@ html, body {
 
 .button-label2{
   color: var(--dark-color);
-  font-size: 0.8rem;
+  font-size: 0.85rem;
   font-weight: bold;
+}
 
+.horizontal-container5 {
+  background-color: var(--color-active);
+  border-radius: 8px; /* Rounded borders, adjust value as needed */
+  width: 6rem;
+  height: 1.5rem;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Light shadow for a lifted effect */
+  margin-bottom: 0.05rem;
+  margin-right: 0.3rem;
 }
 
 .icon-button{
@@ -622,7 +571,8 @@ html, body {
 
 
 .modal-message {
-  margin-top: 10px;
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
   color: var(--error-color); 
 }
 

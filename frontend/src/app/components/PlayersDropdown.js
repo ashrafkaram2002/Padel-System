@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { MdDelete } from "react-icons/md";
 
-const PlayersDropdown = ({ players, onSelect, loading }) => {
+const PlayersDropdown = ({ players, onSelect, loading, onRemove }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [availablePlayers, setAvailablePlayers] = useState([]);
   const [selectedPlayers, setSelectedPlayers] = useState([]);
@@ -34,6 +34,7 @@ const PlayersDropdown = ({ players, onSelect, loading }) => {
   const handleRemovePlayer = (player) => {
     setSelectedPlayers(prev => prev.filter(p => p._id !== player._id));
     setAvailablePlayers(prev => [...prev, player].sort((a, b) => a.name.localeCompare(b.name)));
+    onRemove(player);
   };
 
   // Count the number of left and right players selected

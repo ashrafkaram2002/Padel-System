@@ -13,8 +13,8 @@ export default function Scores() {
   const [selectedMatch, setSelectedMatch] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
   const [score, setScore] = useState("");
-  const [successModal, setSuccessModal] = useState(false);
-  const [winner, setWinner] = useState("");
+  const [confirmationModal, setConfirmationModal] = useState(false);
+  const [confirmationMessage, setConfirmationMessage] = useState("");
 
   useEffect(() => {
     fetchDraws();
@@ -60,25 +60,31 @@ export default function Scores() {
 
   const handleCloseModal = () => {
     setModalOpen(false);
-    setSelectedMatch(null);
-    setScore("");
     setMessage("");
   }
 
-  const handleSuccessModal = () => {
-    setMessage(`${winner}` + " won!")
-    setSuccessModal(true);
+  const closeConfirmationModal = () => {
+    setConfirmationModal(false);
+    setSelectedMatch(null);
+    setScore("");
+    setMessage("");
+    setConfirmationMessage("");
+  }
+
+  const handleConfirmationModal = () => {
+    const validation = validateScore(score);
+
+    if (!validation.valid) {
+      setMessage(validation.message);
+      return;
+    }
+
+    setConfirmationMessage(validation.message);
+    setConfirmationModal(true);
     handleCloseModal();
-  }
+  };
 
-  const closeSuccessModal = () => {
-    setSuccessModal(false);
-    setSelectedMatch(null);
-    setScore("");
-    setMessage("");
-    setWinner("");
-  }
-
+  
   const validateScore = (score) => {
     const sets = score.split('/'); // Split the score into sets
     let leftWins = 0;
@@ -89,14 +95,12 @@ export default function Scores() {
   
       // Check if both scores are valid numbers
       if (isNaN(left) || isNaN(right)) {
-        setMessage("Scores must be numbers.");
-        return { valid: false };
+        return { valid: false, message: "Scores must be numbers." };
       }
   
       // Check if scores are non-negative and not greater than 7
       if (left < 0 || right < 0 || left > 7 || right > 7) {
-        setMessage("Scores must be non-negative numbers no greater than 7.");
-        return { valid: false };
+        return { valid: false, message: "Scores must be non-negative numbers no greater than 7." };
       }
   
       // Validate score conditions
@@ -109,27 +113,21 @@ export default function Scores() {
       } else if (right === 7 && (left === 5 || left === 6)) {
         rightWins++;
       } else if (Math.abs(left - right) < 2) {
-        setMessage("The score difference must be at least 2.");
-        return { valid: false };
+        return { valid: false, message: "The score difference must be at least 2." };
       } else if (left < 6 && right < 6) {
-        setMessage("At least one score must be 6 to win a set.");
-        return { valid: false };
+        return { valid: false, message: "At least one score must be 6 to win a set." };
       } else if (left === 6 && right === 6) {
-        setMessage("Both teams cannot score 6 in the same set.");
-        return { valid: false };
+        return { valid: false, message: "Both teams cannot score 6 in the same set." };
       }
     }
   
-    // Check final outcome
+    // Check final outcome and set the confirmation message
     if (leftWins > 1 || (leftWins === 1 && rightWins === 0)) {
-        setWinner(`${selectedMatch[0][0]} & ${selectedMatch[0][1]}`);
-      return { valid: true };
+      return { valid: true, message: `Are you sure team ${selectedMatch[0][0]} & ${selectedMatch[0][1]} won with a score of ${score}?` };
     } else if (rightWins > 1 || (rightWins === 1 && leftWins === 0)) {
-        setWinner(`${selectedMatch[1][0]} & ${selectedMatch[1][1]}`);
-      return { valid: true };
+      return { valid: true, message: `Are you sure team ${selectedMatch[1][0]} & ${selectedMatch[1][1]} won with a score of ${score}?` };
     } else {
-      setMessage("Each team has won a set; a final set is needed.");
-      return { valid: false };
+      return { valid: false, message: "Each team has won a set; a final set is needed." };
     }
   };
   
@@ -142,13 +140,6 @@ export default function Scores() {
     
       console.log(teams);
   
-    // Validate score format
-    const validation = validateScore(score);
-    if (!validation.valid) {
-      setMessage(validation.message);
-      return;
-    }
-  
     try {
       const response = await axios.post(' http://localhost:8000/updateScoreAndPoints', {
         teams,
@@ -157,9 +148,8 @@ export default function Scores() {
   
       // Handle success response
       if (response.status === 200) {
-        setMessage('Score updated successfully!');
-        handleSuccessModal();
-        setMatches((prevMatches) => prevMatches.filter(match => match.id !== selectedMatch.id));
+        closeConfirmationModal();
+        setMatches((prevMatches) => prevMatches.filter(match => match._id !== selectedMatch._id));
       }
     } catch (error) {
       // Handle error response
@@ -193,16 +183,16 @@ export default function Scores() {
             {matches.length > 0 ? (
               matches.map((match, index) => (
                 <div key={index} className="match-container2">
-                  <div className="team2">{match[0][0]} | {match[0][1]}</div>
+                  <div className="team2">{match[0][0]} - {match[0][1]}</div>
                   <div className="vs2">vs</div>
-                  <div className="team2">{match[1][0]} | {match[1][1]}</div>
+                  <div className="team2">{match[1][0]} - {match[1][1]}</div>
                   <button className="horizontal-container5" onClick={() => handleOpenModal(match)}>
                     <div className="button-label2">Add Score</div>
                   </button>
                 </div>
               ))
             ) : (
-                <div className='horizontal-container'><div className='none-message'> No matches found.</div></div> 
+                <div className='horizontal-container'><div className='none-message'> No completed matches found.</div></div> 
             )}
           </div>
         )}
@@ -226,7 +216,7 @@ export default function Scores() {
                 />
             </div>
             {message && <p className="modal-message">{message}</p>}
-            <button className="modal-button confirm" onClick={handleAddScore}>Confirm</button>
+            <button className="modal-button confirm" onClick={handleConfirmationModal}>Submit</button>
             <button className="modal-button cancel"  onClick={handleCloseModal}>Cancel</button>
             </div>
 
@@ -236,12 +226,16 @@ export default function Scores() {
 
 
         {/* Modal for score confirmation */}
-      {successModal && (
+      {confirmationModal && (
         <div className="modal-overlay">
           <div className="modal-content">
-            <p className="confirmation-message">{message}</p>
-            <button className="modal-button confirm" onClick={closeSuccessModal}>
-              OK
+          {confirmationMessage && <p className="confirmation-message">{confirmationMessage}</p>}
+          {message && <p className="modal-message">{message}</p>}
+            <button className="modal-button confirm" onClick={handleAddScore}>
+              Confirm
+            </button>
+            <button className="modal-button cancel" onClick={closeConfirmationModal}>
+              Cancel
             </button>
           </div>
         </div>
