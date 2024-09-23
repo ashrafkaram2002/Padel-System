@@ -32,6 +32,44 @@ const login = async (req, res) => {
       }
 }
 
+// const login = async (req, res) => {
+//   const { username, password } = req.body;
+
+//   try {
+//     // Find admin by username
+//     const admin = await adminModel.findOne({ username });
+    
+//     // Check if admin exists
+//     if (!admin) {
+//       return res.status(401).json({ message: "Invalid credentials" });
+//     }
+
+//     // Compare the provided password with the stored hashed password
+//     const auth = await bcrypt.compare(password, admin.password);
+
+//     if (auth) {
+//       // Create JWT token
+//       const token = createToken(admin._id);
+      
+//       // Set the JWT token in a cookie (correctly multiplying maxAge)
+//       res.cookie('jwt', token, {
+//         httpOnly: true,   // Prevents client-side access to the cookie
+//         maxAge: maxAge * 1000, // Sets cookie expiration time to 1 day in milliseconds
+//         secure: false,    // Set to true in production when using HTTPS
+//         sameSite: 'None',  // Adjust SameSite policy to prevent CSRF
+//       });
+
+//       // Return success response
+//       return res.status(200).json({ message: "Admin logged in", user: admin });
+//     } else {
+//       return res.status(401).json({ message: "Invalid credentials" });
+//     }
+//   } catch (error) {
+//     console.error("Error during login:", error);
+//     return res.status(500).json({ message: "Server Error" });
+//   }
+// };
+
 const requireAdminAuth = (req, res, next) => {
     const token = req.cookies.jwt;
   
@@ -292,6 +330,7 @@ const requireAdminAuth = (req, res, next) => {
       res.redirect("/login");
     }
   };
+  
   
 
 
