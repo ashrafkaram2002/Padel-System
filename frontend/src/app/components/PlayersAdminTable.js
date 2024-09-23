@@ -58,10 +58,11 @@ export default function PlayersAdminTable({ playersData=[],loading, fetchPlayers
           <tr>
             <th>Name</th>
             <th>Position</th>
-            <th>Points</th>
+
             <th>Wins</th>
             <th>Losses</th>
-            <th>Manage</th>
+            <th>Points</th>
+            <th></th>
           </tr>
         </thead>
         <tbody>
@@ -70,9 +71,10 @@ export default function PlayersAdminTable({ playersData=[],loading, fetchPlayers
               <tr key={index}>
                 <td>{item.name}</td>
                 <td>{item.position}</td>
-                <td>{item.points}</td>
+                
                 <td>{item.wins}</td>
                 <td>{item.loses}</td>
+                <td>{item.points}</td>
                 <td>
                     <button onClick={() => handleDeleteClick(item)}>
                     <MdDelete className="delete-icon" />

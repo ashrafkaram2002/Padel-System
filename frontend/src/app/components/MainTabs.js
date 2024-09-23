@@ -30,7 +30,6 @@ export default function MainTabs() {
           className={`tab-button ${activeTab === 'players' ? 'tab-button-active' : 'tab-button-inactive'}`}
         >
             <div className="horizontal-container">
-                <BsPersonFill className="tab-icon" />
                     Players
             </div>
         </button>
@@ -39,8 +38,7 @@ export default function MainTabs() {
           className={`tab-button ${activeTab === 'matches' ? 'tab-button-active' : 'tab-button-inactive'}`}
         >
           <div className="horizontal-container">
-                <BsFillPeopleFill className="tab-icon" />
-                    Matches
+                    Previous Matches
             </div>
         </button>
         <button
@@ -48,8 +46,7 @@ export default function MainTabs() {
           className={`tab-button ${activeTab === 'draws' ? 'tab-button-active' : 'tab-button-inactive'}`}
         >
           <div className="horizontal-container">
-                <GiTabletopPlayers className="tab-icon" />
-                    Draws
+                    Upcoming Matches
             </div>
         </button>
       </div>

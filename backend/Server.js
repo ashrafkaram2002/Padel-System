@@ -38,6 +38,7 @@ const {
     confirmDraw,
     viewDraw,
     putTimings,
+    deleteAllMatches,
 } = require("./src/Controllers/adminController.js");
 //Player Controller
 
@@ -94,4 +95,5 @@ app.post("/putTimings" ,putTimings);
 
 app.delete("/removePlayer" , removePlayer);
 app.delete("/removeAdmin" ,removeAdmin);
+app.delete("/deleteAllMatches" ,deleteAllMatches);
 

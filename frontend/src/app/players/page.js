@@ -94,9 +94,9 @@ const handleAddPlayerConfirm = async () => {
       <div className="center-container" style={{marginTop:"5rem", textAlign: "center"}}>
         <div className='horizontal-container2'>
           <div className="page-title"> Manage Players</div>
-          <button className="horizontal-container3" onClick={handleAddPlayerClick}>
+          <button onClick={handleAddPlayerClick}>
              <MdPersonAdd className="icon-button"/>
-             <div className="button-label"> Add Player</div>
+             <div className="button-label"> </div>
           </button>
         </div>
         <SearchBar className="search-bar" onSearch={handleSearch}/>

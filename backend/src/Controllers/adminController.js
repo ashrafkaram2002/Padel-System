@@ -530,21 +530,26 @@ const requireAdminAuth = (req, res, next) => {
 
 
   const viewPlayers = async (req, res) => {
-    try {
-      // Fetch all players from the database
-      const players = await playerModel.find();
-  
-      // If there are no players, return a 404 error
-      if (!players.length) {
-        return res.status(404).json({ message: "No players found." });
-      }
-  
-      // Return the players in the response
-      res.status(200).json(players);
-    } catch (error) {
-      res.status(500).json({ error: error.message });
+  try {
+    // Fetch all players from the database
+    const players = await playerModel.find();
+
+    // If there are no players, return a 404 error
+    if (!players.length) {
+      return res.status(404).json({ message: "No players found." });
     }
-  };
+
+    // Sort players by points (converted to numbers) in descending order
+    const sortedPlayers = players.sort((a, b) => Number(b.points) - Number(a.points));
+
+    // Return the sorted players in the response
+    res.status(200).json(sortedPlayers);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+  
   
   const viewAdmins = async (req, res) => {
     try {
@@ -661,6 +666,18 @@ const requireAdminAuth = (req, res, next) => {
     }
   };
 
+  const deleteAllMatches = async (req, res) => {
+    try {
+      // Delete all documents in the Match collection
+      await matchModel.deleteMany({});
+  
+      // Return a success message
+      return res.status(200).json({ message: "All matches have been deleted." });
+    } catch (error) {
+      return res.status(500).json({ error: error.message });
+    }
+  };
+  
 
   module.exports = {
     login,
@@ -684,4 +701,5 @@ const requireAdminAuth = (req, res, next) => {
     confirmDraw,
     viewDraw,
     putTimings,
+    deleteAllMatches,
 }

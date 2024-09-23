@@ -30,38 +30,41 @@ export default function PlayersTable({ searchTerm }) {
 
   return (
     <div className="players-table-container">
-      {loading ?
-      (<div className="flex justify-center items-center">
-         <div className="w-8 h-8 border-4 border-dashed rounded-full animate-spin border-white"></div>
-      </div>): (<table className="players-table">
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Position</th>
-            <th>Points</th>
-            <th>Wins</th>
-            <th>Losses</th>
-          </tr>
-        </thead>
-        <tbody>
-          {filteredData.length > 0 ? (
-            filteredData.map((item, index) => (
-              <tr key={index}>
-                <td>{item.name}</td>
-                <td>{item.position}</td>
-                <td>{item.points}</td>
-                <td>{item.wins}</td>
-                <td>{item.loses}</td>
-              </tr>
-            ))
-          ) : (
+      {loading ? (
+        <div className="flex justify-center items-center">
+          <div className="w-8 h-8 border-4 border-dashed rounded-full animate-spin border-white"></div>
+        </div>
+      ) : (
+        <table className="players-table">
+          <thead>
             <tr>
-              <td colSpan="5" className="none-message">No players found</td>
+              <th>Rank</th> {/* Add numbering column */}
+              <th>Name</th>
+              <th>Wins</th>
+              <th>Losses</th>
+              <th>Points</th>
             </tr>
-          )}
-        </tbody>
-      </table>)}
-      
+          </thead>
+          <tbody>
+            {filteredData.length > 0 ? (
+              filteredData.map((item, index) => (
+                <tr key={index}>
+                  <td>{index + 1}</td> {/* Display row number */}
+                  <td>{item.name}</td>
+                  <td>{item.wins}</td>
+                  <td>{item.loses}</td>
+                  <td>{item.points}</td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan="6" className="none-message">No players found</td> {/* Adjust colspan */}
+              </tr>
+            )}
+          </tbody>
+        </table>
+      )}
     </div>
   );
+  
 }
