@@ -66,8 +66,9 @@ const PlayersDropdown = ({ players, onSelect, loading }) => {
                   className='dropdown-item'
                   onClick={() => handleSelectPlayer(player)}
                 >
-                  <div style={{fontWeight:"bold", marginRight:"2rem"}}>{player.position=="left"?"L":"R"}<span style={{marginLeft:"2rem", fontWeight:"lighter"}}>{player.points} pts</span></div>
+                  <div style={{fontWeight:"bold", marginRight:"2rem"}}>{player.position=="left"?"L":"R"}</div>
                   <div>{player.name}</div>
+                  <span style={{marginLeft:"2rem", fontWeight:"lighter"}}>{player.points} pts</span>
                 </li>
               ))
             ) : (

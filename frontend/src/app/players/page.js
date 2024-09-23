@@ -40,7 +40,7 @@ export default function Players() {
   };
 
   // Handle Add Player form submission
-const handleAddPlayerConfirm = async () => {
+  const handleAddPlayerConfirm = async () => {
     // Validate the player's name (must contain at least two words)
     const nameParts = newPlayer.name.trim().split(' ');
     if (nameParts.length < 2) {
@@ -52,9 +52,13 @@ const handleAddPlayerConfirm = async () => {
       const response = await axios.post('http://localhost:8000/addPlayer', newPlayer);
       if (response.status === 200) {
         setMessage('Player added successfully!');
-        setShowAddModal(false);
         setNewPlayer({ name: '', position: 'left', points: 0 });
         fetchPlayersData();
+        // Close the modal after a successful operation
+        setTimeout(() => {
+          setShowAddModal(false);
+          setMessage(''); // Clear the message when closing the modal
+        }, 1500); // Optionally delay closing to let user see the message
       } else {
         setMessage('Failed to add player');
       }

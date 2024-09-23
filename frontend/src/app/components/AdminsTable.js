@@ -46,7 +46,7 @@ export default function AdminsTable({ adminsData=[], loading, fetchAdminsData })
         <thead>
           <tr>
             <th>Username</th>
-            <th>Manage</th>
+            <th></th>
           </tr>
         </thead>
         <tbody>
