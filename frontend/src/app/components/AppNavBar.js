@@ -64,16 +64,11 @@ export default function AppNavBar({onHome, onLogin}) {
           )}
         </div>
   
-        {/* Center: Title */}
-        <div className="flex-1 flex justify-center items-center">
-          <GiTennisBall style={{ marginRight: "1rem", fontSize: "3em", color: "#c6df36" }} />
-          <span className="text-4xl font-bold text-white">
-            SR League
-          </span>
-        </div>
+        
   
         {/* Right side: Login/Logout */}
         <div className="flex items-center">
+          
           {isAdminLoggedIn && (
             <button onClick={handleLogout} className="navbar-button">
               Logout

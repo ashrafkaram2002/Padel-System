@@ -148,12 +148,65 @@ html, body {
   font-weight: 500; /* Font weight */
   text-decoration: none; /* Remove underline */
   transition: background-color 0.3s ease; /* Smooth background color transition */
+  padding-right: 1.5rem;
 }
 
 .navbar-button:hover {
   color: rgb(255, 255, 255); /* Text color */
   text-decoration: underline;
 }
+
+.navbar {
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+}
+
+.navbar-content {
+  display: flex;
+  justify-content: space-around; /* Space items evenly */
+}
+
+.navbar-item {
+  color: white; /* Text color */
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  position: relative; /* Required for absolute positioning of the hover effect */
+  font-size: 0.9rem; /* Adjust this value to make the font smaller */
+  padding-left: 0.85rem;
+  padding-right: 0.85rem;
+}
+
+.navbar-item::after {
+  content: '';
+  position: absolute;
+  top: -40%; /* Adjust for larger hover box */
+  left: -2%; /* Adjust for larger hover box */
+  right: -2%; /* Adjust for larger hover box */
+  bottom: -40%; /* Adjust for larger hover box */
+  background-color: rgba(255, 255, 255, 0.3); /* Translucent background */
+  opacity: 0; /* Start hidden */
+  transition: opacity 0.3s; /* Smooth transition */
+  z-index: -1; /* Behind the text */
+}
+
+.navbar-item:hover::after,
+.navbar-item.selected::after { /* Show hover effect on hover and for selected item */
+  opacity: 1; /* Show on hover */
+}
+
+.menu-icon {
+  margin-right: 0.5rem; /* Space between icon and text */
+}
+
+.navbar-footer {
+  text-align: center;
+  color: white; /* Footer text color */
+  margin-top: 1rem;
+}
+
+
 
 .error-message {
   color: var(--error-color);

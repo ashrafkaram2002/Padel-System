@@ -1,16 +1,14 @@
 "use client";
 
 import { useRouter } from 'next/navigation';
-
 import { TiHome } from "react-icons/ti";
 import { MdManageAccounts } from "react-icons/md";
 import { RiTeamFill } from "react-icons/ri";
-import { GiTabletopPlayers} from 'react-icons/gi';
-import { BsFillPeopleFill} from "react-icons/bs";
+import { GiTabletopPlayers } from 'react-icons/gi';
+import { BsFillPeopleFill } from "react-icons/bs";
 import { TbScoreboard } from "react-icons/tb";
 
-export default function HamburgerMenu({ menuOpen, toggleMenu }) {
-
+export default function Navbar() {
   const router = useRouter();
 
   const handleHomeClick = () => {
@@ -38,38 +36,27 @@ export default function HamburgerMenu({ menuOpen, toggleMenu }) {
   };
 
   return (
-    <>
-      <button
-        className={`hamburger-button ${menuOpen ? 'open' : ''}`}
-        onClick={toggleMenu}
-      >
-        ☰
-      </button>
-
-      <div className={`hamburger-menu ${menuOpen ? 'open' : ''}`}>
-        <a onClick={handleHomeClick} className="menu-item">
-          <TiHome className="menu-icon" /> Home
-        </a>
-        <a onClick={handleAdminsClick} className="menu-item">
-          <MdManageAccounts className="menu-icon" /> Manage Admins
-        </a>
-        <a onClick={handlePlayersClick} className="menu-item">
-          <RiTeamFill className="menu-icon" /> Manage Players
-        </a>
-        <a onClick={handleTeamsClick} className="menu-item">
-          <BsFillPeopleFill className="menu-icon" /> Match Teams
-        </a>
-        <a onClick={handleMatchesClick} className="menu-item">
-          <GiTabletopPlayers className="menu-icon" /> Manage Matches
-        </a>
-        <a onClick={handleScoresClick} className="menu-item">
-          <TbScoreboard className="menu-icon" /> Update Scores
-        </a>
-
-        <div className="menu-footer">
-          &copy; SR League
+    <nav className="navbar">
+      <div className="navbar-content">
+        <div className="navbar-item" onClick={handleHomeClick}>
+           Home
+        </div>
+        <div className="navbar-item" onClick={handleAdminsClick}>
+           Manage Admins
+        </div>
+        <div className="navbar-item" onClick={handlePlayersClick}>
+           Manage Players
+        </div>
+        <div className="navbar-item" onClick={handleTeamsClick}>
+           Match Teams
+        </div>
+        <div className="navbar-item" onClick={handleMatchesClick}>
+           Manage Matches
+        </div>
+        <div className="navbar-item" onClick={handleScoresClick}>
+           Update Scores
         </div>
       </div>
-    </>
+    </nav>
   );
 }
