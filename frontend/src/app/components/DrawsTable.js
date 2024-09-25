@@ -107,32 +107,51 @@ export default function DrawsTable({ searchTerm }) {
 
   // Process and sort draws data based on date and time
   // Process and sort draws data based on date and time
+// Process and sort draws data based on date and time
 const processedData = drawsData.flatMap((drawEntry) => {
-  return drawEntry.draw.map((match, index) => {
-    const matchDate = new Date(drawEntry.day[index]);  // Use the correct date for each match
-    const matchTime = parseTime(drawEntry.timings[index]);  // Use the correct time for each match
-    const matchDateTime = new Date(matchDate.getFullYear(), matchDate.getMonth(), matchDate.getDate(), matchTime.getHours(), matchTime.getMinutes());
+  // Check if draw, timings, day, and locations are available
+  if (!drawEntry.draw || !drawEntry.timings || !drawEntry.day || !drawEntry.locations) {
+    return []; // Return an empty array if data is missing
+  }
 
-    // Only include future matches
-    if (matchDateTime > new Date()) {
-      return {
-        playerA: match[0].join(' - '),
-        playerB: match[1].join(' - '),
-        date: formatDate(drawEntry.day[index]),  // Use the correct date
-        time: drawEntry.timings[index],  // Use the correct time
-        location: drawEntry.locations[index],  // Use the correct location
-      };
+  return drawEntry.draw.map((match, index) => {
+    // Ensure the index exists for day, timings, and locations
+    const matchDate = drawEntry.day[index] ? new Date(drawEntry.day[index]) : null;
+    const matchTime = drawEntry.timings[index] ? parseTime(drawEntry.timings[index]) : null;
+    const matchLocation = drawEntry.locations[index] || 'Unknown location';
+
+    if (matchDate && matchTime) {
+      const matchDateTime = new Date(
+        matchDate.getFullYear(),
+        matchDate.getMonth(),
+        matchDate.getDate(),
+        matchTime.getHours(),
+        matchTime.getMinutes()
+      );
+
+      // Only include future matches
+      if (matchDateTime > new Date()) {
+        return {
+          playerA: match[0].join(' - '),
+          playerB: match[1].join(' - '),
+          date: formatDate(drawEntry.day[index]),
+          time: drawEntry.timings[index],
+          location: matchLocation,
+        };
+      }
     }
-    return null; // Filter out past matches
+    return null; // Filter out past matches or invalid data
   });
-}).filter(Boolean) // Remove null entries
-.sort((a, b) => {
-  const dateA = new Date(a.date);
-  const dateB = new Date(b.date);
-  const timeA = parseTime(a.time);
-  const timeB = parseTime(b.time);
-  return dateA - dateB || timeA - timeB;
-});
+})
+  .filter(Boolean) // Remove null entries
+  .sort((a, b) => {
+    const dateA = new Date(a.date);
+    const dateB = new Date(b.date);
+    const timeA = parseTime(a.time);
+    const timeB = parseTime(b.time);
+    return dateA - dateB || timeA - timeB;
+  });
+
 
   // Filter the processed data based on search term
   const filteredData = processedData.filter(
