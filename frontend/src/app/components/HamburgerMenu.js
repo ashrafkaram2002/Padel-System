@@ -29,7 +29,7 @@ export default function Navbar() {
           Match Teams
         </div>
         <div className={`navbar-item ${isActive('/matches')}`} onClick={() => handleNavigation('/matches')}>
-          Manage Draws
+          Manage Matches
         </div>
         <div className={`navbar-item ${isActive('/scores')}`} onClick={() => handleNavigation('/scores')}>
           Update Scores
