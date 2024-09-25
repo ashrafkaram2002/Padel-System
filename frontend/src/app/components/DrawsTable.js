@@ -9,10 +9,11 @@ export default function DrawsTable({ searchTerm }) {
   const [loading, setLoading] = useState(true);
 
   // Fetch draws data from the backend
-  useEffect(() => { 
+  useEffect(() => {
     const fetchDrawsData = async () => {
       try {
         const response = await axios.get('http://localhost:8000/viewDraw');
+<<<<<<< Updated upstream
         const draws = response.data;
   
         // Get the current date and time
@@ -46,16 +47,18 @@ export default function DrawsTable({ searchTerm }) {
         const flattenedDraws = filteredDraws.flat();
   
         setDrawsData(flattenedDraws); // Update the state with the filtered data
+=======
+        setDrawsData(response.data); 
+>>>>>>> Stashed changes
         setLoading(false);
       } catch (error) {
         console.error('Error fetching draws data:', error);
         setLoading(false);
       }
     };
-  
+
     fetchDrawsData();
   }, []);
-  
 
   const parseTime = (time) => {
     const [hours, minutes] = time.split(':').map(Number);
@@ -106,21 +109,29 @@ export default function DrawsTable({ searchTerm }) {
   };
 
   // Process and sort draws data based on date and time
-  // Process and sort draws data based on date and time
-// Process and sort draws data based on date and time
-const processedData = drawsData.flatMap((drawEntry) => {
-  // Check if draw, timings, day, and locations are available
-  if (!drawEntry.draw || !drawEntry.timings || !drawEntry.day || !drawEntry.locations) {
-    return []; // Return an empty array if data is missing
-  }
-
-  return drawEntry.draw.map((match, index) => {
-    // Ensure the index exists for day, timings, and locations
-    const matchDate = drawEntry.day[index] ? new Date(drawEntry.day[index]) : null;
-    const matchTime = drawEntry.timings[index] ? parseTime(drawEntry.timings[index]) : null;
-    const matchLocation = drawEntry.locations[index] || 'Unknown location';
-
-    if (matchDate && matchTime) {
+  const processedData = drawsData.flatMap((drawEntry) => {
+    // Ensure that drawEntry.draw, drawEntry.day, and drawEntry.timings are valid arrays before proceeding
+    if (!drawEntry.draw || !drawEntry.day || !drawEntry.timings) {
+      return []; // Skip this entry if any of the required data is missing
+    }
+  
+    return drawEntry.draw.map((match, index) => {
+      const matchDay = drawEntry.day[index];
+      const matchTiming = drawEntry.timings[index];
+  
+      // Ensure the match date and time are valid
+      if (!matchDay || !matchTiming) {
+        return null; // Skip if the date or time is missing
+      }
+  
+      const matchDate = new Date(matchDay);
+      const matchTime = parseTime(matchTiming);
+  
+      // Check if matchTime was parsed correctly
+      if (!matchTime) {
+        return null; // Skip if time parsing failed
+      }
+  
       const matchDateTime = new Date(
         matchDate.getFullYear(),
         matchDate.getMonth(),
@@ -128,38 +139,40 @@ const processedData = drawsData.flatMap((drawEntry) => {
         matchTime.getHours(),
         matchTime.getMinutes()
       );
-
+  
       // Only include future matches
       if (matchDateTime > new Date()) {
         return {
           playerA: match[0].join(' - '),
           playerB: match[1].join(' - '),
-          date: formatDate(drawEntry.day[index]),
-          time: drawEntry.timings[index],
-          location: matchLocation,
+          date: formatDate(matchDay),  // Use the correct date
+          time: matchTiming,  // Use the correct time
+          location: drawEntry.locations ? drawEntry.locations[index] : 'Unknown',  // Use the correct location, or fallback
         };
       }
-    }
-    return null; // Filter out past matches or invalid data
-  });
-})
+      return null; // Filter out past matches
+    });
+  })
   .filter(Boolean) // Remove null entries
   .sort((a, b) => {
     const dateA = new Date(a.date);
     const dateB = new Date(b.date);
     const timeA = parseTime(a.time);
     const timeB = parseTime(b.time);
+  
+    // Ensure dates and times are valid before comparing
+    if (!dateA || !dateB || !timeA || !timeB) return 0;
+  
     return dateA - dateB || timeA - timeB;
   });
-
-
+  
   // Filter the processed data based on search term
   const filteredData = processedData.filter(
     item =>
       item.playerA.toLowerCase().includes(searchTerm.toLowerCase()) ||
       item.playerB.toLowerCase().includes(searchTerm.toLowerCase())
   );
-
+  
   return (
     <div className="players-table-container">
   {loading ? (
