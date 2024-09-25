@@ -9,20 +9,53 @@ export default function DrawsTable({ searchTerm }) {
   const [loading, setLoading] = useState(true);
 
   // Fetch draws data from the backend
-  useEffect(() => {
+  useEffect(() => { 
     const fetchDrawsData = async () => {
       try {
         const response = await axios.get('http://localhost:8000/viewDraw');
-        setDrawsData(response.data); 
+        const draws = response.data;
+  
+        // Get the current date and time
+        const now = new Date();
+  
+        // Filter draws where both 'timings' and 'day' exist and are valid
+        const filteredDraws = draws.map(draw => {
+          // If timings or day don't exist or are invalid, return an empty array
+          if (!draw.timings || !draw.day || draw.timings.length === 0 || draw.day.some(d => d === "")) {
+            return [];
+          }
+  
+          // Proceed with filtering matches if timings and day are valid
+          return draw.draw.filter((match, index) => {
+            const drawDate = new Date(draw.day[index]);
+            const timing = draw.timings[index];
+  
+            if (!timing || isNaN(drawDate)) {
+              return false; // Skip invalid matches
+            }
+  
+            const [hours, minutes] = timing.split(':').map(Number);
+            drawDate.setHours(hours, minutes, 0, 0); // Set the correct time for the draw
+  
+            // Return true if the match's date and time are in the past
+            return drawDate < now;
+          });
+        }).filter(draw => draw.length > 0); // Filter out empty draws
+  
+        // Flatten the filtered draws
+        const flattenedDraws = filteredDraws.flat();
+  
+        setDrawsData(flattenedDraws); // Update the state with the filtered data
         setLoading(false);
       } catch (error) {
         console.error('Error fetching draws data:', error);
         setLoading(false);
       }
     };
-
+  
     fetchDrawsData();
   }, []);
+  
 
   const parseTime = (time) => {
     const [hours, minutes] = time.split(':').map(Number);
