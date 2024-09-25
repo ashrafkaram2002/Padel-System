@@ -27,6 +27,7 @@ const PlayersDropdown = ({ players, onSelect, loading, onRemove }) => {
     if (!selectedPlayers.some(p => p._id === player._id)) {
       setSelectedPlayers(prev => [...prev, player]);
       setAvailablePlayers(prev => prev.filter(p => p._id !== player._id));
+      console.log(player.position)
       onSelect(player);
     }
   };

@@ -134,7 +134,7 @@ export default function Admins() {
             setShowAddPopup(true);
             setMessage(''); // Clear message when opening modal
           }}>
-            <MdPersonAdd className="icon-button" />
+            <MdPersonAdd className="icon-button-big" />
           </button>
         </div>
         <SearchBar className="search-bar" onSearch={handleSearch}/>

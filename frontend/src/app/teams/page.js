@@ -62,7 +62,7 @@ export default function Teams() {
     const rightPlayers = selectedPlayers.filter(player => player.position === 'right');
     console.log(selectedPlayers.length)
     if(selectedPlayers.length%4!==0){
-      alert('The number of players should be divisible by 4.');
+      alert('Not enough players to form draws.');
       return;
     }
     if (leftPlayers.length !== rightPlayers.length) {
@@ -163,11 +163,24 @@ export default function Teams() {
       </div>
 
       <div className="center-container" style={{ marginTop: "5rem", textAlign: "center" }}>
-        {drawMade?( (loading? (<div className="flex justify-center items-center">
+        {drawMade?( (loading? (<><div className='horizontal-container2'>
+               <div className="page-title">Manage Draw</div>
+             </div> <div className="flex justify-center items-center">
          <div className="w-8 h-8 border-4 border-dashed rounded-full animate-spin border-white mt-8"></div>
-      </div>): (<div >
+      </div> <div className='horizontal-container2' style={{marginLeft:"3rem", marginRight:"3rem", marginTop:"25.5rem"}}>
+              <button className="horizontal-container3" style={{height:"3rem"}} onClick={handleReDraw}>
+                <TbArrowsShuffle2 className="icon-button"/>
+                <div className="button-label" > Re-Draw</div>
+                
+              </button>
+              <button className="horizontal-container3" style={{height:"3rem"}} onClick={handleConfirmDraw}>
+                <GiConfirmed className="icon-button"/>
+                <div className="button-label"> Confirm Draw</div>
+               
+              </button>
+             </div></>): (<div >
              <div className='horizontal-container2'>
-               <div className="page-title">Manage Draws</div>
+               <div className="page-title">Manage Draw</div>
              </div>
              <div className="matches-list">
              {matches.length > 0 && (

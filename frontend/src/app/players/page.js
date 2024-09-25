@@ -13,7 +13,7 @@ export default function Players() {
  const [searchTerm, setSearchTerm] = useState('');
  const [playersData, setPlayersData] = useState([]);
  const [showAddModal, setShowAddModal] = useState(false);
- const [newPlayer, setNewPlayer] = useState({ name: '', position: 'Left', points: 0 });
+ const [newPlayer, setNewPlayer] = useState({ name: '', position: 'left', points: 0 });
  const [message, setMessage] = useState('');
  const [loading, setLoading] = useState(true);
 
@@ -100,7 +100,7 @@ const handleAddPlayerConfirm = async () => {
         <div className='horizontal-container2'>
           <div className="page-title"> Manage Players</div>
           <button onClick={handleAddPlayerClick}>
-             <MdPersonAdd className="icon-button"/>
+             <MdPersonAdd className="icon-button-big"/>
              <div className="button-label"> </div>
           </button>
         </div>

@@ -20,7 +20,7 @@ export default function Matches() {
     const [locations, setLocations] = useState([]);
     const [matchTime, setMatchTime] = useState("");  // Temp state for modal input
     const [matchDate, setMatchDate] = useState("");  // Temp state for modal input
-    const [matchLocation, setMatchLocation] = useState("");  // Temp state for modal input
+    const [matchLocation, setMatchLocation] = useState(null);  // Temp state for modal input
     
     const router = useRouter();
 
@@ -33,7 +33,7 @@ export default function Matches() {
     setSelectedMatchIndex(index);
     setMatchTime(timings[index] || "");  // Pre-fill if timing already exists
     setMatchDate(dates[index] || "");    // Pre-fill if date already exists
-    setMatchLocation(locations[index] || "");  // Pre-fill if location already exists
+    setMatchLocation(locations[index] || null);  // Pre-fill if location already exists
     setModalOpen(true);
 };
 
@@ -42,7 +42,7 @@ export default function Matches() {
     setSelectedMatch(null);
     setMatchTime("");
     setMatchDate("");
-    setMatchLocation("");
+    setMatchLocation(null);
     setMessage("");
   }
 
@@ -56,18 +56,22 @@ export default function Matches() {
         setMessage("Please enter all fields");
         return;
     }
-    if(!matchTime){
+    if (!matchTime) {
         setMessage("Please enter the match's time");
         return;
     }
-    if(!matchDate){
+    if (!matchDate) {
         setMessage("Please enter the match's date");
         return;
     }
-    if(!matchLocation){
-        setMessage("Please enter the match's location");
+    if (!matchLocation) {
+        setMessage("Please enter the court number");
         return;
     }
+
+    // Extract the existing court number if matchLocation already has "Court"
+    const existingCourtNumberMatch = matchLocation.match(/Court(\d+)/);
+    const existingCourtNumber = existingCourtNumberMatch ? existingCourtNumberMatch[1] : "";
 
     // Update the timings, dates, and locations arrays at the selected index
     const newTimings = [...timings];
@@ -76,7 +80,14 @@ export default function Matches() {
 
     newTimings[selectedMatchIndex] = matchTime;
     newDates[selectedMatchIndex] = matchDate;
-    newLocations[selectedMatchIndex] = matchLocation;
+
+    if (existingCourtNumber) {
+      // If there is, replace the existing court number with the new one
+      newLocations[selectedMatchIndex] = `Court${matchLocation.replace(/\D/g, '')}`; // Retain only digits
+  } else {
+      // If not, just add the new court number
+      newLocations[selectedMatchIndex] = `Court${matchLocation}`;
+  }
 
     setTimings(newTimings);
     setDates(newDates);
@@ -85,6 +96,7 @@ export default function Matches() {
     setModalOpen(false);  // Close the modal
     setMessage("");
 };
+
 
 const handleFinalSubmitTimings = () => {
   // Check if timings, dates, and locations are provided for all matches
@@ -174,7 +186,8 @@ const putTimings = async (timings, day, locations) => {
               <div className="team2">{match[0][0]} - {match[0][1]}</div>
               <div className="vs2">vs</div>
               <div className="team2">{match[1][0]} - {match[1][1]}</div>
-              <button className="horizontal-container5" onClick={() => handleAddTiming(match, index)}>
+              {hasTiming && (<div className="timings"> {timings[index]} | {locations[index]}</div>)}         
+              <button className={hasTiming?"horizontal-container5": "horizontal-container6"} onClick={() => handleAddTiming(match, index)}>
                 <div className="button-label2">
                   {hasTiming ? "Edit Timing" : "Add Timing"}
                 </div>
@@ -219,6 +232,7 @@ const putTimings = async (timings, day, locations) => {
           type="date"
           value={matchDate}
           onChange={(e) => setMatchDate(e.target.value)}
+          style={{ color: matchDate ? 'inherit' : 'gray' }}
           placeholder="Day"
         />
         
@@ -228,19 +242,20 @@ const putTimings = async (timings, day, locations) => {
           className="modal-input"
           type="time"
           value={matchTime}
+          style={{ color: matchTime ? 'inherit' : 'gray' }}
           onChange={(e) => setMatchTime(e.target.value)}
         />
-        <small style={{ color: "gray", display: "block", marginBottom: "1rem" }}>
+        <small style={{ color: "gray", display: "block", marginBottom: "1rem", textAlign: "left"}}>
           Please use AM or PM when entering the time.
         </small>
         
-        <label htmlFor="matchLoc" className="modal-label">Match Location:</label>
+        <label htmlFor="matchLoc" className="modal-label">Court Number:</label>
         <input
           className="modal-input"
-          type="text"
-          value={matchLocation}
+          type="number"
+          value={matchLocation ? matchLocation.split('Court')[1] : ''}
           onChange={(e) => setMatchLocation(e.target.value)}
-          placeholder="Location"
+          placeholder="Enter court number"
         />
       </div>
       {message && <p className="modal-message">{message}</p>}

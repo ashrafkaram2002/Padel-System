@@ -48,7 +48,7 @@ export default function PlayersAdminTable({ playersData=[],loading, fetchPlayers
   };
 
   return (
-    <div className="players-table-container" style={{marginLeft:"2rem", marginRight:"2rem", height:"30rem"}}>
+    <div style={{marginLeft:"2rem", marginRight:"2rem"}}>
       
       {loading ? (
   <div className="flex justify-center items-center">
