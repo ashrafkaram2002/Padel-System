@@ -88,7 +88,7 @@ const handleAddPlayerConfirm = async () => {
       <AppNavBar onLogin={false} onHome={false}/>
       <div className="relative min-h-screen">
       <Image
-          src="/assets/padel.png"
+          src="/assets/padel2.jpeg"
           alt="Padel Background"
           layout="fill"
           objectFit="cover"

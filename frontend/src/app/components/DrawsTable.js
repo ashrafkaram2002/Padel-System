@@ -38,7 +38,7 @@ export default function DrawsTable({ searchTerm }) {
             drawDate.setHours(hours, minutes, 0, 0); // Set the correct time for the draw
   
             // Return true if the match's date and time are in the past
-            return drawDate < now;
+            return drawDate >= now;
           });
         }).filter(draw => draw.length > 0); // Filter out empty draws
   
