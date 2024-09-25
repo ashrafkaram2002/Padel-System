@@ -1,60 +1,38 @@
 "use client";
 
-import { useRouter } from 'next/navigation';
-import { TiHome } from "react-icons/ti";
-import { MdManageAccounts } from "react-icons/md";
-import { RiTeamFill } from "react-icons/ri";
-import { GiTabletopPlayers } from 'react-icons/gi';
-import { BsFillPeopleFill } from "react-icons/bs";
-import { TbScoreboard } from "react-icons/tb";
+import { useRouter, usePathname } from 'next/navigation';
 
 export default function Navbar() {
   const router = useRouter();
 
-  const handleHomeClick = () => {
-    router.push('/'); // Navigate to home page
+  const pathname = usePathname();
+
+  const handleNavigation = (path) => {
+    router.push(path); // Navigate to the specified path
   };
 
-  const handleAdminsClick = () => {
-    router.push('/admins'); // Navigate to admins page
-  };
-
-  const handlePlayersClick = () => {
-    router.push('/players'); // Navigate to players page
-  };
-
-  const handleTeamsClick = () => {
-    router.push('/teams'); // Navigate to teams page
-  };
-
-  const handleMatchesClick = () => {
-    router.push('/matches'); // Navigate to matches page
-  };
-
-  const handleScoresClick = () => {
-    router.push('/scores'); // Navigate to scores page
-  };
+  const isActive = (path) => pathname === path ? 'active' : '';
 
   return (
     <nav className="navbar">
       <div className="navbar-content">
-        <div className="navbar-item" onClick={handleHomeClick}>
-           Home
+        <div className={`navbar-item ${isActive('/')}`} onClick={() => handleNavigation('/')}>
+          Home
         </div>
-        <div className="navbar-item" onClick={handleAdminsClick}>
-           Manage Admins
+        <div className={`navbar-item ${isActive('/admins')}`} onClick={() => handleNavigation('/admins')}>
+          Manage Admins
         </div>
-        <div className="navbar-item" onClick={handlePlayersClick}>
-           Manage Players
+        <div className={`navbar-item ${isActive('/players')}`} onClick={() => handleNavigation('/players')}>
+          Manage Players
         </div>
-        <div className="navbar-item" onClick={handleTeamsClick}>
-           Match Teams
+        <div className={`navbar-item ${isActive('/teams')}`} onClick={() => handleNavigation('/teams')}>
+          Match Teams
         </div>
-        <div className="navbar-item" onClick={handleMatchesClick}>
-           Manage Matches
+        <div className={`navbar-item ${isActive('/matches')}`} onClick={() => handleNavigation('/matches')}>
+          Manage Draws
         </div>
-        <div className="navbar-item" onClick={handleScoresClick}>
-           Update Scores
+        <div className={`navbar-item ${isActive('/scores')}`} onClick={() => handleNavigation('/scores')}>
+          Update Scores
         </div>
       </div>
     </nav>

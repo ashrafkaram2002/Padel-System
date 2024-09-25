@@ -7,7 +7,6 @@ import AppNavBar from '../components/AppNavBar';
 import { GiConfirmed } from 'react-icons/gi';
 import { useRouter} from 'next/navigation';
 
-
 export default function Matches() {
 
     const [loading, setLoading] = useState(true);
@@ -44,7 +43,7 @@ export default function Matches() {
     setMatchTime("");
     setMatchDate("");
     setMatchLocation("");
-    setMessage(null);
+    setMessage("");
   }
 
   const goToMatchesTab = () => {
@@ -224,11 +223,11 @@ const putTimings = async (timings, day, locations) => {
         
         <label htmlFor="matchTime" className="modal-label">Match Time:</label>
         <input
+          id="matchTime"
           className="modal-input"
           type="time"
           value={matchTime}
           onChange={(e) => setMatchTime(e.target.value)}
-          placeholder="Time"
         />
         <small style={{ color: "gray", display: "block", marginBottom: "1rem" }}>
           Please use AM or PM when entering the time.

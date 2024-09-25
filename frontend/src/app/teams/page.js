@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from 'react';
+import { useRouter} from 'next/navigation';
 import axios from 'axios';
 import Image from "next/image";
 import AppNavBar from '../components/AppNavBar';
@@ -20,10 +21,17 @@ export default function Teams() {
   const [matches, setMatches] = useState([]);
   const [drawConfirmed, setDrawConfirmed] = useState(false);  // State for modal visibility
 
+  const router = useRouter();
+
+  const goToManageDraws = () => {
+    router.push('/matches');
+  };
+
   const closeModal = () => {
     setDrawConfirmed(false);
     setDrawMade(false); 
     setTeams([]);
+    goToManageDraws();
   };
 
   const fetchPlayersData = async () => {

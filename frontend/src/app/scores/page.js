@@ -28,24 +28,26 @@ export default function Scores() {
       // Get the current date and time
       const now = new Date();
   
-      // Filter out draws that have already passed
-      const filteredMatches = draws.filter(draw => {
-        // Extract the date and time from the draw
-        const drawDate = new Date(draw.day[0]); // Assuming the day is in an array
-        const drawTimings = draw.timings; // Assuming timings is an array
+      // Filter out matches that are in the future
+      const filteredMatches = draws.map(draw => {
+        return draw.draw.filter((match, index) => {
+          const drawDate = new Date(draw.day[index]); // Get the corresponding date for the match
+          const timing = draw.timings[index]; // Get the corresponding timing
   
-        // Check if any timing indicates the match has passed
-        return drawTimings.some(timing => {
+          // Extract hours and minutes from the timing
           const [hours, minutes] = timing.split(':').map(Number);
-          const drawDateTime = new Date(drawDate.setHours(hours, minutes));
-          return drawDateTime < now; // Include only past matches
-        });
-      }).map(draw => draw.draw); // Return only the draw details
+          drawDate.setHours(hours, minutes, 0, 0); // Set the hours and minutes
   
+          // Return true if the match date and time are in the past
+          return drawDate < now;
+        });
+      }).filter(draw => draw.length > 0); // Filter out any draws with no valid matches
+  
+      // Flatten the matches into a single array
       const flattenedMatches = filteredMatches.flat();
   
       setMatches(flattenedMatches); // Update the state with the filtered matches
-
+      console.log(flattenedMatches);
     } catch (error) {
       console.error('Error fetching draws:', error);
     } finally {
@@ -104,9 +106,11 @@ export default function Scores() {
       }
   
       // Validate score conditions
-      if (left === 6 && right <= 7) {
+      if (left === 6 && right < 7) {
+        console.log("11111")
         leftWins++;
-      } else if (right === 6 && left <= 7) {
+      } else if (right === 6 && left < 7) {
+        console.log("22222")
         rightWins++;
       } else if (left === 7 && (right === 5 || right === 6)) {
         leftWins++;
