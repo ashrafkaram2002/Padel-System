@@ -142,7 +142,7 @@ export default function DrawsTable({ searchTerm }) {
           </tbody>
         </table>
       ) : (
-        <div className='center'> <div className='none-message'>No upcoming matches available.</div></div> 
+        <div className='center'> <div className='none-message'>No upcoming matches found.</div></div> 
       )}
     </div>
   )}

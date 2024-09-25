@@ -36,32 +36,35 @@ export default function MainTabs() {
 
   return (
     <div>
-      <div className="tab-buttons">
-        <button
-          onClick={() => navigateToTab('players')}
-          className={`tab-button ${activeTab === 'players' ? 'tab-button-active' : 'tab-button-inactive'}`}
-        >
-            <div className="horizontal-container">
-                    Players
-            </div>
-        </button>
-        <button
-          onClick={() => navigateToTab('matches')}
-          className={`tab-button ${activeTab === 'matches' ? 'tab-button-active' : 'tab-button-inactive'}`}
-        >
-          <div className="horizontal-container">
-                    Previous Matches
-            </div>
-        </button>
-        <button
-          onClick={() => navigateToTab('draws')}
-          className={`tab-button ${activeTab === 'draws' ? 'tab-button-active' : 'tab-button-inactive'}`}
-        >
-          <div className="horizontal-container">
-                    Upcoming Matches
-            </div>
-        </button>
+  <div className="tab-buttons flex space-x-4">
+    <button
+      onClick={() => navigateToTab('players')}
+      className={`tab-button ${activeTab === 'players' ? 'tab-button-active' : 'tab-button-inactive'} transform transition-transform duration-200 hover:-translate-y-1`}
+    >
+      <div className="horizontal-container10">
+        Players
       </div>
+    </button>
+    
+    <button
+      onClick={() => navigateToTab('matches')}
+      className={`tab-button ${activeTab === 'matches' ? 'tab-button-active' : 'tab-button-inactive'} transform transition-transform duration-200 hover:-translate-y-1`}
+    >
+      <div className="horizontal-container10">
+        Previous Matches
+      </div>
+    </button>
+    
+    <button
+      onClick={() => navigateToTab('draws')}
+      className={`tab-button ${activeTab === 'draws' ? 'tab-button-active' : 'tab-button-inactive'} transform transition-transform duration-200 hover:-translate-y-1`}
+    >
+      <div className="horizontal-container10">
+        Upcoming Matches
+      </div>
+    </button>
+  </div>
+
 
       <div className="tab-content">
         {activeTab === 'players' && (

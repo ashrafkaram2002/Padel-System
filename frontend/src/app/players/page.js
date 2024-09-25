@@ -40,33 +40,33 @@ export default function Players() {
   };
 
   // Handle Add Player form submission
-  const handleAddPlayerConfirm = async () => {
-    // Validate the player's name (must contain at least two words)
-    const nameParts = newPlayer.name.trim().split(' ');
-    if (nameParts.length < 2) {
-      setMessage('Please enter both first and last names.');
-      return;
+  // Handle Add Player form submission
+const handleAddPlayerConfirm = async () => {
+  // Validate the player's name (must contain at least two words)
+  const nameParts = newPlayer.name.trim().split(' ');
+  if (nameParts.length < 2) {
+    setMessage('Please enter both first and last names.');
+    return;
+  }
+
+  try {
+    const response = await axios.post('http://localhost:8000/addPlayer', newPlayer);
+    if (response.status === 200) {
+      setMessage('Player added successfully!');
+      setNewPlayer({ name: '', position: 'left', points: 0 });
+      fetchPlayersData();
+      // Close the modal immediately after a successful operation
+      setShowAddModal(false);
+      setMessage(''); // Clear the message after closing the modal
+    } else {
+      setMessage('Failed to add player');
     }
-  
-    try {
-      const response = await axios.post('http://localhost:8000/addPlayer', newPlayer);
-      if (response.status === 200) {
-        setMessage('Player added successfully!');
-        setNewPlayer({ name: '', position: 'left', points: 0 });
-        fetchPlayersData();
-        // Close the modal after a successful operation
-        setTimeout(() => {
-          setShowAddModal(false);
-          setMessage(''); // Clear the message when closing the modal
-        }, 1500); // Optionally delay closing to let user see the message
-      } else {
-        setMessage('Failed to add player');
-      }
-    } catch (error) {
-      console.error('Error adding player:', error);
-      setMessage('Error occurred while adding player');
-    }
-  };
+  } catch (error) {
+    console.error('Error adding player:', error);
+    setMessage('Error occurred while adding player');
+  }
+};
+
 
   const handleAddCancel = () => {
     setShowAddModal(false);
@@ -117,7 +117,7 @@ export default function Players() {
       <input
         type="text"
         id="playerName"
-        placeholder="Enter player's name"
+        placeholder="Enter player's first and last names"
         value={newPlayer.name}
         className="modal-input"
         onChange={(e) => setNewPlayer({ ...newPlayer, name: e.target.value })}

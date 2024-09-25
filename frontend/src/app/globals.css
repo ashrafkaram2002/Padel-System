@@ -5,7 +5,7 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
-  --color-active: #c6df36;
+  --color-active: #dbe51b;
   --normal-color: #055c9d;
   --dark-color: #003060;
   --error-color: #dc3545;
@@ -88,6 +88,20 @@ html, body {
   @apply flex items-center justify-center; /* Align items horizontally and center them */
   @apply space-x-4; /* Add spacing between child elements (optional) */
 }
+.horizontal-container10 {
+  @apply flex items-center justify-center; /* Align items horizontally and center them */
+  @apply space-x-4; /* Add spacing between child elements (optional) */
+}
+
+.horizontal-container10 > * {
+  transition: transform 0.1s ease-in-out; /* Smooth transition for hover effect */
+}
+
+.horizontal-container10 > *:hover {
+  transform: translateY(-1rem); /* Move the item slightly upwards on hover */
+  cursor: pointer; /* Change cursor to indicate it's clickable */
+}
+
 
 .horizontal-container2 {
   display: flex;

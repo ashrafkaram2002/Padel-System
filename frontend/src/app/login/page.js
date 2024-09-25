@@ -48,7 +48,7 @@ export default function Login() {
       <AppNavBar onLogin={true} onHome={false} adminOn={false}/>
       <div className="relative min-h-screen">
       <Image
-          src="/assets/padel.png"
+          src="/assets/padel3.jpg"
           alt="Padel Background"
           layout="fill"
           objectFit="cover"

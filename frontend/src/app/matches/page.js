@@ -147,7 +147,7 @@ const putTimings = async (timings, day, locations) => {
       <AppNavBar onLogin={false} onHome={false}/>
 <div className="relative min-h-screen">
         <Image
-          src="/assets/padel.png"
+          src="/assets/padel3.jpg"
           alt="Padel Background"
           layout="fill"
           objectFit="cover"
@@ -157,7 +157,7 @@ const putTimings = async (timings, day, locations) => {
 
 <div className="center-container" style={{marginTop: "5rem", textAlign: "center"}}>
   <div className='horizontal-container2'>
-    <div className="page-title">Manage Draws</div>
+    <div className="page-title">Manage Matches</div>
   </div>
   {loading ? (
     <div className="flex justify-center items-center">
@@ -201,49 +201,55 @@ const putTimings = async (timings, day, locations) => {
 </div>
 
 
-        {modalOpen && (
-          <div className="modal-overlay">
+{modalOpen && (
+  <div className="modal-overlay">
+    <div className="modal-content">
+      <h2 className="modal-title">Add Match Timing</h2>
+      <div className="login-subtitle" style={{ marginBottom: "0.3rem" }}>
+        {selectedMatch[0][0]} - {selectedMatch[0][1]}
+      </div>
+      <div style={{ color: "#dc3545", fontWeight: "bold", marginBottom: "0.3" }}>VS</div>
+      <div className="login-subtitle" style={{ marginBottom: "0.5rem" }}>
+        {selectedMatch[1][0]} - {selectedMatch[1][1]}
+      </div>
+      <div>
+        <label htmlFor="matchDay" className="modal-label">Match Day:</label>
+        <input
+          className="modal-input"
+          type="date"
+          value={matchDate}
+          onChange={(e) => setMatchDate(e.target.value)}
+          placeholder="Day"
+        />
+        
+        <label htmlFor="matchTime" className="modal-label">Match Time:</label>
+        <input
+          className="modal-input"
+          type="time"
+          value={matchTime}
+          onChange={(e) => setMatchTime(e.target.value)}
+          placeholder="Time"
+        />
+        <small style={{ color: "gray", display: "block", marginBottom: "1rem" }}>
+          Please use AM or PM when entering the time.
+        </small>
+        
+        <label htmlFor="matchLoc" className="modal-label">Match Location:</label>
+        <input
+          className="modal-input"
+          type="text"
+          value={matchLocation}
+          onChange={(e) => setMatchLocation(e.target.value)}
+          placeholder="Location"
+        />
+      </div>
+      {message && <p className="modal-message">{message}</p>}
+      <button className="modal-button confirm" onClick={handleSubmitTiming}>Confirm</button>
+      <button className="modal-button cancel" onClick={handleCloseModal}>Cancel</button>
+    </div>
+  </div>
+)}
 
-            <div className="modal-content">
-            <h2 className="modal-title">Add Match Timing</h2>
-            <div className="login-subtitle" style={{marginBottom:"0.3rem"}}>{selectedMatch[0][0]} - {selectedMatch[0][1]}</div>
-            <div style={{color:"#dc3545", fontWeight:"bold", marginBottom:"0.3"}}>VS</div>
-            <div className="login-subtitle" style={{marginBottom:"0.5rem"}}>{selectedMatch[1][0]} - {selectedMatch[1][1]} </div>
-            <div>
-                <label htmlFor="matchDay" className="modal-label">Match Day:</label>
-                <input
-                  className="modal-input"
-                  type="date"
-                  value={matchDate}
-                  onChange={(e) => setMatchDate(e.target.value)}
-                  // min={new Date().toISOString().split("T")[0]}
-                  placeholder="Day"
-                />
-                <label htmlFor="matchTime" className="modal-label">Match Time:</label>
-                <input
-                  className="modal-input"
-                  type="time"
-                  value={matchTime}
-                  onChange={(e) => setMatchTime(e.target.value)}
-                  placeholder="Time"
-                />
-                <label htmlFor="matchLoc" className="modal-label">Match Location:</label>
-                <input
-                  className="modal-input"
-                  type="text"
-                  value={matchLocation}
-                  onChange={(e) => setMatchLocation(e.target.value)}
-                  placeholder="Location"
-                />
-            </div>
-            {message && <p className="modal-message">{message}</p>}
-            <button className="modal-button confirm" onClick={handleSubmitTiming}>Confirm</button>
-            <button className="modal-button cancel"  onClick={handleCloseModal}>Cancel</button>
-            </div>
-
-          </div>
-            
-        )}
 
 
     </>
