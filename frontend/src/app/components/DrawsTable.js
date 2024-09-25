@@ -8,48 +8,11 @@ export default function DrawsTable({ searchTerm }) {
   const [drawsData, setDrawsData] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // Fetch draws data from the backend
-  useEffect(() => {
+  useEffect(() => { 
     const fetchDrawsData = async () => {
       try {
         const response = await axios.get('http://localhost:8000/viewDraw');
-<<<<<<< Updated upstream
-        const draws = response.data;
-  
-        // Get the current date and time
-        const now = new Date();
-  
-        // Filter draws where both 'timings' and 'day' exist and are valid
-        const filteredDraws = draws.map(draw => {
-          // If timings or day don't exist or are invalid, return an empty array
-          if (!draw.timings || !draw.day || draw.timings.length === 0 || draw.day.some(d => d === "")) {
-            return [];
-          }
-  
-          // Proceed with filtering matches if timings and day are valid
-          return draw.draw.filter((match, index) => {
-            const drawDate = new Date(draw.day[index]);
-            const timing = draw.timings[index];
-  
-            if (!timing || isNaN(drawDate)) {
-              return false; // Skip invalid matches
-            }
-  
-            const [hours, minutes] = timing.split(':').map(Number);
-            drawDate.setHours(hours, minutes, 0, 0); // Set the correct time for the draw
-  
-            // Return true if the match's date and time are in the past
-            return drawDate >= now;
-          });
-        }).filter(draw => draw.length > 0); // Filter out empty draws
-  
-        // Flatten the filtered draws
-        const flattenedDraws = filteredDraws.flat();
-  
-        setDrawsData(flattenedDraws); // Update the state with the filtered data
-=======
         setDrawsData(response.data); 
->>>>>>> Stashed changes
         setLoading(false);
       } catch (error) {
         console.error('Error fetching draws data:', error);
@@ -59,6 +22,7 @@ export default function DrawsTable({ searchTerm }) {
 
     fetchDrawsData();
   }, []);
+  
 
   const parseTime = (time) => {
     const [hours, minutes] = time.split(':').map(Number);
@@ -108,7 +72,6 @@ export default function DrawsTable({ searchTerm }) {
     return `${shortDayName}, ${dayWithOrdinal} of ${monthName}`;
   };
 
-  // Process and sort draws data based on date and time
   const processedData = drawsData.flatMap((drawEntry) => {
     // Ensure that drawEntry.draw, drawEntry.day, and drawEntry.timings are valid arrays before proceeding
     if (!drawEntry.draw || !drawEntry.day || !drawEntry.timings) {
@@ -173,6 +136,7 @@ export default function DrawsTable({ searchTerm }) {
       item.playerB.toLowerCase().includes(searchTerm.toLowerCase())
   );
   
+
   return (
     <div className="players-table-container">
   {loading ? (
