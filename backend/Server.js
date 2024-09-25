@@ -46,10 +46,22 @@ const {
 
 const port = process.env.PORT || "8000";
 const app = express();
+
 app.use(cors());
 const server = app.listen(port, () => {
   console.log(`Listening to requests on http://localhost:${port}`);
 });
+
+// app.use(cors({
+//   origin: "http://localhost:3000",   // Ensure this matches your frontend's URL
+//   credentials: true,                 // Allow credentials (cookies)
+//   methods: ['GET', 'POST', 'PUT', 'DELETE'],  // Specify allowed HTTP methods
+//   allowedHeaders: ['Content-Type', 'Authorization'],  // Allow necessary headers
+// }));
+// const server = app.listen(port, () => {
+//      console.log(`Listening to requests on http://localhost:${port}`);
+//   });
+
 
 const adminstrator = require("./src/Models/Admin.js");
 const player = require("./src/Models/Player.js");

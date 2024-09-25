@@ -72,37 +72,33 @@ export default function DrawsTable({ searchTerm }) {
     return `${shortDayName}, ${dayWithOrdinal} of ${monthName}`;
   };
 
-  const isAfterNowOrWithinLastHour = (day, timing) => {
-    const now = new Date();
-    const matchDate = new Date(`${day}T${timing}`);
-    const timeDifference = matchDate - now;
-    const oneHourInMilliseconds = 60 * 60 * 1000;
-    return timeDifference >= -oneHourInMilliseconds; // Match is either within the past hour or in the future
-  };
-
   // Process and sort draws data based on date and time
   const processedData = drawsData.flatMap((drawEntry) => {
-    return drawEntry.draw.map((match, index) => ({
-      playerA: match[0].join(' - '),  // Combine player names for team A
-      playerB: match[1].join(' - '),  // Combine player names for team B
-      date: formatDate(drawEntry.day[0]),     // Use the first date (assuming one per draw)
-      time: drawEntry.timings[0], // Use the first time (assuming one per draw)
-      location: drawEntry.locations[0], // Use the first location (assuming one per draw)
-      matchDay: drawEntry.day[0], // Original date to be used in filtering
-      matchTime: drawEntry.timings[0], // Original time to be used in filtering
-    }));
-  }).filter(item => {
-    return isAfterNowOrWithinLastHour(item.matchDay, item.matchTime);
-  }).sort((a, b) => {
-    const dateA = new Date(a.matchDay);
-    const dateB = new Date(b.matchDay);
+    return drawEntry.draw.map((match, index) => {
+      const matchDate = new Date(drawEntry.day[0]);
+      const matchTime = parseTime(drawEntry.timings[0]);
+      const matchDateTime = new Date(matchDate.getFullYear(), matchDate.getMonth(), matchDate.getDate(), matchTime.getHours(), matchTime.getMinutes());
+
+      // Only include future matches
+      if (matchDateTime > new Date()) {
+        return {
+          playerA: match[0].join(' - '),
+          playerB: match[1].join(' - '),
+          date: formatDate(drawEntry.day[0]),
+          time: drawEntry.timings[0],
+          location: drawEntry.locations[0],
+        };
+      }
+      return null; // Filter out past matches
+    });
+  }).filter(Boolean) // Remove null entries
+  .sort((a, b) => {
+    const dateA = new Date(a.date);
+    const dateB = new Date(b.date);
     const timeA = parseTime(a.time);
     const timeB = parseTime(b.time);
-
-    // First compare dates, then times
     return dateA - dateB || timeA - timeB;
   });
-
   // Filter the processed data based on search term
   const filteredData = processedData.filter(
     item =>
@@ -147,6 +143,5 @@ export default function DrawsTable({ searchTerm }) {
     </div>
   )}
 </div>
-
   );
 }

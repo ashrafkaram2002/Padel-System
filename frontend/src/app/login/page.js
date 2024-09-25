@@ -29,7 +29,7 @@ export default function Login() {
       if (response.status === 200) {
         console.log('Login successful', response.data);
         // Redirect to admin dashboard or do something on success
-        Cookies.set('jwt', response.data.token, { expires: 1, path: '/', secure: true, sameSite: 'None' });
+        Cookies.set('jwt', response.data.token, { expires: 1 });
         router.push('/');
         setErrorMessage('');
       } else {
@@ -37,7 +37,13 @@ export default function Login() {
       }
     } catch (error) {
       console.error('Login error:', error);
-      setErrorMessage('Login failed. Please try again.');
+  if (error.response && error.response.status === 401) {
+    // Handle 401 Unauthorized error
+    setErrorMessage('Invalid Credentials.');
+  } else {
+    // Handle other errors
+    setErrorMessage('Login failed. Please try again.');
+  }
     }
 
     setLoading(false);
