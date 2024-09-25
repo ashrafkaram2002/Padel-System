@@ -83,6 +83,7 @@ export default function Matches() {
     setLocations(newLocations);
 
     setModalOpen(false);  // Close the modal
+    setMessage("");
 };
 
 const handleFinalSubmitTimings = () => {
