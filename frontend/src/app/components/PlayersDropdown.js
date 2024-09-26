@@ -44,8 +44,8 @@ const PlayersDropdown = ({ players, onSelect, loading, onRemove }) => {
   return (
     <div style={{ paddingLeft: "2rem", paddingRight: "2rem" }}>
       
-      <div className="info-text" style={{ marginBottom: '0.5rem', fontSize: '0.9rem', color: '#fff', marginTop:'-0.9rem', textAlign:'left' }}>
-        Click on the players you want to select.
+      <div className="info-text" style={{ marginBottom: '0.3rem', fontSize: '0.9rem', color: '#fff', marginTop:'-0.9rem', textAlign:'left' }}>
+        Click on the players you want to select
       </div>
       
       <div>
@@ -55,7 +55,7 @@ const PlayersDropdown = ({ players, onSelect, loading, onRemove }) => {
           placeholder="Search by name"
           onChange={(e) => setSearchTerm(e.target.value)}
           className="search-input"
-          style={{ width: "100%", marginLeft: '-0.2rem' }}
+          style={{ width: "100%", marginLeft: '-0.2rem', marginBottom:"0.1rem"}}
         />
 
         <div className='mini-title'>Available Players</div>

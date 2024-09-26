@@ -166,7 +166,7 @@ export default function Teams() {
 
         {drawMade?(  
           <> 
-          <div className='horizontal-container2'>
+          <div className='title-container'>
             <div className="page-title">Manage Draw</div>
           </div> 
           {loading?( <div className="flex justify-center items-center">
@@ -210,7 +210,7 @@ export default function Teams() {
         :
         (<div>
           
-            <div className="page-title2">Match Teams</div>
+            <div className="page-title">Match Teams</div>
           
   
           <div className="two-column-container">

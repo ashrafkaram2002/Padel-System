@@ -198,7 +198,7 @@ export default function Scores() {
       </div>
 
       <div className="center-container" style={{marginTop:"5rem", textAlign: "center"}}>
-        <div className='horizontal-container2'>
+        <div className='title-container'>
           <div className="page-title">Update Scores</div>
         </div>
 
@@ -231,7 +231,7 @@ export default function Scores() {
             <div className="modal-content">
             <h2 className="modal-title">Add Match Scores</h2>
             <div className="login-subtitle" style={{marginBottom:"0.3rem"}}>{selectedMatch[0][0]}-{selectedMatch[0][1]}</div>
-            <div style={{color:"#dc3545", fontWeight:"bold", marginBottom:"0.3"}}>VS</div>
+            {/* <div style={{color:"#dc3545", fontWeight:"bold", marginBottom:"0.3"}}>VS</div> */}
             <div className="login-subtitle" style={{marginBottom:"0.5rem"}}>{selectedMatch[1][0]} & {selectedMatch[1][1]} </div>
             <div>
                 {/* <label htmlFor="score" className="modal-label">Set X-X     Sets X-X/X-X</label> */}
@@ -240,7 +240,7 @@ export default function Scores() {
                   type="text"
                   value={score}
                   onChange={(e) => setScore(e.target.value)}
-                  placeholder="Score"
+                  placeholder="Enter score"
                 />
             </div>
             {message && <p className="modal-message">{message}</p>}

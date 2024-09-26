@@ -6,6 +6,7 @@ import Image from "next/image";
 import AppNavBar from '../components/AppNavBar';
 import { GiConfirmed } from 'react-icons/gi';
 import { useRouter} from 'next/navigation';
+import { SlClock } from "react-icons/sl"
 
 export default function Matches() {
 
@@ -168,7 +169,7 @@ const putTimings = async (timings, day, locations) => {
 </div>
 
 <div className="center-container" style={{marginTop: "5rem", textAlign: "center"}}>
-  <div className='horizontal-container2'>
+  <div className='title-container'>
     <div className="page-title">Manage Matches Timings</div>
   </div>
   {loading ? (
@@ -221,7 +222,7 @@ const putTimings = async (timings, day, locations) => {
       <div className="login-subtitle" style={{ marginBottom: "0.3rem" }}>
         {selectedMatch[0][0]} - {selectedMatch[0][1]}
       </div>
-      <div style={{ color: "#dc3545", fontWeight: "bold", marginBottom: "0.3" }}>VS</div>
+      {/* <div style={{ color: "#dc3545", fontWeight: "bold", marginBottom: "0.3" }}>VS</div> */}
       <div className="login-subtitle" style={{ marginBottom: "0.5rem" }}>
         {selectedMatch[1][0]} - {selectedMatch[1][1]}
       </div>
@@ -238,14 +239,17 @@ const putTimings = async (timings, day, locations) => {
         />
         
         <label htmlFor="matchTime" className="modal-label">Match Time:</label>
-        <input
-          id="matchTime"
-          className="modal-input"
-          type="time"
-          value={matchTime}
-          style={{ color: matchTime ? 'inherit' : 'gray' }}
-          onChange={(e) => setMatchTime(e.target.value)}
-        />
+        <div className="input-with-icon">
+          <input
+            id="matchTime"
+            className="modal-input"
+            type="time"
+            value={matchTime}
+            style={{ color: matchTime ? 'inherit' : 'gray' }}
+            onChange={(e) => setMatchTime(e.target.value)}
+          />
+          <SlClock className="clock-icon" />
+        </div>
         <small style={{ color: "gray", display: "block", marginBottom: "1rem", textAlign: "left"}}>
           Please use AM or PM when entering the time.
         </small>

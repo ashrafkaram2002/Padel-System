@@ -97,11 +97,10 @@ const handleAddPlayerConfirm = async () => {
       </div>
 
       <div className="center-container" style={{marginTop:"5rem", textAlign: "center"}}>
-        <div className='horizontal-container2'>
-          <div className="page-title"> Manage Players</div>
-          <button onClick={handleAddPlayerClick}>
+        <div className='title-container'>
+          <div className="page-title" style={{marginLeft:"15rem"}}> Manage Players</div>
+          <button onClick={handleAddPlayerClick} style={{marginLeft:"12rem"}}>
              <MdPersonAdd className="icon-button-big"/>
-             <div className="button-label"> </div>
           </button>
         </div>
         <SearchBar className="search-bar" onSearch={handleSearch}/>

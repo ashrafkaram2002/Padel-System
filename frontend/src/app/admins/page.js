@@ -128,13 +128,13 @@ export default function Admins() {
       </div>
 
       <div className="center-container" style={{ marginTop: "5rem", textAlign: "center" }}>
-        <div className='horizontal-container2'>
-          <div className="page-title">Manage Admins</div>
+        <div className='title-container'>
+          <div className="page-title" style={{marginLeft:"15rem"}}>Manage Admins</div>
           <button onClick={() => {
             setShowAddPopup(true);
             setMessage(''); // Clear message when opening modal
           }}>
-            <MdPersonAdd className="icon-button-big" />
+            <MdPersonAdd className="icon-button-big" style={{marginLeft:"12rem"}}/>
           </button>
         </div>
         <SearchBar className="search-bar" onSearch={handleSearch}/>
