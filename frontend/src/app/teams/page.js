@@ -163,26 +163,15 @@ export default function Teams() {
       </div>
 
       <div className="center-container" style={{ marginTop: "5rem", textAlign: "center" }}>
-        {drawMade?( (loading? (<><div className='horizontal-container2'>
-               <div className="page-title">Manage Draw</div>
-             </div> <div className="flex justify-center items-center">
+
+        {drawMade?(  
+          <> 
+          <div className='horizontal-container2'>
+            <div className="page-title">Manage Draw</div>
+          </div> 
+          {loading?( <div className="flex justify-center items-center">
          <div className="w-8 h-8 border-4 border-dashed rounded-full animate-spin border-white mt-8"></div>
-      </div> <div className='horizontal-container2' style={{marginLeft:"3rem", marginRight:"3rem", marginTop:"25.5rem"}}>
-              <button className="horizontal-container3" style={{height:"3rem"}} onClick={handleReDraw}>
-                <TbArrowsShuffle2 className="icon-button"/>
-                <div className="button-label" > Re-Draw</div>
-                
-              </button>
-              <button className="horizontal-container3" style={{height:"3rem"}} onClick={handleConfirmDraw}>
-                <GiConfirmed className="icon-button"/>
-                <div className="button-label"> Confirm Draw</div>
-               
-              </button>
-             </div></>): (<div >
-             <div className='horizontal-container2'>
-               <div className="page-title">Manage Draw</div>
-             </div>
-             <div className="matches-list">
+      </div>):(<div className="matches-list">
              {matches.length > 0 && (
               matches.map((match, index) => (
               <div key={index} className="match-container">
@@ -193,8 +182,8 @@ export default function Teams() {
               </div>
             ))
              )}
-             </div>
-             <div className='horizontal-container2' style={{marginLeft:"3rem", marginRight:"3rem"}}>
+             </div>)}
+          <div className='horizontal-container2' style={{marginLeft:"3rem", marginRight:"3rem", marginTop: loading? "25.5rem":"0rem"}}>
               <button className="horizontal-container3" style={{height:"3rem"}} onClick={handleReDraw}>
                 <TbArrowsShuffle2 className="icon-button"/>
                 <div className="button-label" > Re-Draw</div>
@@ -205,8 +194,8 @@ export default function Teams() {
                 <div className="button-label"> Confirm Draw</div>
                
               </button>
-             </div>
-             {drawConfirmed && (
+          </div>
+          {drawConfirmed && (
               <div className="modal-overlay">
                 <div className="modal-content">
                   <p className="confirmation-message">Drawn matches are confirmed</p>
@@ -216,7 +205,7 @@ export default function Teams() {
                 </div>
               </div>
               )}
-         </div>))
+          </>
           )
         :
         (<div>

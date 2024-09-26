@@ -232,6 +232,7 @@ const putTimings = async (timings, day, locations) => {
           type="date"
           value={matchDate}
           onChange={(e) => setMatchDate(e.target.value)}
+          min={new Date().toISOString().split("T")[0]}
           style={{ color: matchDate ? 'inherit' : 'gray' }}
           placeholder="Day"
         />

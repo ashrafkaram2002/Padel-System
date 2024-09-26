@@ -415,7 +415,7 @@ const requireAdminAuth = (req, res, next) => {
   
       await newMatch.save();
 
-      await drawModel.deleteMany({});
+      // await drawModel.deleteMany({});
   
       return res.status(200).json({
         message: 'Points updated successfully',

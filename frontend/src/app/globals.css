@@ -209,6 +209,7 @@ html, body {
 .navbar-item::after {
   content: '';
   position: absolute;
+  border-radius: 4px;
   top: -40%;
   left: 2%; 
   right: 2%; 
@@ -698,6 +699,7 @@ html, body {
 
 .match-container {
   display: flex;
+  justify-content: space-between;
   align-items: center;
   border-radius: 15px;
   background-color: rgba(var(--dark-color-rgb), 0.7); /* Subtle background */
@@ -715,7 +717,7 @@ html, body {
   color: white;
   padding: 0.5rem;
   cursor: default;
-  width: 20rem; /* Adjust width to fit the content */
+  width: fit-content; /* Adjust width to fit the content */
 }
 
 .vs {
@@ -727,6 +729,7 @@ html, body {
     4px 4px 5px rgba(0, 0, 0, 0.5), /* Multiple shadows for depth */
     0 0 25px rgba(233, 135, 128, 0.6); /* Glowing effect */
   transform: rotate(-15deg); /* Increased rotation for more dynamism */
+  margin-top: -0.5rem;
 }
 
 .match-container:hover .vs {

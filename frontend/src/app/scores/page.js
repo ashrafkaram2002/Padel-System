@@ -54,6 +54,7 @@ export default function Scores() {
       setLoading(false);
     }
   };
+
   
   const handleOpenModal = (match) => {
     setSelectedMatch(match);
@@ -63,6 +64,13 @@ export default function Scores() {
   const handleCloseModal = () => {
     setModalOpen(false);
     setMessage("");
+    setScore("");
+  }
+
+  const handleCloseModal2 = () => {
+    setModalOpen(false);
+    setMessage("");
+    // setScore("");
   }
 
   const closeConfirmationModal = () => {
@@ -83,7 +91,7 @@ export default function Scores() {
 
     setConfirmationMessage(validation.message);
     setConfirmationModal(true);
-    handleCloseModal();
+    handleCloseModal2();
   };
 
   
@@ -106,29 +114,35 @@ export default function Scores() {
       }
   
       // Validate score conditions
-      if (left === 6 && right < 7) {
-        console.log("11111")
+      if (right === 7 && left === 6){
+        rightWins++;
+      } else if (left === 7 && right === 6){
+        leftWins++;
+      } else if (Math.abs(left - right) < 2){
+        return { valid: false, message: "Invalid score" };
+      } else if (left === 6 && right < 7) {
         leftWins++;
       } else if (right === 6 && left < 7) {
-        console.log("22222")
         rightWins++;
       } else if (left === 7 && (right === 5 || right === 6)) {
         leftWins++;
       } else if (right === 7 && (left === 5 || left === 6)) {
         rightWins++;
-      } else if (Math.abs(left - right) < 2) {
-        return { valid: false, message: "The score difference must be at least 2." };
+      } else if (right === 7 && (left<5)) {
+        return { valid: false, message: "Invalid score" };
+      } else if (left === 7 && (right<5)) {
+        return { valid: false, message: "Invalid score" };
       } else if (left < 6 && right < 6) {
-        return { valid: false, message: "At least one score must be 6 to win a set." };
+        return { valid: false, message: "Invalid score" };
       } else if (left === 6 && right === 6) {
-        return { valid: false, message: "Both teams cannot score 6 in the same set." };
+        return { valid: false, message: "Invalid score" };
       }
     }
   
     // Check final outcome and set the confirmation message
-    if (leftWins > 1 || (leftWins === 1 && rightWins === 0)) {
+    if (leftWins > rightWins) {
       return { valid: true, message: `Are you sure team ${selectedMatch[0][0]} & ${selectedMatch[0][1]} won with a score of ${score}?` };
-    } else if (rightWins > 1 || (rightWins === 1 && leftWins === 0)) {
+    } else if (leftWins < rightWins) {
       return { valid: true, message: `Are you sure team ${selectedMatch[1][0]} & ${selectedMatch[1][1]} won with a score of ${score}?` };
     } else {
       return { valid: false, message: "Each team has won a set; a final set is needed." };
@@ -138,8 +152,8 @@ export default function Scores() {
 
   const handleAddScore = async () => {
     const teams = [
-        [selectedMatch[0][0],selectedMatch[0][1]], // Assuming team names are in [0][0] and [0][1]
-        [selectedMatch[1][0],selectedMatch[1][1]], // Assuming team names are in [1][0] and [1][1]
+        [selectedMatch[0][0],selectedMatch[0][1]], 
+        [selectedMatch[1][0],selectedMatch[1][1]], 
       ];
     
       console.log(teams);
@@ -153,8 +167,16 @@ export default function Scores() {
       // Handle success response
       if (response.status === 200) {
         closeConfirmationModal();
-        setMatches((prevMatches) => prevMatches.filter(match => match._id !== selectedMatch._id));
-      }
+        // Remove the match based on team names and timing
+        setMatches((prevMatches) => prevMatches.filter((match) => {
+            return !(
+              match[0][0] === selectedMatch[0][0] &&
+              match[0][1] === selectedMatch[0][1] &&
+              match[1][0] === selectedMatch[1][0] &&
+              match[1][1] === selectedMatch[1][1]
+            );
+        }));
+    }
     } catch (error) {
       // Handle error response
       setMessage(`Error updating score: ${error.response?.data?.error || error.message}`);
@@ -191,7 +213,7 @@ export default function Scores() {
                   <div className="team2">{match[0][0]} - {match[0][1]}</div>
                   <div className="vs2">vs</div>
                   <div className="team2">{match[1][0]} - {match[1][1]}</div>
-                  <button className="horizontal-container5" onClick={() => handleOpenModal(match)}>
+                  <button className="horizontal-container6" onClick={() => handleOpenModal(match)}>
                     <div className="button-label2">Add Score</div>
                   </button>
                 </div>
