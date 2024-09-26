@@ -209,9 +209,9 @@ export default function Teams() {
           )
         :
         (<div>
-          <div className='horizontal-container2'>
-            <div className="page-title">Manage Teams</div>
-          </div>
+          
+            <div className="page-title2">Match Teams</div>
+          
   
           <div className="two-column-container">
   
@@ -224,7 +224,7 @@ export default function Teams() {
                 loading={loading}
               />
 
-              <div className='horizontal-container' style={{marginTop:"1rem"}}>
+              <div className='horizontal-container' style={{marginTop:"0.8rem"}}>
                 <button className="horizontal-container3" onClick={handleMatchTeams}>
                    <BsFillPeopleFill className="icon-button"/>
                    <div className="button-label"> Match Teams</div>
