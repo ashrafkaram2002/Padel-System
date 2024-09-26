@@ -10,6 +10,7 @@
   --light-color: #438ec8;
   --lighter-color: rgb(187, 220, 245);
   --dark-color: #003060;
+  --darker-color: #051829;
   --error-color: #dc3545;
   --gray-color: #6c757d;
   --color-active-rgb: 139, 223, 54;   /* #8bdf36 */
@@ -717,13 +718,13 @@ html, body {
   color: white;
   padding: 0.5rem;
   cursor: default;
-  width: fit-content; /* Adjust width to fit the content */
+  width: 25rem; 
 }
 
 .vs {
-  font-size: 3rem; /* Extra large for emphasis */
+  font-size: 2rem; /* Extra large for emphasis */
   font-weight: bold;
-  color: #dc3545; /* Bright color for 'vs' */
+  color: var(--error-color); /* Bright color for 'vs' */
   cursor: default;
   text-shadow: 
     4px 4px 5px rgba(0, 0, 0, 0.5), /* Multiple shadows for depth */
@@ -759,16 +760,22 @@ html, body {
   }
 }
 
-.timings{ font-size: 1rem;
+.timings{ 
+  font-size: 0.9rem;
 color: var(--lighter-color);
-font-weight: bold;}
+font-weight: bold;
+/* background-color: pink; */
+width: 8.2rem;
+text-shadow: 0 0 3px var(--darker-color), 0 0 8px var(--darker-color), 0 0 13px var(--darker-color);
+}
 
 .team2 {
   font-size: 1rem;
   color: white;
   padding: 0.5rem;
-  width: fit-content;
+  width: 20rem;
   cursor: default;
+  /* background-color: red; */
 }
 
 .match-container2 {

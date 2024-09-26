@@ -186,7 +186,7 @@ const putTimings = async (timings, day, locations) => {
               <div className="team2">{match[0][0]} - {match[0][1]}</div>
               <div className="vs2">vs</div>
               <div className="team2">{match[1][0]} - {match[1][1]}</div>
-              {hasTiming && (<div className="timings"> {timings[index]} | {locations[index]}</div>)}         
+              {hasTiming ?(<div className="timings"> {timings[index]}|{locations[index]}</div>): (<div className="timings" style={{color:"transparent"}}>.</div>)}         
               <button className={hasTiming?"horizontal-container5": "horizontal-container6"} onClick={() => handleAddTiming(match, index)}>
                 <div className="button-label2">
                   {hasTiming ? "Edit Timing" : "Add Timing"}

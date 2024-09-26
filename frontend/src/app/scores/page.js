@@ -168,14 +168,15 @@ export default function Scores() {
       if (response.status === 200) {
         closeConfirmationModal();
         // Remove the match based on team names and timing
-        setMatches((prevMatches) => prevMatches.filter((match) => {
-            return !(
-              match[0][0] === selectedMatch[0][0] &&
-              match[0][1] === selectedMatch[0][1] &&
-              match[1][0] === selectedMatch[1][0] &&
-              match[1][1] === selectedMatch[1][1]
-            );
-        }));
+        // setMatches((prevMatches) => prevMatches.filter((match) => {
+        //     return !(
+        //       match[0][0] === selectedMatch[0][0] &&
+        //       match[0][1] === selectedMatch[0][1] &&
+        //       match[1][0] === selectedMatch[1][0] &&
+        //       match[1][1] === selectedMatch[1][1]
+        //     );
+        // }));
+        fetchDraws();
     }
     } catch (error) {
       // Handle error response
