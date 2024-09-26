@@ -439,6 +439,14 @@ html, body {
   margin: 1rem;
   letter-spacing: 0.2rem; /* Slight letter spacing for a modern look */
 }
+.page-title2{
+  font-size: 2rem;
+  font-weight: bold;
+  color: white;
+  margin: 1rem;
+  letter-spacing: 0.2rem; /* Slight letter spacing for a modern look */
+  text-align: 'right';
+}
 
 .mini-title{
   text-align: left;
