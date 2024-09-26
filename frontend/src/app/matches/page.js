@@ -169,7 +169,7 @@ const putTimings = async (timings, day, locations) => {
 
 <div className="center-container" style={{marginTop: "5rem", textAlign: "center"}}>
   <div className='horizontal-container2'>
-    <div className="page-title">Manage Matches</div>
+    <div className="page-title">Manage Matches Timings</div>
   </div>
   {loading ? (
     <div className="flex justify-center items-center">

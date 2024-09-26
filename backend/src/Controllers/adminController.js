@@ -370,12 +370,8 @@ const requireAdminAuth = (req, res, next) => {
       const winningTeamPoints = winningPlayers.reduce((sum, player) => sum + Number(player.points), 0);
       const losingTeamPoints = losingPlayers.reduce((sum, player) => sum + Number(player.points), 0);
   
-      //console.log("winning: " + winningTeamPoints);
-      //console.log("losing: " + losingTeamPoints);
-  
       // Calculate the delta (absolute difference)
       const delta = Math.abs(winningTeamPoints - losingTeamPoints);
-      //console.log("delta: " + delta);
   
       // Initialize points to be added or subtracted
       let pointsChange;
@@ -414,8 +410,28 @@ const requireAdminAuth = (req, res, next) => {
       });
   
       await newMatch.save();
-
-      // await drawModel.deleteMany({});
+  
+      // Fetch the draw
+      const drawEntry = await drawModel.findOne();
+  
+      if (drawEntry) {
+        // Find and remove the specific match
+        const updatedDraw = drawEntry.draw.filter(
+          (match) => 
+            !(
+              (JSON.stringify(match[0]) === JSON.stringify(team1) && JSON.stringify(match[1]) === JSON.stringify(team2)) ||
+              (JSON.stringify(match[0]) === JSON.stringify(team2) && JSON.stringify(match[1]) === JSON.stringify(team1))
+            )
+        );
+  
+        // Check if any matches remain, if only one is left, delete the whole draw
+        if (updatedDraw.length > 1) {
+          drawEntry.draw = updatedDraw;
+          await drawEntry.save();
+        } else {
+          await drawModel.deleteMany({});
+        }
+      }
   
       return res.status(200).json({
         message: 'Points updated successfully',
