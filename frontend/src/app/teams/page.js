@@ -9,8 +9,7 @@ import PlayersDropdown from '../components/PlayersDropdown';
 import { GiPerspectiveDiceSixFacesRandom } from "react-icons/gi";
 import { BsFillPeopleFill} from "react-icons/bs";
 import { MdKeyboardDoubleArrowRight } from "react-icons/md";
-import { GiConfirmed } from "react-icons/gi";
-import { TbArrowsShuffle2 } from "react-icons/tb";
+import { IoDuplicateOutline, IoCheckmarkCircleOutline, IoShuffle } from "react-icons/io5";
 
 export default function Teams() {
   const [players, setPlayers] = useState([]);
@@ -19,7 +18,7 @@ export default function Teams() {
   const [loading, setLoading] = useState(true);
   const [drawMade, setDrawMade] = useState(false);
   const [matches, setMatches] = useState([]);
-  const [drawConfirmed, setDrawConfirmed] = useState(false);  // State for modal visibility
+  const [drawConfirmed, setDrawConfirmed] = useState(false);  
 
   const router = useRouter();
 
@@ -119,7 +118,7 @@ export default function Teams() {
     } catch (error) {
       alert(`Error making draw: ${error.response ? error.response.data.error : error.message}`);
     } finally {
-      setLoading(false); // Stop loading after the request is finished
+      setLoading(false); 
     }
   };
 
@@ -131,6 +130,19 @@ export default function Teams() {
       setMatches(response.data || []);  // Store the new matches
     } catch (error) {
       alert(`Error making re-draw: ${error.response ? error.response.data.error : error.message}`);
+    } finally {
+      setLoading(false);  // Hide loading indicator
+    }
+  };
+
+  const handleAddCombination = async () => {
+    setLoading(true);  // Show loading indicator
+  
+    try {
+      const response = await axios.post('http://localhost:8000/addCombination', { matches });
+      setMatches(response.data || []);  // Store the new matches
+    } catch (error) {
+      alert(`Error adding new combination: ${error.response ? error.response.data.error : error.message}`);
     } finally {
       setLoading(false);  // Hide loading indicator
     }
@@ -185,12 +197,17 @@ export default function Teams() {
              </div>)}
           <div className='horizontal-container2' style={{marginLeft:"3rem", marginRight:"3rem", marginTop: loading? "25.5rem":"0rem"}}>
               <button className="horizontal-container3" style={{height:"3rem"}} onClick={handleReDraw}>
-                <TbArrowsShuffle2 className="icon-button"/>
+                <IoShuffle className="icon-button"/>
                 <div className="button-label" > Re-Draw</div>
                 
               </button>
+              <button className="horizontal-container3" style={{height:"3rem"}} onClick={handleAddCombination}>
+                <IoDuplicateOutline className="icon-button"/>
+                <div className="button-label" > Add Combination</div>
+                
+              </button>
               <button className="horizontal-container3" style={{height:"3rem"}} onClick={handleConfirmDraw}>
-                <GiConfirmed className="icon-button"/>
+                <IoCheckmarkCircleOutline className="icon-button"/>
                 <div className="button-label"> Confirm Draw</div>
                
               </button>
