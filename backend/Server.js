@@ -39,6 +39,7 @@ const {
     viewDraw,
     putTimings,
     deleteAllMatches,
+    makeDraw3,
 } = require("./src/Controllers/adminController.js");
 //Player Controller
 
@@ -102,6 +103,7 @@ app.post("/teamMatchingRandomized" ,teamMatchingRandomized);
 app.post("/UpdateScoreAndPoints" ,UpdateScoreAndPoints);
 app.post("/makeDraw" ,makeDraw);
 app.post("/makeDraw2" ,makeDraw2);
+app.post("/makeDraw3" ,makeDraw3);
 app.post("/confirmDraw" ,confirmDraw);
 app.post("/putTimings" ,putTimings);
 
