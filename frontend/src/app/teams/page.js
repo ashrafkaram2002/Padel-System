@@ -88,7 +88,7 @@ export default function Teams() {
     const leftPlayers = selectedPlayers.filter(player => player.position === 'left');
     const rightPlayers = selectedPlayers.filter(player => player.position === 'right');
     if(selectedPlayers.length%4!==0){
-      alert('The number of players should be divisible by 4.');
+      alert('Not enough players to draw.');
       return;
     }
     if (leftPlayers.length !== rightPlayers.length) {
@@ -139,8 +139,8 @@ export default function Teams() {
     setLoading(true);  // Show loading indicator
   
     try {
-      const response = await axios.post('http://localhost:8000/addCombination', { matches });
-      setMatches(response.data || []);  // Store the new matches
+      const response = await axios.post('http://localhost:8000/makeDraw3', { teams });
+      setMatches(response.data.generatedMatches || []);  // Store the new matches
     } catch (error) {
       alert(`Error adding new combination: ${error.response ? error.response.data.error : error.message}`);
     } finally {

@@ -34,6 +34,7 @@ const {
     viewPlayers,
     viewAdmins,
     makeDraw2,
+    makeDraw3,
     viewMatches,
     confirmDraw,
     viewDraw,
@@ -102,6 +103,7 @@ app.post("/teamMatchingRandomized" ,teamMatchingRandomized);
 app.post("/UpdateScoreAndPoints" ,UpdateScoreAndPoints);
 app.post("/makeDraw" ,makeDraw);
 app.post("/makeDraw2" ,makeDraw2);
+app.post("/makeDraw3" ,makeDraw3);
 app.post("/confirmDraw" ,confirmDraw);
 app.post("/putTimings" ,putTimings);
 
