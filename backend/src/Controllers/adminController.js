@@ -579,129 +579,163 @@ const requireAdminAuth = (req, res, next) => {
   };
   
 
-  // const makeDraw3 = async (req, res) => {
-  //   const { teams } = req.body;
-  
-  //   try {
-  //     // Ensure teams are in pairs and count is even
-  //     if (teams.length % 2 !== 0) {
-  //       throw new Error("Number of teams must be even.");
-  //     }
-  
-  //     // Helper function to generate all unique combinations of pairs from the given teams
-  //     const generateUniquePairs = (teams) => {
-  //       const results = [];
-  //       const used = new Set();
-  
-  //       const generatePairs = (remainingTeams, currentPairs = []) => {
-  //         if (remainingTeams.length === 0) {
-  //           results.push([...currentPairs]);
-  //           return;
-  //         }
-  
-  //         for (let i = 0; i < remainingTeams.length; i++) {
-  //           for (let j = i + 1; j < remainingTeams.length; j++) {
-  //             const pair = [remainingTeams[i], remainingTeams[j]];
-  //             const sortedPair = pair.sort().toString();
-  
-  //             if (!used.has(sortedPair)) {
-  //               used.add(sortedPair);
-  //               generatePairs(
-  //                 remainingTeams.filter((_, index) => index !== i && index !== j),
-  //                 [...currentPairs, pair]
-  //               );
-  //               used.delete(sortedPair);
-  //             }
-  //           }
-  //         }
-  //       };
-  
-  //       generatePairs(teams);
-  //       return results;
-  //     };
-  
-  //     const allCombinations = generateUniquePairs(teams);
-  
-  //     if (allCombinations.length === 0) {
-  //       throw new Error("No unique combinations possible.");
-  //     }
-  
-  //     // Function to normalize draw order by sorting matches
-  //     const normalizeDraw = (draw) => {
-  //       return draw.map(match => match.sort((a, b) => a.toString().localeCompare(b.toString())))
-  //                   .sort((a, b) => a.toString().localeCompare(b.toString()));
-  //     };
-  
-  //     // Store previous combinations to avoid repeats
-  //     const usedCombinations = req.app.locals.usedCombinations || [];
-  //     req.app.locals.usedCombinations = usedCombinations;
-  
-  //     let selectedCombination;
-  
-  //     // Convert all draws to normalized form
-  //     const normalizedCombinations = allCombinations.map(combo => normalizeDraw(combo));
-  //     const usedNormalizedCombinations = usedCombinations.map(combo => normalizeDraw(combo));
-  
-  //     // Find a new combination not used before
-  //     for (const combo of normalizedCombinations) {
-  //       if (!usedNormalizedCombinations.some(prevCombo => prevCombo.toString() === combo.toString())) {
-  //         selectedCombination = combo;
-  //         usedCombinations.push(combo);
-  //         break;
-  //       }
-  //     }
-  
-  //     if (!selectedCombination) {
-  //       // If all combinations have been used, reset and start over
-  //       req.app.locals.usedCombinations = [];
-  //       selectedCombination = allCombinations[0];
-  //     }
-  
-  //     // Concatenate original teams and the selected combination into one array called "teams"
-  //     const teamsResponse = [...teams, ...selectedCombination];
-  
-  //     return res.status(200).json({ teams: teamsResponse });
-  
-  //   } catch (error) {
-  //     return res.status(400).json({ error: error.message });
-  //   }
-  // };
-  
   const makeDraw3 = async (req, res) => {
     const { teams } = req.body;
   
     try {
-      // Ensure the number of teams is even and more than 2
+      // Ensure teams are in pairs and count is even
       if (teams.length % 2 !== 0) {
         throw new Error("Number of teams must be even.");
       }
   
-      // Helper function to generate 2 matches per team
-      const generateMatches = (teams) => {
-        const matches = [];
-        const n = teams.length;
+      // Helper function to generate all unique combinations of pairs from the given teams
+      const generateUniquePairs = (teams) => {
+        const results = [];
+        const used = new Set();
   
-        // First round: Pair teams sequentially
-        for (let i = 0; i < n; i += 2) {
-          matches.push([teams[i], teams[i + 1]]);
-        }
+        const generatePairs = (remainingTeams, currentPairs = []) => {
+          if (remainingTeams.length === 0) {
+            results.push([...currentPairs]);
+            return;
+          }
   
-        // Second round: Rotate teams to create new matches
-        for (let i = 0; i < n / 2; i++) {
-          matches.push([teams[i], teams[i + n / 2]]);
-        }
+          for (let i = 0; i < remainingTeams.length; i++) {
+            for (let j = i + 1; j < remainingTeams.length; j++) {
+              const pair = [remainingTeams[i], remainingTeams[j]];
+              const sortedPair = pair.sort().toString();
   
-        return matches;
+              if (!used.has(sortedPair)) {
+                used.add(sortedPair);
+                generatePairs(
+                  remainingTeams.filter((_, index) => index !== i && index !== j),
+                  [...currentPairs, pair]
+                );
+                used.delete(sortedPair);
+              }
+            }
+          }
+        };
+  
+        generatePairs(teams);
+        
+        return results;
       };
   
-      // Generate matches where each team plays exactly 2 matches
-      const generatedMatches = generateMatches(teams);
+      const allCombinations = generateUniquePairs(teams);
   
-      return res.status(200).json({generatedMatches });
+      if (allCombinations.length === 0) {
+        throw new Error("No unique combinations possible.");
+      }
+  
+      // Function to normalize draw order by sorting matches
+      const normalizeDraw = (draw) => {
+        return draw
+          .map((match) => match.sort((a, b) => a.toString().localeCompare(b.toString())))
+          .sort((a, b) => a.toString().localeCompare(b.toString()));
+      };
+  
+      // Store previous combinations to avoid repeats
+      const usedCombinations = req.app.locals.usedCombinations || [];
+      req.app.locals.usedCombinations = usedCombinations;
+  
+      let selectedCombination;
+  
+      // Convert all draws to normalized form
+      const normalizedCombinations = allCombinations.map((combo) => normalizeDraw(combo));
+      const usedNormalizedCombinations = usedCombinations.map((combo) => normalizeDraw(combo));
+  
+      // Find a new combination not used before
+      for (const combo of normalizedCombinations) {
+        if (!usedNormalizedCombinations.some((prevCombo) => prevCombo.toString() === combo.toString())) {
+          selectedCombination = combo;
+          usedCombinations.push(combo);
+          break;
+        }
+      }
+  
+      if (!selectedCombination) {
+        // If all combinations have been used, reset and start over
+        req.app.locals.usedCombinations = [];
+        selectedCombination = allCombinations[0];
+      }
+  
+      // Flatten the selected combination to avoid extra arrays
+      const flattenedCombination = selectedCombination.flat();
+  
+      // Concatenate original teams and the flattened combination into one array called "teams"
+      const teamsResponse = [...teams, ...flattenedCombination];
+
+      const groupPairsTo3D = (inputArray) => {
+        const result = [];
+    
+        for (let i = 0; i < inputArray.length; i += 2) {
+            const pairGroup = [];
+            // Check if the current entry exists
+            if (inputArray[i]) {
+                pairGroup.push(inputArray[i]);
+            }
+            // Check if the next entry exists
+            if (inputArray[i + 1]) {
+                pairGroup.push(inputArray[i + 1]);
+            }
+            // Only push to result if there's at least one pair
+            if (pairGroup.length > 0) {
+                result.push(pairGroup);
+            }
+        }
+    
+        return result;
+    };
+
+    const format= groupPairsTo3D(teamsResponse);
+  
+      return res.status(200).json(format);
     } catch (error) {
       return res.status(400).json({ error: error.message });
     }
   };
+  
+  
+  
+  
+  
+  
+  
+  // const makeDraw3 = async (req, res) => {
+  //   const { teams } = req.body;
+  
+  //   try {
+  //     // Ensure the number of teams is even and more than 2
+  //     if (teams.length % 2 !== 0) {
+  //       throw new Error("Number of teams must be even.");
+  //     }
+  
+  //     // Helper function to generate 2 matches per team
+  //     const generateMatches = (teams) => {
+  //       const matches = [];
+  //       const n = teams.length;
+  
+  //       // First round: Pair teams sequentially
+  //       for (let i = 0; i < n; i += 2) {
+  //         matches.push([teams[i], teams[i + 1]]);
+  //       }
+  
+  //       // Second round: Rotate teams to create new matches
+  //       for (let i = 0; i < n / 2; i++) {
+  //         matches.push([teams[i], teams[i + n / 2]]);
+  //       }
+  
+  //       return matches;
+  //     };
+  
+  //     // Generate matches where each team plays exactly 2 matches
+  //     const generatedMatches = generateMatches(teams);
+  
+  //     return res.status(200).json({generatedMatches });
+  //   } catch (error) {
+  //     return res.status(400).json({ error: error.message });
+  //   }
+  // };
   
 
 

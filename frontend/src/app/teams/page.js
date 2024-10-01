@@ -141,7 +141,7 @@ export default function Teams() {
   
     try {
       const response = await axios.post('http://localhost:8000/makeDraw3', { teams });
-      setMatches(response.data.generatedMatches || []);  // Store the new matches
+      setMatches(response.data || []);  // Store the new matches 
     } catch (error) {
       alert(`Error adding new combination: ${error.response ? error.response.data.error : error.message}`);
     } finally {
