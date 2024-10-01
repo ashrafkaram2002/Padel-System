@@ -843,3 +843,8 @@ text-shadow: 0 0 3px var(--darker-color), 0 0 8px var(--darker-color), 0 0 13px 
   pointer-events: none; 
   /* cursor: pointer; */
 }
+
+.horizontal-line{
+  border: 1px solid var(--color-active);
+  margin: 0.5rem;
+}
