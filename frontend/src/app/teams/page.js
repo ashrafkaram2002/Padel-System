@@ -20,6 +20,8 @@ export default function Teams() {
   const [matches, setMatches] = useState([]);
   const [drawConfirmed, setDrawConfirmed] = useState(false);  
   const [addCombination, setAddCombination] = useState(false);
+  const [combinationModal, setCombinationModal] = useState(false);
+  const [numCombinations, setNumCombinations] = useState(null);
   const [showDivider, setShowDivider] = useState(false);
 
   const router = useRouter();
@@ -33,6 +35,11 @@ export default function Teams() {
     setDrawMade(false);
     setTeams([]);
     goToManageDraws();
+  };
+
+  const handleCloseCombinationModal = () => {
+    setCombinationModal(false);
+    setNumCombinations(null);
   };
 
   const fetchPlayersData = async () => {
@@ -180,6 +187,7 @@ export default function Teams() {
       const teams = matches.flat();
       const response = await axios.post("http://localhost:8000/makeDraw3", {
         teams,
+        numCombinations,
       });
       setMatches(response.data || []); // Store the new matches
       setAddCombination(true);
@@ -275,14 +283,25 @@ export default function Teams() {
                 marginTop: loading ? "25.5rem" : "0rem",
               }}
             >
-              <button
-                className="horizontal-container3"
-                style={{ height: "3rem" }}
-                onClick={handleAddCombination}
-              >
-                <IoDuplicateOutline className="icon-button" />
-                <div className="button-label"> Add Combination</div>
-              </button>
+              {!addCombination ? (
+                <button
+                  className="horizontal-container3"
+                  style={{ height: "3rem" }}
+                  onClick={() => setCombinationModal(true)}
+                >
+                  <IoDuplicateOutline className="icon-button" />
+                  <div className="button-label"> Add Combination</div>
+                </button>
+              ) : (
+                <button
+                  className="horizontal-container3"
+                  style={{
+                    height: "3rem",
+                    color: "transparent",
+                    backgroundColor: "transparent",
+                  }}
+                ></button>
+              )}
 
               {!addCombination && (
                 <button
@@ -312,6 +331,40 @@ export default function Teams() {
                   </p>
                   <button className="modal-button confirm" onClick={closeModal}>
                     Close
+                  </button>
+                </div>
+              </div>
+            )}
+            {combinationModal && (
+              <div className="modal-overlay">
+                <div className="modal-content">
+                  <h2 className="modal-title">Combinations</h2>
+                  <div>
+                    <label htmlFor="combination" className="modal-label">
+                      Please choose the number of combinations you want
+                    </label>
+                    <select
+                      id="combination"
+                      className="modal-input"
+                      value={numCombinations}
+                      onChange={(e) => setNumCombinations(e.target.value)}
+                    >
+                      <option value="2">2</option>
+                      <option value="3">3</option>
+                      <option value="4">4</option>
+                    </select>
+                  </div>
+                  <button
+                    className="modal-button confirm"
+                    onClick={handleAddCombination}
+                  >
+                    Confirm
+                  </button>
+                  <button
+                    className="modal-button cancel"
+                    onClick={handleCloseCombinationModal}
+                  >
+                    Cancel
                   </button>
                 </div>
               </div>
