@@ -39,6 +39,7 @@ export default function Teams() {
 
   const handleCloseCombinationModal = () => {
     setCombinationModal(false);
+    setNumCombinations(2);
   };
 
   const handleAddCombinationConfirm = () => {
@@ -180,6 +181,7 @@ export default function Teams() {
       );
     } finally {
       setLoading(false); // Hide loading indicator
+      setAddCombination(false);
     }
   };
 
@@ -188,8 +190,6 @@ export default function Teams() {
 
     try {
       const teams = matches.flat();
-      console.log(numCombinations);
-      console.log(teams);
       const response = await axios.post("http://localhost:8000/makeDraw3", {
         teams,
         numCombinations,
@@ -273,7 +273,8 @@ export default function Teams() {
                         </div>
                       </div>
                       {/* Render horizontal line in the middle */}
-                      {showDivider &&
+                      {addCombination &&
+                        showDivider &&
                         (index + 1) %
                           Math.floor(matches.length / numCombinations) ===
                           0 &&
@@ -292,36 +293,23 @@ export default function Teams() {
                 marginTop: loading ? "25.5rem" : "0rem",
               }}
             >
-              {!addCombination ? (
-                <button
-                  className="horizontal-container3"
-                  style={{ height: "3rem" }}
-                  onClick={() => setCombinationModal(true)}
-                >
-                  <IoDuplicateOutline className="icon-button" />
-                  <div className="button-label"> Add Combinations</div>
-                </button>
-              ) : (
-                <button
-                  className="horizontal-container3"
-                  style={{
-                    height: "3rem",
-                    color: "transparent",
-                    backgroundColor: "transparent",
-                  }}
-                ></button>
-              )}
+              <button
+                className="horizontal-container3"
+                style={{ height: "3rem" }}
+                onClick={handleReDraw}
+              >
+                <IoShuffle className="icon-button" />
+                <div className="button-label"> Re-Draw</div>
+              </button>
 
-              {!addCombination && (
-                <button
-                  className="horizontal-container3"
-                  style={{ height: "3rem" }}
-                  onClick={handleReDraw}
-                >
-                  <IoShuffle className="icon-button" />
-                  <div className="button-label"> Re-Draw</div>
-                </button>
-              )}
+              <button
+                className="horizontal-container3"
+                style={{ height: "3rem" }}
+                onClick={() => setCombinationModal(true)}
+              >
+                <IoDuplicateOutline className="icon-button" />
+                <div className="button-label"> Add Combinations</div>
+              </button>
 
               <button
                 className="horizontal-container3"
@@ -335,9 +323,7 @@ export default function Teams() {
             {drawConfirmed && (
               <div className="modal-overlay">
                 <div className="modal-content">
-                  <p className="confirmation-message">
-                    Matches are confirmed.
-                  </p>
+                  <p className="confirmation-message">Matches are confirmed.</p>
                   <button className="modal-button confirm" onClick={closeModal}>
                     Close
                   </button>
@@ -350,7 +336,8 @@ export default function Teams() {
                   <h2 className="modal-title">Add Combinations</h2>
                   <div>
                     <label htmlFor="combination" className="modal-label">
-                      Please choose the number of the total combinations you want
+                      Please choose the number of the total combinations you
+                      want
                     </label>
                     <select
                       id="combination"
