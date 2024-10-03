@@ -336,7 +336,7 @@ export default function Teams() {
               <div className="modal-overlay">
                 <div className="modal-content">
                   <p className="confirmation-message">
-                    Drawn matches are confirmed
+                    Matches are confirmed.
                   </p>
                   <button className="modal-button confirm" onClick={closeModal}>
                     Close
@@ -347,10 +347,10 @@ export default function Teams() {
             {combinationModal && (
               <div className="modal-overlay">
                 <div className="modal-content">
-                  <h2 className="modal-title">Combinations</h2>
+                  <h2 className="modal-title">Add Combinations</h2>
                   <div>
                     <label htmlFor="combination" className="modal-label">
-                      Please choose the number of combinations you want
+                      Please choose the number of the total combinations you want
                     </label>
                     <select
                       id="combination"
@@ -363,6 +363,9 @@ export default function Teams() {
                       <option value="2">2</option>
                       <option value="3">3</option>
                       <option value="4">4</option>
+                      <option value="5">5</option>
+                      <option value="6">6</option>
+                      <option value="7">7</option>
                     </select>
                   </div>
                   <button
