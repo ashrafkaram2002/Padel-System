@@ -21,7 +21,7 @@ export default function Teams() {
   const [drawConfirmed, setDrawConfirmed] = useState(false);  
   const [addCombination, setAddCombination] = useState(false);
   const [combinationModal, setCombinationModal] = useState(false);
-  const [numCombinations, setNumCombinations] = useState(null);
+  const [numCombinations, setNumCombinations] = useState(2);
   const [showDivider, setShowDivider] = useState(false);
 
   const router = useRouter();
@@ -39,7 +39,10 @@ export default function Teams() {
 
   const handleCloseCombinationModal = () => {
     setCombinationModal(false);
-    setNumCombinations(null);
+  };
+
+  const handleAddCombinationConfirm = () => {
+    handleAddCombination();
   };
 
   const fetchPlayersData = async () => {
@@ -185,6 +188,8 @@ export default function Teams() {
 
     try {
       const teams = matches.flat();
+      console.log(numCombinations);
+      console.log(teams);
       const response = await axios.post("http://localhost:8000/makeDraw3", {
         teams,
         numCombinations,
@@ -192,6 +197,7 @@ export default function Teams() {
       setMatches(response.data || []); // Store the new matches
       setAddCombination(true);
       setShowDivider(true);
+      handleCloseCombinationModal();
     } catch (error) {
       alert(
         `Error adding new combination: ${
@@ -268,7 +274,10 @@ export default function Teams() {
                       </div>
                       {/* Render horizontal line in the middle */}
                       {showDivider &&
-                        index === Math.floor(matches.length / 2) - 1 && (
+                        (index + 1) %
+                          Math.floor(matches.length / numCombinations) ===
+                          0 &&
+                        index !== matches.length - 1 && (
                           <hr className="horizontal-line" />
                         )}
                     </div>
@@ -290,7 +299,7 @@ export default function Teams() {
                   onClick={() => setCombinationModal(true)}
                 >
                   <IoDuplicateOutline className="icon-button" />
-                  <div className="button-label"> Add Combination</div>
+                  <div className="button-label"> Add Combinations</div>
                 </button>
               ) : (
                 <button
@@ -347,7 +356,9 @@ export default function Teams() {
                       id="combination"
                       className="modal-input"
                       value={numCombinations}
-                      onChange={(e) => setNumCombinations(e.target.value)}
+                      onChange={(e) =>
+                        setNumCombinations(parseInt(e.target.value, 10))
+                      }
                     >
                       <option value="2">2</option>
                       <option value="3">3</option>
@@ -356,7 +367,7 @@ export default function Teams() {
                   </div>
                   <button
                     className="modal-button confirm"
-                    onClick={handleAddCombination}
+                    onClick={handleAddCombinationConfirm}
                   >
                     Confirm
                   </button>
