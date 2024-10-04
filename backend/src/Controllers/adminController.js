@@ -588,71 +588,53 @@ const requireAdminAuth = (req, res, next) => {
             throw new Error("Number of teams must be even.");
         }
 
-        const generateUniqueCombinations = (teams) => {
+        const totalTeams = teams.length;
+        const maxCombinations = totalTeams - 1; // n-1 combinations for round-robin
+
+        // Check if the number of requested combinations is valid
+        if (numCombinations > maxCombinations) {
+            throw new Error(`Requested number of combinations (${numCombinations}) exceeds the possible unique combinations (${maxCombinations}).`);
+        }
+
+        const generateRoundRobinCombinations = (teams) => {
             const results = [];
-            const usedPairs = new Set();
+            const n = teams.length;
 
-            // Add the first combination exactly as per the input
-            const firstCombination = [];
-            for (let i = 0; i < teams.length; i += 2) {
-                const team1 = teams[i];
-                const team2 = teams[i + 1];
-                const sortedPair = [team1, team2].sort().toString(); // Sorting to avoid duplicates
-                firstCombination.push([team1, team2]);
-                usedPairs.add(sortedPair);
-            }
-            results.push(firstCombination);
+            // First combination is the user-input order
+            results.push([...teams]);
 
-            const generatePairs = (remainingTeams) => {
-                const currentCombination = [];
+            // Generate n-1 combinations using round-robin rotation
+            for (let round = 1; round < n; round++) {
+                const newRound = [teams[0]]; // Keep the first team in place
 
-                for (let i = 0; i < remainingTeams.length; i += 2) {
-                    const team1 = remainingTeams[i];
-                    const team2 = remainingTeams[i + 1];
-                    const sortedPair = [team1, team2].sort().toString();
-
-                    if (!usedPairs.has(sortedPair)) {
-                        usedPairs.add(sortedPair);
-                        currentCombination.push([team1, team2]);
-                    } else {
-                        return null; // This combination can't work since it would repeat a match
-                    }
-                }
-                return currentCombination;
-            };
-
-            // Generate all possible valid combinations without repeating matches
-            while (results.length < numCombinations) {
-                const shuffledTeams = teams.slice().sort(() => Math.random() - 0.5);
-                const newCombination = generatePairs(shuffledTeams);
-
-                if (newCombination) {
-                    results.push(newCombination);
-                }
-
-                if (usedPairs.size === teams.length * (teams.length - 1) / 2) {
-                    break; // If all pairs have been used, exit the loop
-                }
+                // Rotate all other teams
+                newRound.push(...teams.slice(1).map((_, i) => teams[(i + round) % (n - 1) + 1]));
+                results.push(newRound);
             }
 
             return results;
         };
 
-        const allCombinations = generateUniqueCombinations(teams);
+        // Split each round into pairs
+        const splitIntoPairs = (combination) => {
+            const pairs = [];
+            for (let i = 0; i < combination.length; i += 2) {
+                pairs.push([combination[i], combination[i + 1]]);
+            }
+            return pairs;
+        };
 
-        // Check if the requested number of combinations is valid
-        if (allCombinations.length < numCombinations) {
-            throw new Error(`Requested number of combinations (${numCombinations}) exceeds the possible unique combinations.`);
-        }
+        const allCombinations = generateRoundRobinCombinations(teams).slice(0, numCombinations);
 
         // Flatten all combinations into a single array of matches
-        const flattenedMatches = allCombinations.flat();
+        const flattenedMatches = allCombinations.flatMap(splitIntoPairs);
 
         return res.status(200).json(flattenedMatches);
     } catch (error) {
-        return res.status(400).json( "Invalid number of combinations" );
+        return res.status(400).json({ error: error.message });
     }
 };
+
 
 
 
