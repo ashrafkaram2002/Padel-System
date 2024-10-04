@@ -302,14 +302,16 @@ export default function Teams() {
                 <div className="button-label"> Re-Draw</div>
               </button>
 
-              <button
-                className="horizontal-container3"
-                style={{ height: "3rem" }}
-                onClick={() => setCombinationModal(true)}
-              >
-                <IoDuplicateOutline className="icon-button" />
-                <div className="button-label"> Add Combinations</div>
-              </button>
+              {!addCombination && (
+                <button
+                  className="horizontal-container3"
+                  style={{ height: "3rem" }}
+                  onClick={() => setCombinationModal(true)}
+                >
+                  <IoDuplicateOutline className="icon-button" />
+                  <div className="button-label"> Add Combinations</div>
+                </button>
+              )}
 
               <button
                 className="horizontal-container3"
