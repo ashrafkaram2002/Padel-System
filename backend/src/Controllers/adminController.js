@@ -593,7 +593,7 @@ const requireAdminAuth = (req, res, next) => {
 
         // Check if the number of requested combinations is valid
         if (numCombinations > maxCombinations) {
-            throw new Error(`Requested number of combinations (${numCombinations}) exceeds the possible unique combinations (${maxCombinations}).`);
+            throw new Error(`Requested number of combinations exceeds the possible unique combinations for this draw (${maxCombinations}).`);
         }
 
         const generateRoundRobinCombinations = (teams) => {
