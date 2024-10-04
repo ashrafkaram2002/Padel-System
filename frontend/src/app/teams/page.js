@@ -23,6 +23,7 @@ export default function Teams() {
   const [combinationModal, setCombinationModal] = useState(false);
   const [numCombinations, setNumCombinations] = useState(2);
   const [showDivider, setShowDivider] = useState(false);
+  const [numMatches, setNumMatches] = useState(null);
 
   const router = useRouter();
 
@@ -76,7 +77,6 @@ export default function Teams() {
     const rightPlayers = selectedPlayers.filter(
       (player) => player.position === "right"
     );
-    console.log(selectedPlayers.length);
     if (selectedPlayers.length % 4 !== 0) {
       alert("Not enough players to form draws.");
       return;
@@ -161,6 +161,7 @@ export default function Teams() {
         }`
       );
     } finally {
+      setNumMatches(teams.length / 2);
       setLoading(false);
     }
   };
@@ -272,12 +273,9 @@ export default function Teams() {
                           {match[1][0]} - {match[1][1]}
                         </div>
                       </div>
-                      {/* Render horizontal line in the middle */}
                       {addCombination &&
                         showDivider &&
-                        (index + 1) %
-                          Math.floor(matches.length / numCombinations) ===
-                          0 &&
+                        (index + 1) % numMatches === 0 &&
                         index !== matches.length - 1 && (
                           <hr className="horizontal-line" />
                         )}
