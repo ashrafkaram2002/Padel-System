@@ -7,6 +7,7 @@ import AppNavBar from '../components/AppNavBar';
 import { GiConfirmed } from 'react-icons/gi';
 import { useRouter} from 'next/navigation';
 import { SlClock } from "react-icons/sl"
+import React, { Suspense } from 'react';
 
 export default function Matches() {
 
